@@ -8,23 +8,31 @@
             </span>
         </div>
         <div class="m-body">
-            <form action="">
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+                Дякуємо! Ми зв'яжемося з вами найближчим часом.
+            </div>
+            <form id="feedbackForm" action="{{ route('feedback.submit') }}" method="POST">
+                @csrf
                 <div class="enter-element">
-                    <label for="name">Ім’я*</label>
-                    <input type="text" name="name" id="name" placeholder="Ваше ім’я">
+                    <label for="name">Ім'я*</label>
+                    <input type="text" name="name" id="name" placeholder="Ваше ім'я" required>
+                    <div class="error-message" id="nameError"></div>
                 </div>
                 <div class="enter-element">
                     <label for="phone">Номер телефону*</label>
-                    <input type="text" name="phone" id="phone_ьщвфд" placeholder="+38 (__) ___ __-__">
+                    <input type="tel" name="phone" id="phone" required>
+                    <div class="error-message" id="phoneError"></div>
                 </div>
                 <div class="enter-element">
                     <label for="message">Повідомлення</label>
-                    <input type="text" name="message" id="message" placeholder="Ваше повідомлення">
+                    <textarea name="message" id="message" placeholder="Ваше повідомлення" rows="4"></textarea>
+                    <div class="error-message" id="messageError"></div>
                 </div>
                 <div class="btn-sb">
-                    <button type="submit">
+                    <button type="submit" id="submitBtn">
                         <div class="btn btn-style-fas-head_2">
-                            <p>Зв’язатися</p>
+                            <p>Зв'язатися</p>
                         </div>
                     </button>
                 </div>

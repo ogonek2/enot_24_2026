@@ -7,9 +7,9 @@
 @section('content')
     {{-- Hero Section --}}
     <div class="container mx-auto px-4 mb-20">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="flex flex-col-reverse lg:flex-row gap-12 items-center">
             {{-- Content --}}
-            <div class="space-y-8 text-center lg:text-left">
+            <div class="space-y-8 text-center lg:text-left flex-1">
                 {{-- Badge --}}
                 <div class="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
                     <i class="fas fa-truck mr-2"></i>

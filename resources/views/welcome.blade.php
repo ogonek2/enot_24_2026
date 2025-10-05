@@ -5,128 +5,105 @@
 @endsection
 
 @section('content')
-    {{-- Hero Section --}}
-    <div class="container mx-auto px-4 mb-20">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-            {{-- Content --}}
-            <div class="space-y-8 text-center lg:text-left">
-                {{-- Badge --}}
-                <div class="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                    <i class="fas fa-leaf mr-2"></i>
-                    Екологічно чисто • 100% безпечно
-                </div>
-                
-                {{-- Main Title --}}
-                <div class="space-y-6">
-                    <h1 class="text-4xl lg:text-6xl font-bold leading-tight text-gray-900">
-                        Екочистка <span class="text-primary">одягу</span>
-                    </h1>
-                    <p class="text-xl text-gray-600 leading-relaxed max-w-2xl">
-                        Професійна екочистка одягу та домашнього текстилю з 
-                        <span class="font-semibold text-primary">кур'єрською доставкою</span>. 
-                        Швидко, зручно, якісно!
-                    </p>
-                </div>
-                
-                {{-- CTA Buttons --}}
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <button class="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-2xl modal_fade" data-modal="feedbackmd">
-                        <i class="fas fa-phone mr-2"></i>
-                        Замовити зараз
-                    </button>
-                    <a href="#services" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 hover:border-primary">
-                        <i class="fas fa-list mr-2"></i>
-                        Наші послуги
-                    </a>
-                </div>
-                
-                {{-- Quick Stats --}}
-                <div class="grid grid-cols-3 gap-6 pt-8">
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-truck text-primary text-xl"></i>
-                        </div>
-                        <div class="text-2xl font-bold text-gray-900">24/7</div>
-                        <div class="text-sm text-gray-600">Кур'єрська доставка</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-gradient-to-br from-green-500/20 to-green-500/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-leaf text-green-500 text-xl"></i>
-                        </div>
-                        <div class="text-2xl font-bold text-gray-900">100%</div>
-                        <div class="text-sm text-gray-600">Екологічно чисто</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-gradient-to-br from-orange-500/20 to-orange-500/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-clock text-orange-500 text-xl"></i>
-                        </div>
-                        <div class="text-2xl font-bold text-gray-900">24ч</div>
-                        <div class="text-sm text-gray-600">Швидке виконання</div>
-                    </div>
-                </div>
-            </div>
-            
-            {{-- Visual Element --}}
-            <div class="relative">
-                <div class="relative z-10">
-                    {{-- Main Illustration Container --}}
-                    <div class="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl p-8 border border-gray-200">
-                        <div class="text-center space-y-6">
-                            {{-- Icon --}}
-                            <div class="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-3xl flex items-center justify-center mx-auto shadow-lg">
-                                <i class="fas fa-tshirt text-white text-3xl"></i>
+    {{-- Hero Section with Background Image --}}
+    <div class="relative flex items-center py-20 overflow-hidden">
+        {{-- Background Image --}}
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style="background-image: url('{{ asset('storage/source/head.png') }}');">
+            <div class="absolute inset-0 bg-black/30"></div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-6 lg:gap-12 items-end">
+                {{-- Left Side - White Box with Content --}}
+                <div class="space-y-4 lg:space-y-8">
+                    {{-- White Content Box --}}
+                    <div class="bg-white/95 backdrop-blur-sm rounded-3xl p-4 lg:p-8 shadow-2xl">
+                        <div class="space-y-6">
+                            {{-- Main Title --}}
+                            <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-roboto font-bold leading-tight text-gray-900" style="color: #111827;">
+                                ЧИСТКА ОДЯГУ
+                            </h1>
+
+                            {{-- Description --}}
+                            <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed">
+                                Професійна екочистка одягу та домашнього текстилю з кур'єрською доставкою. Швидко, зручно,
+                                якісно!
+                            </p>
+
+                            {{-- CTA Buttons --}}
+                            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                                <button
+                                    class="gradient-button text-white px-4 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-base lg:text-lg transition-all duration-300 shadow-lg hover:shadow-2xl modal_fade"
+                                    data-modal="feedbackmd">
+                                    <i class="fas fa-phone mr-2"></i>
+                                    Замовити зараз
+                                </button>
+                                <a href="#prices"
+                                    class="text-custom-purple text-center border-2 border-custom-purple px-4 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-base lg:text-lg transition-all duration-300 shadow-lg hover:bg-custom-purple hover:text-white">
+                                    <i class="fas fa-list mr-2"></i>
+                                    Наші послуги
+                                </a>
                             </div>
-                            
-                            {{-- Text --}}
-                            <div class="space-y-2">
-                                <h3 class="text-xl font-semibold text-gray-900">Професійна чистка</h3>
-                                <p class="text-gray-600">Ваш одяг буде виглядати як новий</p>
-                            </div>
-                            
-                            {{-- Features --}}
-                            <div class="grid grid-cols-2 gap-4 text-sm">
-                                <div class="flex items-center space-x-2">
-                                    <i class="fas fa-check text-green-500"></i>
-                                    <span class="text-gray-600">Еко засоби</span>
+                        </div>
+                    </div>
+
+                    {{-- Benefits Block on Blurred Background --}}
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-white/20 backdrop-blur-md rounded-2xl"></div>
+                        <div class="relative z-10 p-3 sm:p-4 lg:p-6">
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+                                {{-- Benefit 1 --}}
+                                <div class="text-center">
+                                    <div
+                                        class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-white/90 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-3 shadow-lg">
+                                        <i class="fas fa-truck text-primary text-sm sm:text-base lg:text-xl"></i>
+                                    </div>
+                                    <div class="text-sm sm:text-base lg:text-xl font-bold text-white">300 грн</div>
+                                    <div class="text-xs sm:text-sm text-white/90">Кур'єрська доставка</div>
                                 </div>
-                                <div class="flex items-center space-x-2">
-                                    <i class="fas fa-check text-green-500"></i>
-                                    <span class="text-gray-600">Безпечно</span>
+
+                                {{-- Benefit 2 --}}
+                                <div class="text-center">
+                                    <div
+                                        class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-white/90 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-3 shadow-lg">
+                                        <i class="fas fa-phone text-primary text-sm sm:text-base lg:text-xl"></i>
+                                    </div>
+                                    <div class="text-sm sm:text-base lg:text-xl font-bold text-white">Без вихідних</div>
+                                    <div class="text-xs sm:text-sm text-white/90">З 09:00 до 21:00</div>
                                 </div>
-                                <div class="flex items-center space-x-2">
-                                    <i class="fas fa-check text-green-500"></i>
-                                    <span class="text-gray-600">Швидко</span>
+
+                                {{-- Benefit 3 --}}
+                                <div class="text-center">
+                                    <div
+                                        class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-white/90 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-3 shadow-lg">
+                                        <i class="fas fa-leaf text-primary text-sm sm:text-base lg:text-xl"></i>
+                                    </div>
+                                    <div class="text-sm sm:text-base lg:text-xl font-bold text-white">100%</div>
+                                    <div class="text-xs sm:text-sm text-white/90">Екологічно - Безпечно</div>
                                 </div>
-                                <div class="flex items-center space-x-2">
-                                    <i class="fas fa-check text-green-500"></i>
-                                    <span class="text-gray-600">Зручно</span>
+
+                                {{-- Benefit 4 --}}
+                                <div class="text-center">
+                                    <div
+                                        class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-white/90 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-3 shadow-lg">
+                                        <i class="fas fa-clock text-primary text-sm sm:text-base lg:text-xl"></i>
+                                    </div>
+                                    <div class="text-sm sm:text-base lg:text-xl font-bold text-white">48 год</div>
+                                    <div class="text-xs sm:text-sm text-white/90">Швидке виконання</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                {{-- Floating Elements --}}
-                <div class="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center shadow-lg">
-                    <i class="fas fa-star text-white"></i>
-                </div>
-                <div class="absolute -bottom-4 -left-4 w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <i class="fas fa-heart text-white text-sm"></i>
-                </div>
+
+                {{-- Reviews Slider --}}
+                @include('includes.elements.reviews-slider')
             </div>
         </div>
     </div>
-
     {{-- Services Navigation --}}
     @include('includes.elements.header-2-box')
-
-    {{-- Road/Process Section --}}
-    @include('includes.elements.road-box')
-
-    {{-- Services Section --}}
-    <div id="services">
-        @include('includes.elements.services-box')
-    </div>
 
     {{-- Price Section --}}
     @include('includes.elements.price-box')
@@ -148,11 +125,11 @@
     <script src="{{ asset('js/scripts/price_slide.js') }}"></script>
     <script>
         // Page-specific animations
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add floating animation to stats
-            document.querySelectorAll('.grid.grid-cols-3 > div').forEach((stat, index) => {
-                stat.style.animationDelay = `${index * 0.2}s`;
-                stat.classList.add('animate-fade-in-up');
+        $(document).ready(function() {
+            // Add floating animation to benefits
+            $('.grid.grid-cols-2.lg\\:grid-cols-4 > div').each(function(index) {
+                $(this).css('animation-delay', (index * 0.2) + 's');
+                $(this).addClass('animate-fade-in-up');
             });
         });
     </script>

@@ -1,5 +1,5 @@
 <div class="container mx-auto px-4 mb-20">
-    <div class="grid lg:grid-cols-2 gap-12 items-center">
+    <div class="grid lg:grid-cols-2 gap-12 items-center flex flex-col-reverse lg:flex-row">
         {{-- Left Content --}}
         <div class="space-y-8">
             <div class="space-y-6">
@@ -67,40 +67,35 @@
                 
                 <div class="relative z-10">
                     <div class="text-center mb-8">
-                        <div class="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <div class="w-16 h-16 gradient-button from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                             <i class="fas fa-paper-plane text-white text-2xl"></i>
                         </div>
                         <h3 class="text-2xl font-bold text-gray-900 mb-2">Зв'яжіться з нами</h3>
                         <p class="text-gray-600">Заповніть форму і ми обов'язково відповімо</p>
                     </div>
                     
-                    <form method="POST" action="#" class="space-y-6">
+                    <form id="consultationForm" method="POST" action="{{ route('feedback.submit') }}" class="space-y-6">
                         @csrf
                         <div class="space-y-4">
                             <div class="form-group">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Ім'я *</label>
-                                <input type="text" id="name_fd" placeholder="Введіть ваше ім'я" 
+                                <input type="text" name="name" id="name_fd" placeholder="Введіть ваше ім'я" required
                                        class="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl focus:border-primary focus:outline-none transition-all duration-300 text-lg bg-gray-50 focus:bg-white">
+                                <div class="error-message" id="name_fdError"></div>
                             </div>
                             <div class="form-group">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Номер телефону *</label>
-                                <input type="tel" id="phone_fd" placeholder="+380 (XX) XXX XX XX" 
+                                <input type="tel" name="phone" id="phone_fd" placeholder="+380 (XX) XXX XX XX" required
                                        class="w-full px-4 py-4 border-2 border-gray-200 rounded-2xl focus:border-primary focus:outline-none transition-all duration-300 text-lg bg-gray-50 focus:bg-white">
+                                <div class="error-message" id="phone_fdError"></div>
                             </div>
                         </div>
                         
                         <div class="pt-4">
-                            <button class="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl group" type="submit">
+                            <button id="consultationSubmitBtn" class="w-full gradient-button from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl group" type="submit">
                                 <i class="fas fa-paper-plane mr-2 group-hover:translate-x-1 transition-transform duration-300"></i>
                                 Відправити заявку
                             </button>
-                        </div>
-                        
-                        <div class="text-center pt-4">
-                            <p class="text-sm text-gray-500">
-                                Натискаючи кнопку, ви погоджуєтесь з 
-                                <a href="#" class="text-primary hover:underline">умовами обробки даних</a>
-                            </p>
                         </div>
                     </form>
                 </div>

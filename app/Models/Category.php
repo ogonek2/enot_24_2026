@@ -10,12 +10,45 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'href',
+        'name', 'href', 'discount_percent', 'discount_active',
+    ];
+
+    protected $casts = [
+        'discount_active' => 'boolean',
     ];
 
     public function services()
     {
         return $this->belongsToMany(Service::class);
+    }
+
+    /**
+     * Проверить, активна ли скидка на категорию
+     */
+    public function hasActiveDiscount()
+    {
+        return $this->discount_active && $this->discount_percent > 0;
+    }
+
+    /**
+     * Получить размер скидки в процентах
+     */
+    public function getDiscountPercent()
+    {
+        return $this->hasActiveDiscount() ? $this->discount_percent : 0;
+    }
+
+    /**
+     * Вычислить цену со скидкой
+     */
+    public function calculateDiscountedPrice($originalPrice)
+    {
+        if (!$this->hasActiveDiscount()) {
+            return $originalPrice;
+        }
+
+        $discountAmount = ($originalPrice * $this->discount_percent) / 100;
+        return $originalPrice - $discountAmount;
     }
 
     protected static function boot()

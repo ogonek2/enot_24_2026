@@ -102,33 +102,13 @@ class ModernUI {
         });
     }
 
-    // Loading States
+    // Loading States - DISABLED
     setupLoadingStates() {
-        // Add loading state to buttons
-        document.querySelectorAll('button[type="submit"]').forEach(button => {
-            button.addEventListener('click', function() {
-                if (this.form && this.form.checkValidity()) {
-                    this.classList.add('loading');
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Завантаження...';
-                }
-            });
-        });
+        // Loading states disabled - no loading indicators
+        return;
 
-        // Image loading with fade-in effect
-        document.querySelectorAll('img').forEach(img => {
-            // Check if image is already loaded
-            if (img.complete && img.naturalHeight !== 0) {
-                img.classList.add('loaded');
-            } else {
-                img.addEventListener('load', function() {
-                    this.classList.add('loaded');
-                });
-                img.addEventListener('error', function() {
-                    // Show image even if it fails to load
-                    this.classList.add('loaded');
-                });
-            }
-        });
+        // Image loading disabled - images show immediately
+        // No fade-in effect for images
     }
 
     // Tooltips
@@ -320,22 +300,10 @@ class ModernUI {
         });
     }
 
-    // Reinitialize images for dynamically loaded content
+    // Reinitialize images disabled - images show immediately
     static reinitializeImages() {
-        document.querySelectorAll('img:not(.loaded)').forEach(img => {
-            // Check if image is already loaded
-            if (img.complete && img.naturalHeight !== 0) {
-                img.classList.add('loaded');
-            } else {
-                img.addEventListener('load', function() {
-                    this.classList.add('loaded');
-                });
-                img.addEventListener('error', function() {
-                    // Show image even if it fails to load
-                    this.classList.add('loaded');
-                });
-            }
-        });
+        // No image reinitialization needed
+        return;
     }
 }
 
@@ -359,9 +327,10 @@ window.reinitializeAnimations = () => {
     ModernUI.reinitializeAnimations();
 };
 
-// Global function to reinitialize images
+// Global function to reinitialize images - DISABLED
 window.reinitializeImages = () => {
-    ModernUI.reinitializeImages();
+    // Images show immediately, no reinitialization needed
+    return;
 };
 
 // Simple mobile menu fallback function
@@ -431,18 +400,13 @@ style.textContent = `
         75% { transform: translateX(5px); }
     }
 
-    /* Loading States */
+    /* Loading States - DISABLED */
     .loading {
-        opacity: 0.7;
-        pointer-events: none;
+        /* Loading states disabled */
     }
 
+    /* Image loading styles removed - images now show immediately */
     img {
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    img.loaded {
         opacity: 1;
     }
 

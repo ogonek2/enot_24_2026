@@ -14,12 +14,19 @@
             <div class="grid lg:grid-cols-5 md:grid-cols-2 gap-8">
                 {{-- Logo & Description --}}
                 <div class="lg:col-span-2 space-y-6">
-                    <div class="flex items-center space-x-3">
-                        <img src="{{ asset('storage/source/logo.svg') }}" alt="Logo" class="w-12 h-12">
-                        <div>
-                            <h3 class="text-2xl font-bold text-white">praska.kiev.ua</h3>
-                            <p class="text-gray-400 text-sm">Екочистка одягу</p>
-                        </div>
+                     <!-- Logo -->
+                    <div style="display: flex; align-items: center;">
+                        <a href="/"
+                            style="
+                            display: flex;
+                            align-items: center;
+                            text-decoration: none;
+                            color: #1f2937;
+                            font-weight: bold;
+                            font-size: 20px;
+                        ">
+                            <img src="{{ asset('storage/source/logo_hear_white.svg') }}" alt="Logo" class="w-auto h-12">
+                        </a>
                     </div>
                     
                     <p class="text-gray-300 leading-relaxed max-w-md">

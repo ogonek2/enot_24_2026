@@ -8,7 +8,9 @@ class ServicesExport
 {
     public function export()
     {
-        $services = Service::with(['categories', 'groups'])->get();
+        $services = Service::with(['categories', 'groups'])
+            ->where('price', '>', 0)
+            ->get();
         
         $filename = 'services_' . date('Y-m-d_H-i-s') . '.csv';
         $headers = [

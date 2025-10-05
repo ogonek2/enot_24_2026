@@ -29,20 +29,7 @@
                 font-weight: bold;
                 font-size: 20px;
             ">
-                <div
-                    style="
-                    width: 40px;
-                    height: 40px;
-                    background: linear-gradient(135deg, #3b82f6, #06b6d4);
-                    border-radius: 8px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-right: 12px;
-                ">
-                    <img src="{{ asset('storage/source/logo.svg') }}" alt="Logo" class="w-12 h-12">
-                </div>
-                Praska.kiev.ua
+                <img src="{{ asset('storage/source/logo_hear.svg') }}" alt="Logo" class="w-auto h-12">
             </a>
         </div>
 
@@ -93,8 +80,23 @@
                 onmouseover="this.style.color='#3b82f6'" onmouseout="this.style.color='#6b7280'">
                 Викликати кур'єра
             </a>
-        </div>
+            <!-- Search Field -->
+            <div class="relative">
+                <input type="text" id="nav-service-search" placeholder="Пошук послуг..."
+                    class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-sm">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
 
+                <!-- Search Results Dropdown -->
+                <div id="nav-search-results"
+                    class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 hidden max-h-96 overflow-y-auto">
+                    <div id="nav-search-results-list" class="divide-y divide-gray-200">
+                        <!-- Search results will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Right Side -->
         <div style="display: flex; align-items: center; gap: 20px;">
             <!-- Phone (Desktop) -->
@@ -110,10 +112,9 @@
             </div>
 
             <!-- CTA Button (Desktop) -->
-            <button id="desktop-cta" class="modal_fade" data-modal="feedbackmd"
+            <button id="desktop-cta" class="modal_fade gradient-button" data-modal="feedbackmd"
                 style="
                 display: none;
-                background: linear-gradient(135deg, #3b82f6, #06b6d4);
                 color: white;
                 border: none;
                 padding: 12px 24px;
@@ -503,6 +504,104 @@
                 updateLayout();
             });
 
+            // Navigation Search Functionality
+            const navSearchInput = document.getElementById('nav-service-search');
+            const navSearchResults = document.getElementById('nav-search-results');
+            const navSearchResultsList = document.getElementById('nav-search-results-list');
+            let searchTimeout;
+
+            if (navSearchInput) {
+                navSearchInput.addEventListener('input', function() {
+                    const query = this.value.trim();
+
+                    clearTimeout(searchTimeout);
+
+                    if (query.length < 2) {
+                        navSearchResults.classList.add('hidden');
+                        return;
+                    }
+
+                    searchTimeout = setTimeout(() => {
+                        searchServices(query);
+                    }, 300);
+                });
+
+                // Hide results when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!navSearchInput.contains(e.target) && !navSearchResults.contains(e
+                        .target)) {
+                        navSearchResults.classList.add('hidden');
+                    }
+                });
+
+                // Show results on focus if there's a query
+                navSearchInput.addEventListener('focus', function() {
+                    if (this.value.trim().length >= 2) {
+                        navSearchResults.classList.remove('hidden');
+                    }
+                });
+            }
+
+            function searchServices(query) {
+                fetch(`/api/search-services?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Search API response:', data); // Отладка
+                        displayNavSearchResults(data.services || []);
+                    })
+                    .catch(error => {
+                        console.error('Search error:', error);
+                        navSearchResultsList.innerHTML =
+                            '<div class="p-4 text-center text-gray-500">Помилка пошуку</div>';
+                    });
+            }
+
+            function displayNavSearchResults(results) {
+                console.log('Displaying results:', results); // Отладка
+
+                if (results.length === 0) {
+                    navSearchResultsList.innerHTML =
+                        '<div class="p-4 text-center text-gray-500">Послуги не знайдено</div>';
+                } else {
+                    navSearchResultsList.innerHTML = results.map(service => {
+                        console.log('Processing service:', service); // Отладка
+
+                        // Правильно получаем название категории из массива categories (теперь это массив объектов)
+                        let categoryName = 'Професійна обробка';
+
+                        if (service.categories && Array.isArray(service.categories) && service.categories.length > 0) {
+                            // Теперь categories - это массив объектов с полем name
+                            categoryName = service.categories[0].name || 'Професійна обробка';
+                        }
+
+                        return `
+                            <div class="p-3 hover:bg-gray-50 cursor-pointer transition-colors duration-200" onclick="navigateToServicesWithSearch('${navSearchInput.value}')">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-gray-900">${service.name}</div>
+                                        <div class="text-sm text-gray-500">${categoryName}</div>
+                                    </div>
+                                    <div class="text-right">
+                                        ${getNavServicePriceHTML(service)}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+                navSearchResults.classList.remove('hidden');
+            }
+
+            // Функция для перехода на страницу услуг с поисковым запросом
+            window.navigateToServicesWithSearch = function(query) {
+                if (query && query.trim()) {
+                    window.location.href =
+                    `/poslugi-ta-cini?search=${encodeURIComponent(query.trim())}`;
+                } else {
+                    window.location.href = '/poslugi-ta-cini';
+                }
+            };
+
             // Handle escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && isMenuOpen) {
@@ -516,5 +615,39 @@
 
             console.log('Navigation initialization complete');
         });
+
+        // Функция для отображения цены с учетом скидки в навигаторе
+        function getNavServicePriceHTML(service) {
+            const originalPrice = service.price;
+            let discountedPrice = originalPrice;
+            let hasDiscount = false;
+            let discountPercent = 0;
+            
+            // Проверяем скидку на категорию
+            if (service.categories && service.categories.length > 0) {
+                for (const category of service.categories) {
+                    if (category.discount_active && category.discount_percent > 0) {
+                        discountedPrice = originalPrice - (originalPrice * category.discount_percent / 100);
+                        hasDiscount = true;
+                        discountPercent = category.discount_percent;
+                        break;
+                    }
+                }
+            }
+            
+            if (hasDiscount) {
+                return `
+                    <div class="space-y-1">
+                        <div class="font-bold text-primary">${Math.round(discountedPrice)}₴</div>
+                        <div class="text-xs text-gray-400 line-through">${originalPrice}₴</div>
+                        <div class="text-xs text-green-600 font-semibold">
+                            -${discountPercent}%
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `<div class="font-bold text-primary">${originalPrice}₴</div>`;
+            }
+        }
     })();
 </script>

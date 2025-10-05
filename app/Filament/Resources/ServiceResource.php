@@ -45,16 +45,11 @@ class ServiceResource extends Resource
                     ->label('Значення'),
                 Forms\Components\TextInput::make('href')
                     ->label('URL'),
-                Forms\Components\Select::make('categories')
-                    ->label('Категорії')
-                    ->searchable()
-                    ->multiple()
-                    ->options(\App\Models\Category::pluck('name', 'id')),
                 Forms\Components\Select::make('groups')
                     ->label('Групи')
-                    ->searchable()
                     ->multiple()
-                    ->options(\App\Models\Group::pluck('name', 'id')),
+                    ->options(\App\Models\Group::pluck('name', 'id'))
+                    ->relationship('groups', 'name'),
             ]);
     }
 
@@ -72,11 +67,6 @@ class ServiceResource extends Resource
                     ->label('Заголовок'),
                 Tables\Columns\TextColumn::make('value')
                     ->label('Значення'),
-                Tables\Columns\TextColumn::make('categories.name')
-                    ->label('Категорії')
-                    ->formatStateUsing(function ($record) {
-                        return $record->categories->pluck('name')->join(', ');
-                    }),
                 Tables\Columns\TextColumn::make('groups.name')
                     ->label('Групи')
                     ->formatStateUsing(function ($record) {
@@ -109,15 +99,44 @@ class ServiceResource extends Resource
                             ->acceptedFileTypes(['text/csv', 'application/csv', 'text/plain', '.csv'])
                             ->disk('public')
                             ->directory('imports')
-                            ->required(),
+                            ->required()
+                            ->storeFileNamesIn('original_filename')
+                            ->visibility('private'),
                     ])
                     ->action(function (array $data) {
                         try {
                             // Логируем начало импорта
                             \Log::info('Starting import with data:', $data);
                             
+                            // Получаем полный путь к файлу
+                            $filePath = storage_path('app/public/' . $data['file']);
+                            
+                            // Проверяем существование файла
+                            if (!file_exists($filePath)) {
+                                // Пробуем альтернативные пути
+                                $alternativePaths = [
+                                    storage_path('app/public/imports/' . basename($data['file'])),
+                                    storage_path('app/' . $data['file']),
+                                    public_path('storage/' . $data['file']),
+                                    $data['file']
+                                ];
+                                
+                                foreach ($alternativePaths as $path) {
+                                    if (file_exists($path)) {
+                                        $filePath = $path;
+                                        break;
+                                    }
+                                }
+                                
+                                if (!file_exists($filePath)) {
+                                    throw new \Exception('Файл не найден. Проверенные пути: ' . implode(', ', array_merge([$filePath], $alternativePaths)));
+                                }
+                            }
+                            
+                            \Log::info('Using file path:', ['path' => $filePath]);
+                            
                             $import = new ServicesImport();
-                            $result = $import->import($data['file']);
+                            $result = $import->import($filePath);
                             
                             $message = "Імпортовано: {$result['imported']} записів";
                             if (!empty($result['errors'])) {
@@ -138,7 +157,7 @@ class ServiceResource extends Resource
                             
                             \Filament\Notifications\Notification::make()
                                 ->title('Помилка імпорту')
-                                ->body($e->getMessage())
+                                ->body('Помилка: ' . $e->getMessage())
                                 ->danger()
                                 ->send();
                         }

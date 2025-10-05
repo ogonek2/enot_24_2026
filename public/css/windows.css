@@ -56,6 +56,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal.active {
+  opacity: 1;
+  visibility: visible;
 }
 .modal .modal-container {
   width: 100%;
@@ -64,6 +72,14 @@
   background-color: var(--var-color-1);
   z-index: 10;
   position: relative;
+  transform: scale(0.8) translateY(-50px);
+  transition: all 0.3s ease;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.modal.active .modal-container {
+  transform: scale(1) translateY(0);
 }
 .modal .modal-container .m-head {
   padding: 0 0 15px;
@@ -105,14 +121,26 @@
 .modal .modal-container .m-body form .enter-element label {
   font-size: 16px;
 }
-.modal .modal-container .m-body form .enter-element input {
+.modal .modal-container .m-body form .enter-element input,
+.modal .modal-container .m-body form .enter-element textarea {
   width: 100%;
-  height: 48px;
   border-radius: 12px;
   background-color: #F3F3F3;
-  text-indent: var(--var-horizontal-padding);
+  padding: 12px var(--var-horizontal-padding);
   font-size: 16px;
   font-weight: 200;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.modal .modal-container .m-body form .enter-element input {
+  height: 48px;
+}
+
+.modal .modal-container .m-body form .enter-element textarea {
+  min-height: 80px;
 }
 .modal .modal-container .m-body form .enter-element input:focus {
   outline: 1px solid var(--var-color-3);
@@ -134,4 +162,92 @@
   background-color: rgba(0, 0, 0, 0.6);
   -webkit-backdrop-filter: blur(5px);
           backdrop-filter: blur(5px);
+  cursor: pointer;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Form validation styles */
+.modal .enter-element input.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.modal .enter-element input:focus {
+  outline: none;
+  border-color: var(--var-color-3);
+  box-shadow: 0 0 0 3px rgba(48, 193, 240, 0.1);
+}
+
+/* Loading state removed - no longer needed */
+
+/* Success message styles */
+.modal .success-message {
+  background: #10b981;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: none;
+}
+
+.modal .success-message.show {
+  display: block;
+}
+
+/* Error message styles */
+.modal .error-message {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 5px;
+  display: none;
+}
+
+.modal .error-message.show {
+  display: block;
+}
+
+.modal .enter-element input.error,
+.modal .enter-element textarea.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.modal .enter-element input:focus,
+.modal .enter-element textarea:focus {
+  outline: none;
+  border-color: var(--var-color-3);
+  box-shadow: 0 0 0 3px rgba(48, 193, 240, 0.1);
+}
+
+/* Error message styles for all forms */
+.error-message {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 5px;
+  display: none;
+}
+
+.error-message.show {
+  display: block;
+}
+
+/* Error styles for form inputs */
+input.error,
+textarea.error {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Focus styles for form inputs */
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--var-color-3) !important;
+  box-shadow: 0 0 0 3px rgba(48, 193, 240, 0.1) !important;
 }

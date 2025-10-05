@@ -176,7 +176,7 @@ class ServicesImport
         
         $service = Service::create([
             'name' => $serviceName,
-            'price' => (float) ($this->getValue($row, ['Ціна', 'Цена', 'Price', 'price']) ?? 0),
+            'price' => $this->parsePrice($this->getValue($row, ['Ціна', 'Цена', 'Price', 'price'])),
             'title' => $this->getValue($row, ['Заголовок', 'Заголовок', 'Title', 'title']) ?? $serviceName,
             'value' => $this->getValue($row, ['Значення', 'Значение', 'Value', 'value']),
             'href' => $this->generateHref($serviceName),
@@ -203,6 +203,58 @@ class ServicesImport
             }
         }
         return null;
+    }
+    
+    private function parsePrice($priceString)
+    {
+        // Если цена пустая, возвращаем 0
+        if (empty($priceString)) {
+            \Log::info('Price parsing: empty price string');
+            return 0;
+        }
+        
+        // Убираем лишние пробелы
+        $priceString = trim($priceString);
+        \Log::info('Price parsing:', ['original' => $priceString]);
+        
+        // Если цена содержит "Від" или "От", извлекаем число после него
+        if (preg_match('/(?:Від|От|From|від|от|from)\s*(\d+(?:[.,]\d+)?)/i', $priceString, $matches)) {
+            $price = str_replace(',', '.', $matches[1]);
+            \Log::info('Price parsing: found "Від" pattern', ['matches' => $matches, 'result' => (float) $price]);
+            return (float) $price;
+        }
+        
+        // Если цена содержит "до" или "до", извлекаем число после него
+        if (preg_match('/(?:до|до|up to|до)\s*(\d+(?:[.,]\d+)?)/i', $priceString, $matches)) {
+            $price = str_replace(',', '.', $matches[1]);
+            \Log::info('Price parsing: found "до" pattern', ['matches' => $matches, 'result' => (float) $price]);
+            return (float) $price;
+        }
+        
+        // Если цена содержит "ціна від" или "цена от", извлекаем число после него
+        if (preg_match('/(?:ціна від|цена от|price from|ціна від|цена от)\s*(\d+(?:[.,]\d+)?)/i', $priceString, $matches)) {
+            $price = str_replace(',', '.', $matches[1]);
+            \Log::info('Price parsing: found "ціна від" pattern', ['matches' => $matches, 'result' => (float) $price]);
+            return (float) $price;
+        }
+        
+        // Если цена содержит "від" в начале строки, извлекаем число после него
+        if (preg_match('/^від\s*(\d+(?:[.,]\d+)?)/i', $priceString, $matches)) {
+            $price = str_replace(',', '.', $matches[1]);
+            \Log::info('Price parsing: found "від" at start pattern', ['matches' => $matches, 'result' => (float) $price]);
+            return (float) $price;
+        }
+        
+        // Если цена содержит только число (с точкой или запятой)
+        if (preg_match('/(\d+(?:[.,]\d+)?)/', $priceString, $matches)) {
+            $price = str_replace(',', '.', $matches[1]);
+            \Log::info('Price parsing: found number pattern', ['matches' => $matches, 'result' => (float) $price]);
+            return (float) $price;
+        }
+        
+        // Если ничего не найдено, возвращаем 0
+        \Log::info('Price parsing: no pattern matched, returning 0');
+        return 0;
     }
     
     private function generateHref($text)

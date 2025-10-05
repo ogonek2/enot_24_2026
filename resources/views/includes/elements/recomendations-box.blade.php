@@ -140,7 +140,7 @@
         
         {{-- CTA Section --}}
         <div class="mt-16 text-center">
-            <div class="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 text-white">
+            <div class="gradient-button from-primary to-secondary rounded-2xl p-8 text-white">
                 <h3 class="text-2xl font-bold mb-4">Потрібна професійна допомога?</h3>
                 <p class="text-lg opacity-90 mb-6">Зверніться до наших експертів для консультації та замовлення послуг</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">

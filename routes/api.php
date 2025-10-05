@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PromotionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// API для модальных акций
+Route::get('/modal-promotion', [PromotionController::class, 'getModalPromotion']);
+
+// API для баннера акций
+Route::get('/promotions-banner', [PromotionController::class, 'getPromotionsForBanner']);
+
+// API для форм обратной связи
+Route::post('/contact', [App\Http\Controllers\FeedbackController::class, 'submit']);

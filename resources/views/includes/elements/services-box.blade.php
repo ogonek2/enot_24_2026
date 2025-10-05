@@ -10,7 +10,7 @@
             </p>
         </div>
         
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="grid lg:grid-cols-2 gap-12 items-center flex flex-col-reverse lg:flex-row">
             {{-- Image --}}
             <div class="animate-fade-in-left">
                 <div class="relative">
