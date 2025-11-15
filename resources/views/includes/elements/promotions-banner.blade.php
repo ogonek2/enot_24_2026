@@ -1,9 +1,9 @@
 <!-- Баннер-слайдер с акциями -->
-<section class="py-4 sm:py-6 bg-gradient-to-r from-blue-50 to-blue-100">
+<section class="py-4 sm:py-6 bg-gradient-to-r from-accent to-primary/30">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Заголовок секции -->
         <div class="text-center mb-4 sm:mb-6">
-            <h2 class="text-xl sm:text-2xl font-bold text-blue-900 mb-1">
+            <h2 class="text-xl sm:text-2xl font-bold text-secondary mb-1">
                 🎁 Спеціальні пропозиції
             </h2>
             <p class="text-gray-600 text-xs sm:text-sm">
@@ -30,7 +30,7 @@
         <!-- Кнопка для вызова модального окна консультации -->
         <div class="text-center mt-4 sm:mt-6">
             <button id="open-consultation-modal" 
-                    class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg">
+                    class="bg-gradient-primary text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm hover:opacity-90 transition-all duration-200 shadow-md hover:shadow-lg">
                 📞 Отримати консультацію
             </button>
         </div>
@@ -114,14 +114,14 @@
 
 .promotion-offers li::before {
     content: "•";
-    color: #3b82f6;
+    color: #b0a8fe;
     font-weight: bold;
     margin-right: 6px;
     margin-top: 1px;
 }
 
 .promotion-button {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    background: linear-gradient(135deg, #b0a8fe, #c47e93);
     color: white;
     border: none;
     padding: 6px 12px;
@@ -134,14 +134,14 @@
 }
 
 .promotion-button:hover {
-    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    background: linear-gradient(135deg, #c47e93, #b0a8fe);
     transform: translateY(-1px);
 }
 
 /* Навигация слайдера */
 .promotions-next,
 .promotions-prev {
-    color: #3b82f6;
+    color: #b0a8fe;
     background: white;
     border-radius: 50%;
     width: 40px;
@@ -156,7 +156,7 @@
 
 /* Пагинация */
 .promotions-pagination .swiper-pagination-bullet {
-    background: #3b82f6;
+    background: #b0a8fe;
     opacity: 0.3;
 }
 

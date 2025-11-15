@@ -24,21 +24,43 @@ class B2bResource extends Resource
     protected static ?string $modelLabel = 'B2B';
     
     protected static ?string $pluralModelLabel = 'B2B';
+    
+    protected static ?string $navigationGroup = 'Контент';
+    
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->label('Назва'),
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->label('Заголовок'),
-                Forms\Components\TextInput::make('href')
-                    ->label('URL'),
-                Forms\Components\TextInput::make('banner')
-                    ->label('Банер'),
+                Forms\Components\Section::make('Основна інформація')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->label('Назва')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('title')
+                            ->required()
+                            ->label('Заголовок')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('href')
+                            ->label('URL адреса')
+                            ->maxLength(255)
+                            ->helperText('Буде згенеровано автоматично, якщо залишити порожнім'),
+                    ])
+                    ->columns(2),
+                
+                Forms\Components\Section::make('Зображення')
+                    ->schema([
+                        Forms\Components\FileUpload::make('banner')
+                            ->label('Банер')
+                            ->image()
+                            ->directory('sources/b2b_icons')
+                            ->disk('public')
+                            ->visibility('public')
+                            ->nullable()
+                            ->helperText('Зображення для B2B сторінки'),
+                    ]),
             ]);
     }
 
@@ -46,20 +68,50 @@ class B2bResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('banner')
+                    ->label('Банер')
+                    ->circular()
+                    ->size(50)
+                    ->getStateUsing(function ($record) {
+                        if (!$record || !$record->banner) {
+                            return null;
+                        }
+                        // Путь в БД: sources/b2b_icons/... или src/...
+                        return $record->banner;
+                    })
+                    ->url(function ($record) {
+                        if (!$record || !$record->banner) {
+                            return null;
+                        }
+                        // Формируем правильный URL: asset('storage/' . $record->banner)
+                        // Если путь начинается с sources/, используем его как есть
+                        // Если путь начинается с src/, используем его как есть
+                        return asset('storage/' . $record->banner);
+                    }),
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID'),
+                    ->label('ID')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Назва'),
+                    ->label('Назва')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Заголовок'),
+                    ->label('Заголовок')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('href')
-                    ->label('URL'),
+                    ->label('URL')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Створено'),
+                    ->label('Створено')
+                    ->dateTime('d.m.Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
+            ->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

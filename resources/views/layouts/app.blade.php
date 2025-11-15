@@ -7,69 +7,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     <link rel="shortcut icon" href="{{ asset('storage/source/logo_icon.svg') }}" type="image/x-icon">
-    {{-- Tailwind CSS --}}
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#30C1F0',
-                        secondary: '#002B5B',
-                        accent: '#26A9D9',
-                        success: '#10B981',
-                        warning: '#F59E0B',
-                        error: '#EF4444',
-                        // Gradient colors
-                        'gradient-purple': '#8B5CF6',
-                        'gradient-blue': '#3B82F6',
-                        'gradient-cyan': '#06B6D4',
-                        // Custom purple
-                        'custom-purple': '#993EFA'
-                    },
-                    fontFamily: {
-                        'inter': ['f_inter', 'Inter', 'sans-serif']
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.6s ease-out',
-                        'fade-in-left': 'fadeInLeft 0.6s ease-out',
-                        'fade-in-right': 'fadeInRight 0.6s ease-out',
-                        'bounce-slow': 'bounce 2s infinite',
-                        'pulse-slow': 'pulse 3s infinite',
-                        'gradient-shift': 'gradientShift 3s ease infinite'
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(30px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' }
-                        },
-                        fadeInLeft: {
-                            '0%': { opacity: '0', transform: 'translateX(-30px)' },
-                            '100%': { opacity: '1', transform: 'translateX(0)' }
-                        },
-                        fadeInRight: {
-                            '0%': { opacity: '0', transform: 'translateX(30px)' },
-                            '100%': { opacity: '1', transform: 'translateX(0)' }
-                        },
-                        gradientShift: {
-                            '0%': { backgroundPosition: '0% 50%' },
-                            '50%': { backgroundPosition: '100% 50%' },
-                            '100%': { backgroundPosition: '0% 50%' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
-    {{-- Styles --}}
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/box_containers.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/content.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/elements.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fixed_elements.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/windows.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/tailwind-integration.css') }}">
+    {{-- Google Fonts --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Russo+One&display=swap" rel="stylesheet">
+    {{-- CSS Styles compiled via Mix --}}
+    {{-- Tailwind CSS - используем скомпилированный через Mix (не в manifest, поэтому asset) --}}
+    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
     {{-- SwiperJs CDN --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     {{-- Font Awesome --}}
@@ -79,12 +23,411 @@
     @yield('styles')
     {{-- Seo --}}
     @yield('seo_tags')
+
+    <style>
+        body{
+            background-color: #EDEDF6 !important;
+        }
+        
+        /* Page Loader Styles */
+        #page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+            overflow: hidden;
+        }
+        
+        #page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        .loader-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .loader-logo {
+            width: 180px;
+            height: 180px;
+            flex-shrink: 0;
+            animation: logoAppear 0.8s ease-out;
+        }
+        
+        @keyframes logoAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .loader-brand {
+            display: flex;
+            align-items: start;
+            gap: 4px;
+            overflow: hidden;
+            width: 0;
+            animation: brandReveal 1.2s ease-out 0.5s forwards;
+        }
+        
+        @keyframes brandReveal {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 280px;
+            }
+        }
+        
+        .loader-brand-text {
+            font-family: 'Namu', sans-serif;
+            font-size: 64px;
+            font-weight: 700;
+            color: #000000;
+            white-space: nowrap;
+            line-height: 1;
+        }
+        
+        .loader-brand-number {
+            font-family: 'Namu', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #000000;
+            line-height: 1;
+            margin-left: 10px;
+        }
+        
+        /* Bubbles Animation */
+        .loader-bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            border-radius: 50%;
+            background: rgba(116, 112, 191, 0.1);
+            border: 2px solid rgba(116, 112, 191, 0.2);
+            animation: bubbleRise 8s infinite ease-in;
+        }
+        
+        .bubble::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            width: 30%;
+            height: 30%;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+        }
+        
+        @keyframes bubbleRise {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+        
+        /* Create multiple bubbles */
+        .bubble:nth-child(1) {
+            width: 40px;
+            height: 40px;
+            left: 10%;
+            animation-duration: 6s;
+            animation-delay: 0s;
+        }
+        
+        .bubble:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            left: 20%;
+            animation-duration: 8s;
+            animation-delay: 1s;
+        }
+        
+        .bubble:nth-child(3) {
+            width: 30px;
+            height: 30px;
+            left: 35%;
+            animation-duration: 7s;
+            animation-delay: 0.5s;
+        }
+        
+        .bubble:nth-child(4) {
+            width: 50px;
+            height: 50px;
+            left: 50%;
+            animation-duration: 9s;
+            animation-delay: 1.5s;
+        }
+        
+        .bubble:nth-child(5) {
+            width: 35px;
+            height: 35px;
+            left: 65%;
+            animation-duration: 7.5s;
+            animation-delay: 0.8s;
+        }
+        
+        .bubble:nth-child(6) {
+            width: 45px;
+            height: 45px;
+            left: 80%;
+            animation-duration: 8.5s;
+            animation-delay: 1.2s;
+        }
+        
+        .bubble:nth-child(7) {
+            width: 55px;
+            height: 55px;
+            left: 90%;
+            animation-duration: 6.5s;
+            animation-delay: 0.3s;
+        }
+        
+        .bubble:nth-child(8) {
+            width: 25px;
+            height: 25px;
+            left: 15%;
+            animation-duration: 7s;
+            animation-delay: 2s;
+        }
+        
+        .bubble:nth-child(9) {
+            width: 40px;
+            height: 40px;
+            left: 75%;
+            animation-duration: 8s;
+            animation-delay: 1.8s;
+        }
+        
+        .bubble:nth-child(10) {
+            width: 35px;
+            height: 35px;
+            left: 45%;
+            animation-duration: 9s;
+            animation-delay: 2.5s;
+        }
+        
+        /* Sparkle/Shine effect on brand text */
+        .loader-brand-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .loader-brand-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(116, 112, 191, 0.3), transparent);
+            animation: shine 3s infinite 2s;
+            pointer-events: none;
+        }
+        
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+            50% {
+                left: 100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        
+        /* Additional cleaning effect - steam/vapor */
+        .loader-steam {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .steam-particle {
+            position: absolute;
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(to top, rgba(116, 112, 191, 0.3), transparent);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: steamRise 4s infinite ease-out;
+        }
+        
+        .steam-particle:nth-child(1) {
+            left: 20%;
+            animation-delay: 0s;
+        }
+        
+        .steam-particle:nth-child(2) {
+            left: 50%;
+            animation-delay: 0.5s;
+        }
+        
+        .steam-particle:nth-child(3) {
+            left: 80%;
+            animation-delay: 1s;
+        }
+        
+        @keyframes steamRise {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.6;
+            }
+            80% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-20vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        /* Cleaning wave effect */
+        .loader-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top, rgba(116, 112, 191, 0.1), transparent);
+            animation: waveMove 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes waveMove {
+            0%, 100% {
+                transform: translateY(0);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-20px);
+                opacity: 0.5;
+            }
+        }
+        
+        /* Prevent body scroll during loader */
+        body.loading {
+            overflow: hidden;
+        }
+        
+        /* Logo transition animation */
+        .logo-transition {
+            position: fixed;
+            z-index: 10000;
+            pointer-events: none;
+            will-change: transform, opacity;
+            /* Smooth easing function for natural movement */
+            transition: transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            /* Preserve 3D for better performance */
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+        
+        /* Hide navbar logo initially during transition */
+        body.loading #navbar img {
+            opacity: 0;
+            transition: opacity 0s;
+        }
+        
+        body.loader-complete #navbar img {
+            opacity: 1;
+            transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.7s;
+        }
+        
+        /* Hide loader content during transition */
+        body.loading .loader-content {
+            transition: opacity 0.3s ease-out;
+        }
+    </style>
 </head>
 
 <body>
+    {{-- Page Loader --}}
+    <div id="page-loader">
+        {{-- Wave Effect at Bottom --}}
+        <div class="loader-wave"></div>
+        
+        {{-- Bubbles Background --}}
+        <div class="loader-bubbles">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+        </div>
+        
+        {{-- Steam/Vapor Effect --}}
+        <div class="loader-steam">
+            <div class="steam-particle"></div>
+            <div class="steam-particle"></div>
+            <div class="steam-particle"></div>
+        </div>
+        
+        {{-- Main Content --}}
+        <div class="loader-content">
+            <img src="{{ asset('storage/src/logo/nobg_enot24.svg') }}" alt="ЄНОТ" class="loader-logo">
+            <div class="loader-brand-wrapper">
+                <div class="loader-brand">
+                    <span class="loader-brand-text">ЄНОТ</span>
+                    <span class="loader-brand-number">24</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     {{-- First element --}}
     <div id="app">
         @include('includes.windows.feedback_form-fd')
+        @include('includes.windows.success-modal')
         <div class="app-container">
             <div class="app-container-navigator">
                 @include('includes.fixed.navigator')
@@ -96,6 +439,8 @@
                 @include('includes.fixed.footer')
             </div>
         </div>
+        {{-- Vue компоненты монтируются точечно через кастомные теги --}}
+        <vue-cart-container></vue-cart-container>
     </div>
 
     {{-- Back to Top Button --}}
@@ -114,6 +459,8 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     {{-- Modern UI JavaScript --}}
     <script src="{{ asset('js/modern-ui.js') }}"></script>
+    {{-- Vue.js App - загружается после других скриптов с defer для правильного порядка --}}
+    <script src="{{ mix('js/app.js') }}" defer></script>
     @yield('scripts')
     <script>
         $(document).ready(function() {
@@ -157,7 +504,15 @@
             // Close modal on Escape key
             $(document).on('keydown', function(e) {
                 if (e.key === 'Escape') {
-                    let openModal = $('.modal:visible');
+                    // Check for success modal first (higher priority)
+                    const successModal = $('#successModal:visible, #successModal:not(.hidden)');
+                    if (successModal.length) {
+                        closeSuccessModal();
+                        return;
+                    }
+                    
+                    // Then check for other modals
+                    let openModal = $('.modal:visible, .modal:not(.hidden)').not('#successModal');
                     if (openModal.length) {
                         closeModal(openModal);
                     }
@@ -171,21 +526,34 @@
         }
 
         function openModal(modal) {
-            // Add active class for animations
-            modal.addClass('active');
-            modal.fadeIn(300);
+            // Remove hidden class (Tailwind) and ensure display
+            modal.removeClass('hidden');
+            modal.css('display', 'flex');
+            
+            // Small delay to ensure display is set before animation
+            setTimeout(function() {
+                // Add active class for animations
+                modal.addClass('active');
+            }, 10);
             
             // Prevent body scroll
             $('body').addClass('modal-open');
             
-            // Focus on first input
-            modal.find('input, textarea, select').first().focus();
+            // Focus on first input after animation completes
+            setTimeout(function() {
+                modal.find('input, textarea, select').first().focus();
+            }, 350);
         }
 
         function closeModal(modal) {
-            // Remove active class
+            // Remove active class for fade out animation
             modal.removeClass('active');
-            modal.fadeOut(300);
+            
+            // After animation, hide and add hidden class back
+            setTimeout(function() {
+                modal.css('display', 'none');
+                modal.addClass('hidden');
+            }, 300);
             
             // Allow body scroll
             $('body').removeClass('modal-open');
@@ -456,8 +824,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    // Show success message
-                    alert('Дякуємо! Ми зв\'яжемося з вами найближчим часом.');
+                    // Show success modal
+                    showSuccessModal();
                     form[0].reset();
                 },
                 error: function(xhr) {
@@ -531,8 +899,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    // Show success message
-                    alert('Дякуємо! Ми зв\'яжемося з вами найближчим часом.');
+                    // Show success modal
+                    showSuccessModal();
                     form[0].reset();
                 },
                 error: function(xhr) {
@@ -556,6 +924,44 @@
                     }
                 }
             });
+        });
+
+        // Success Modal Functions
+        function showSuccessModal() {
+            const modal = $('#successModal');
+            modal.removeClass('hidden');
+            modal.css('display', 'flex');
+            
+            // Small delay to ensure display is set before animation
+            setTimeout(function() {
+                modal.addClass('active');
+            }, 10);
+            
+            // Prevent body scroll
+            $('body').addClass('modal-open');
+        }
+
+        function closeSuccessModal() {
+            const modal = $('#successModal');
+            modal.removeClass('active');
+            
+            // After animation, hide and add hidden class back
+            setTimeout(function() {
+                modal.css('display', 'none');
+                modal.addClass('hidden');
+                $('body').removeClass('modal-open');
+            }, 500);
+        }
+
+        // Close success modal handlers
+        $(document).on('click', '#closeSuccessModal', function(e) {
+            e.preventDefault();
+            closeSuccessModal();
+        });
+
+        $(document).on('click', '.success .success-overlay', function(e) {
+            e.preventDefault();
+            closeSuccessModal();
         });
     </script>
     <script>
@@ -668,6 +1074,353 @@
     
     <!-- Модальное окно для акций -->
     @include('includes.elements.promotion-modal')
+    
+    {{-- Page Loader Script --}}
+    <script>
+        (function() {
+            const loader = document.getElementById('page-loader');
+            const body = document.body;
+            let hideLoaderCalled = false;
+            let pageLoaded = false;
+            let minTimeElapsed = false;
+            const startTime = Date.now();
+            
+            // Check if loader was already shown (using sessionStorage for browser session)
+            const loaderShown = sessionStorage.getItem('enot_loader_shown');
+            
+            // If loader was already shown in this session, hide it immediately
+            if (loaderShown === 'true') {
+                if (loader) {
+                    loader.style.display = 'none';
+                    loader.classList.add('hidden');
+                }
+                body.classList.remove('loading');
+                return; // Exit early, don't show loader
+            }
+            
+            // Mark that loader was shown
+            sessionStorage.setItem('enot_loader_shown', 'true');
+            
+            // Add loading class to body
+            body.classList.add('loading');
+            
+            // Minimum display time - enough to show logo appear and start of brand reveal (1.2 seconds)
+            // This ensures users see at least the beginning of the animation
+            const MIN_DISPLAY_TIME = 1200; // 1.2 seconds
+            
+            // Mark minimum time as elapsed
+            setTimeout(() => {
+                minTimeElapsed = true;
+                if (pageLoaded && !hideLoaderCalled) {
+                    hideLoader();
+                }
+            }, MIN_DISPLAY_TIME);
+            
+            // Hide loader function with logo transition
+            function hideLoader() {
+                if (hideLoaderCalled || !loader) return;
+                hideLoaderCalled = true;
+                
+                const loaderContent = document.querySelector('.loader-content');
+                const navbarLogo = document.querySelector('#navbar img');
+                const navbarLogoContainer = navbarLogo ? navbarLogo.closest('a') : null;
+                
+                if (loaderContent && navbarLogo && navbarLogoContainer) {
+                    // Get positions and dimensions
+                    const loaderContentRect = loaderContent.getBoundingClientRect();
+                    const navbarLogoRect = navbarLogoContainer.getBoundingClientRect();
+                    
+                    // Calculate center points
+                    const startX = loaderContentRect.left + loaderContentRect.width / 2;
+                    const startY = loaderContentRect.top + loaderContentRect.height / 2;
+                    const endX = navbarLogoRect.left + navbarLogoRect.width / 2;
+                    const endY = navbarLogoRect.top + navbarLogoRect.height / 2;
+                    
+                    // Calculate scale factor
+                    const startWidth = loaderContentRect.width;
+                    const endWidth = navbarLogoRect.width;
+                    const scale = endWidth / startWidth;
+                    
+                    // Calculate translation needed (in pixels)
+                    const translateX = endX - startX;
+                    const translateY = endY - startY;
+                    
+                    // Create transition element (clone of entire loader content)
+                    const transitionElement = loaderContent.cloneNode(true);
+                    transitionElement.classList.add('logo-transition');
+                    
+                    // Get computed styles to preserve appearance
+                    const computedStyle = window.getComputedStyle(loaderContent);
+                    transitionElement.style.position = 'fixed';
+                    transitionElement.style.left = startX + 'px';
+                    transitionElement.style.top = startY + 'px';
+                    transitionElement.style.transform = 'translate(-50%, -50%) scale(1)';
+                    transitionElement.style.opacity = '1';
+                    transitionElement.style.zIndex = '10000';
+                    transitionElement.style.width = startWidth + 'px';
+                    transitionElement.style.display = 'flex';
+                    transitionElement.style.alignItems = 'center';
+                    transitionElement.style.justifyContent = 'center';
+                    transitionElement.style.gap = computedStyle.gap || '20px';
+                    
+                    // Hide original loader content smoothly
+                    loaderContent.style.opacity = '0';
+                    loaderContent.style.transition = 'opacity 0.2s ease-out';
+                    
+                    // Hide navbar logo temporarily
+                    navbarLogo.style.opacity = '0';
+                    
+                    // Add to body
+                    document.body.appendChild(transitionElement);
+                    
+                    // Force reflow to ensure initial state is rendered
+                    void transitionElement.offsetHeight;
+                    
+                    // Small delay to ensure smooth start
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            // Start smooth animation - move and scale
+                            transitionElement.style.transform = `translate(calc(-50% + ${translateX}px), calc(-50% + ${translateY}px)) scale(${scale})`;
+                            transitionElement.style.opacity = '1';
+                        });
+                    });
+                    
+                    // Hide loader background with delay
+                    setTimeout(() => {
+                        loader.classList.add('hidden');
+                    }, 400);
+                    
+                    // Start fading in navbar logo BEFORE transition element disappears (overlap)
+                    // This creates a smooth crossfade effect
+                    setTimeout(() => {
+                        // Begin showing navbar logo while transition element is still visible
+                        navbarLogo.style.opacity = '0';
+                        navbarLogo.style.transition = 'opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                        
+                        // Force reflow
+                        void navbarLogo.offsetHeight;
+                        
+                        // Start fade-in of navbar logo
+                        requestAnimationFrame(() => {
+                            navbarLogo.style.opacity = '1';
+                        });
+                    }, 800);
+                    
+                    // Start fading out transition element to create smooth crossfade
+                    setTimeout(() => {
+                        transitionElement.style.opacity = '0';
+                        transitionElement.style.transition = 'opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    }, 900);
+                    
+                    // After animation completes - remove transition element
+                    setTimeout(() => {
+                        // Remove transition element
+                        if (transitionElement.parentNode) {
+                            transitionElement.remove();
+                        }
+                        
+                        // Ensure navbar logo is visible
+                        navbarLogo.style.opacity = '1';
+                        
+                        // Remove loading class
+                        body.classList.remove('loading');
+                        body.classList.add('loader-complete');
+                        
+                        // Hide loader completely
+                        if (loader.parentNode) {
+                            loader.style.display = 'none';
+                        }
+                        
+                        // Mark loader as shown in sessionStorage (already set at start, but ensure it's set)
+                        sessionStorage.setItem('enot_loader_shown', 'true');
+                        
+                        // Remove loader-complete class after a moment
+                        setTimeout(() => {
+                            body.classList.remove('loader-complete');
+                            // Reset navbar logo transition for future use
+                            navbarLogo.style.transition = '';
+                        }, 1500);
+                    }, 1400);
+                } else {
+                    // Fallback if elements not found
+                    loader.classList.add('hidden');
+                    setTimeout(() => {
+                        body.classList.remove('loading');
+                        if (loader.parentNode) {
+                            loader.style.display = 'none';
+                        }
+                        // Mark loader as shown in sessionStorage
+                        sessionStorage.setItem('enot_loader_shown', 'true');
+                    }, 600);
+                }
+            }
+            
+            // Check if page is loaded
+            function checkPageLoad() {
+                if (document.readyState === 'complete') {
+                    pageLoaded = true;
+                    // Hide as soon as minimum time has elapsed
+                    if (minTimeElapsed && !hideLoaderCalled) {
+                        hideLoader();
+                    }
+                }
+            }
+            
+            // Wait for page to fully load
+            if (document.readyState === 'complete') {
+                pageLoaded = true;
+                // Hide as soon as minimum time has elapsed
+                if (minTimeElapsed && !hideLoaderCalled) {
+                    hideLoader();
+                }
+            } else {
+                // Wait for DOMContentLoaded
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', checkPageLoad);
+                }
+                
+                // Wait for window load (images, stylesheets, etc.)
+                window.addEventListener('load', function() {
+                    pageLoaded = true;
+                    // Hide as soon as minimum time has elapsed
+                    if (minTimeElapsed && !hideLoaderCalled) {
+                        hideLoader();
+                    }
+                });
+                
+                // Fallback: hide after maximum time (4 seconds) even if page not fully loaded
+                setTimeout(function() {
+                    if (!hideLoaderCalled) {
+                        hideLoader();
+                    }
+                }, 4000);
+            }
+            
+            // Ensure logo is loaded (critical for animation)
+            const loaderLogo = document.querySelector('.loader-logo');
+            if (loaderLogo) {
+                if (loaderLogo.complete) {
+                    // Logo already loaded, animations will start
+                } else {
+                    loaderLogo.addEventListener('load', function() {
+                        // Logo loaded, animations will start
+                    });
+                    loaderLogo.addEventListener('error', function() {
+                        // Logo failed to load, continue anyway
+                    });
+                }
+            }
+        })();
+    </script>
+
+    {{-- Floating Phone Button --}}
+    <button 
+        id="floating-phone-btn" 
+        class="fixed bottom-6 right-6 z-[9998] w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full shadow-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 modal_fade group relative" 
+        data-modal="feedbackmd"
+        aria-label="Зателефонувати нам">
+        <i class="fas fa-phone text-2xl relative z-10"></i>
+        {{-- Notification Badge --}}
+        <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center z-20">
+            <span class="absolute w-full h-full bg-red-500 rounded-full animate-ping opacity-75"></span>
+            <span class="relative w-2 h-2 bg-white rounded-full"></span>
+        </span>
+    </button>
+
+    <style>
+        /* Floating Phone Button Animation */
+        @keyframes phonePulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(176, 168, 254, 0.7),
+                            0 0 0 0 rgba(196, 126, 147, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(176, 168, 254, 0),
+                            0 0 0 30px rgba(196, 126, 147, 0);
+            }
+        }
+
+        @keyframes phoneRing {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            10%, 30%, 50%, 70%, 90% {
+                transform: rotate(-8deg);
+            }
+            20%, 40%, 60%, 80% {
+                transform: rotate(8deg);
+            }
+        }
+
+        @keyframes phoneBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        #floating-phone-btn {
+            animation: phonePulse 2s ease-in-out infinite, phoneBounce 2s ease-in-out infinite 0.5s;
+        }
+
+        #floating-phone-btn:hover {
+            animation: phonePulse 1s ease-in-out infinite, phoneRing 0.4s ease-in-out infinite, phoneBounce 1s ease-in-out infinite;
+        }
+
+        /* Mobile responsive - adjust position to avoid navbar */
+        @media (max-width: 768px) {
+            #floating-phone-btn {
+                width: 56px;
+                height: 56px;
+                bottom: 5rem;
+                right: 1rem;
+            }
+            
+            #floating-phone-btn i {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 480px) {
+            #floating-phone-btn {
+                width: 52px;
+                height: 52px;
+                bottom: 4.5rem;
+                right: 0.75rem;
+            }
+        }
+
+        /* Hide on very small screens if needed */
+        @media (max-width: 320px) {
+            #floating-phone-btn {
+                width: 48px;
+                height: 48px;
+                bottom: 4rem;
+                right: 0.5rem;
+            }
+        }
+
+        /* Ensure button is visible above content but below modals */
+        #floating-phone-btn {
+            position: fixed !important;
+            z-index: 9998 !important;
+        }
+
+        /* Hide button when modal is open */
+        body.modal-open #floating-phone-btn {
+            opacity: 0.5;
+            pointer-events: none;
+            animation-play-state: paused !important;
+        }
+
+        /* Notification badge animation */
+        #floating-phone-btn span[class*="bg-red-500"]:first-child {
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+    </style>
 </body>
 
 </html>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexServices;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,7 @@ use App\Http\Controllers\IndexServices;
 
 Route::get('/', [IndexServices::class, 'index'])->name('welcome');
 Route::get('/poslugi-ta-cini', [IndexServices::class, 'services'])->name('services');
+Route::get('/poslugi-ta-cini/posluga/{service}', [IndexServices::class, 'service_page'])->name('service_page');
 Route::get('/poslugi-ta-cini/{category}', [IndexServices::class, 'category_page'])->name('category_page');
 Route::get('/api/search-services', [IndexServices::class, 'searchServices'])->name('search_services');
 Route::get('/api/placeholder-services', [IndexServices::class, 'getPlaceholderServices'])->name('placeholder_services');
@@ -23,6 +25,29 @@ Route::get('/dlya-biznesu', [IndexServices::class, 'b2b'])->name('b2b_page');
 Route::get('/dlya-biznesu/{page}', [IndexServices::class, 'b2bShow'])->name('b2b_page_show');
 Route::get('/viklikati-kuryera', [IndexServices::class, 'courier'])->name('courier_page');
 Route::get('/dostavka', [IndexServices::class, 'delivery'])->name('delivery_page');
+Route::get('/lokatsii', [IndexServices::class, 'locations'])->name('locations_page');
+Route::get('/lokatsii/{seo_link}', [IndexServices::class, 'location'])->where('seo_link', '.*')->name('location_page');
+Route::get('/aktsii', [IndexServices::class, 'promotions'])->name('promotions');
+Route::get('/aktsii/{id}', [IndexServices::class, 'promotion'])->name('promotion_page');
+Route::get('/kontakty', [IndexServices::class, 'contacts'])->name('contacts_page');
+
+// Cart routes
+Route::get('/api/cart', [CartController::class, 'getCart'])->name('cart.get');
+Route::post('/api/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::put('/api/cart/{key}', [CartController::class, 'updateCart'])->name('cart.update');
+Route::delete('/api/cart/{key}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::post('/api/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+Route::get('/api/pickup-locations', [CartController::class, 'getPickupLocations'])->name('pickup.locations');
+
+// Checkout routes
+Route::get('/oformlennya-zamovlennya', [CartController::class, 'checkout'])->name('checkout');
+Route::post('/api/order/submit', [CartController::class, 'submitOrder'])->name('order.submit');
+Route::post('/api/order/consultation', [CartController::class, 'submitConsultation'])->name('order.consultation');
+
+// Order success and invoice routes
+Route::get('/order-success', [CartController::class, 'orderSuccess'])->name('order.success');
+Route::get('/order-success/{orderId}', [CartController::class, 'orderSuccess'])->name('order.success.id');
+Route::get('/invoice/{orderId}/download', [CartController::class, 'downloadInvoice'])->name('invoice.download');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

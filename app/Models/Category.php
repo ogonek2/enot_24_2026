@@ -10,7 +10,7 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'href', 'discount_percent', 'discount_active',
+        'name', 'href', 'discount_percent', 'discount_active', 'category_type', 'category_img'
     ];
 
     protected $casts = [
@@ -62,7 +62,7 @@ class Category extends Model
         });
     }
 
-    // Метод для генерации href
+    // Метод для генерации href (базовый, используется текущей логикой сохранения)
     public static function generateHref($text)
     {
         $text = mb_strtolower($text);
@@ -77,5 +77,28 @@ class Category extends Model
         $text = trim($text, '-');
 
         return $text;
+    }
+
+    // Новый генератор с более жёсткими правилами транслитерации для ссылок категорий
+    // Пример: "Одяг Текстиль" -> "odyag-tekstil"
+    public static function generateCategorySlug(string $name): string
+    {
+        $map = [
+            'а' => 'a','б' => 'b','в' => 'v','г' => 'g','ґ' => 'g','д' => 'd','е' => 'e','є' => 'e',
+            'ж' => 'zh','з' => 'z','и' => 'i','і' => 'i','ї' => 'yi','й' => 'y','к' => 'k','л' => 'l',
+            'м' => 'm','н' => 'n','о' => 'o','п' => 'p','р' => 'r','с' => 's','т' => 't','у' => 'u',
+            'ф' => 'f','х' => 'kh','ц' => 'ts','ч' => 'ch','ш' => 'sh','щ' => 'shch','ь' => '',
+            'ю' => 'yu','я' => 'ya',
+        ];
+
+        $slug = mb_strtolower($name);
+        $slug = strtr($slug, $map);
+        // Заменяем всё, кроме латиницы/цифр, на тире
+        $slug = preg_replace('/[^a-z0-9]+/u', '-', $slug);
+        // Схлопываем повторяющиеся тире
+        $slug = preg_replace('/-+/', '-', $slug);
+        // Убираем тире по краям
+        $slug = trim($slug, '-');
+        return $slug;
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PromotionResource\Pages;
-use App\Models\Promotion;
+use App\Models\discount;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PromotionResource extends Resource
 {
-    protected static ?string $model = Promotion::class;
+    protected static ?string $model = discount::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
 
@@ -25,6 +25,8 @@ class PromotionResource extends Resource
     protected static ?string $pluralModelLabel = 'Акції';
 
     protected static ?string $navigationGroup = 'Контент';
+    
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
@@ -38,76 +40,61 @@ class PromotionResource extends Resource
                             ->maxLength(255)
                             ->columnSpanFull(),
                         
-                        Forms\Components\Textarea::make('description')
-                            ->label('Опис')
-                            ->required()
-                            ->rows(4)
-                            ->columnSpanFull(),
-                        
-                        Forms\Components\Textarea::make('offers')
-                            ->label('Пропозиції')
-                            ->required()
-                            ->rows(6)
-                            ->columnSpanFull(),
-                    ])
-                    ->columns(2),
-                
-                Forms\Components\Section::make('Налаштування')
-                    ->schema([
-                        Forms\Components\Toggle::make('is_active')
-                            ->label('Активна')
-                            ->default(true),
-                        
-                        Forms\Components\Toggle::make('show_in_modal')
-                            ->label('Показувати в модальному вікні')
-                            ->default(false),
-                        
-                        Forms\Components\DatePicker::make('start_date')
-                            ->label('Дата початку')
-                            ->nullable(),
-                        
-                        Forms\Components\DatePicker::make('end_date')
-                            ->label('Дата закінчення')
-                            ->nullable(),
-                        
-                        Forms\Components\TextInput::make('sort_order')
-                            ->label('Порядок сортування')
-                            ->numeric()
-                            ->default(0),
-                    ])
-                    ->columns(2),
-                
-                Forms\Components\Section::make('Модальне вікно')
-                    ->schema([
-                        Forms\Components\TextInput::make('modal_title')
-                            ->label('Заголовок модального вікна')
+                        Forms\Components\TextInput::make('link_name')
+                            ->label('URL адреса')
                             ->maxLength(255)
+                            ->helperText('Буде згенеровано автоматично, якщо залишити порожнім')
+                            ->columnSpanFull(),
+                        
+                        Forms\Components\TextInput::make('discount_action')
+                            ->label('Дія знижки')
+                            ->maxLength(255)
+                            ->helperText('Наприклад: "До -35%"')
                             ->nullable(),
                         
-                        Forms\Components\Textarea::make('modal_description')
-                            ->label('Опис для модального вікна')
-                            ->rows(3)
+                        Forms\Components\TextInput::make('locations')
+                            ->label('Локації')
+                            ->maxLength(255)
+                            ->helperText('Де діє акція (наприклад: "ВСІ" або назви міст)')
+                            ->default('ВСІ')
                             ->nullable(),
                         
-                        Forms\Components\TextInput::make('modal_cache_minutes')
-                            ->label('Час кешування (хвилини)')
-                            ->numeric()
-                            ->default(1440) // 24 часа = 1440 минут
-                            ->minValue(1)
-                            ->maxValue(10080), // 7 дней = 10080 минут
+                        Forms\Components\TextInput::make('telegram_name')
+                            ->label('Назва для Telegram')
+                            ->maxLength(255)
+                            ->helperText('Назва акції для відправки в Telegram')
+                            ->nullable(),
                     ])
-                    ->columns(1)
-                    ->visible(fn ($get) => $get('show_in_modal')),
+                    ->columns(2),
+                
+                Forms\Components\Section::make('Опис акції')
+                    ->schema([
+                        Forms\Components\Placeholder::make('umowy_info')
+                            ->label('Опис')
+                            ->content(new \Illuminate\Support\HtmlString('
+                                <div class="text-sm text-gray-600 mb-2">
+                                    <p>Використовуйте HTML для форматування тексту.</p>
+                                    <p>Наприклад: &lt;p&gt;Текст абзацу&lt;/p&gt;, &lt;strong&gt;Жирний текст&lt;/strong&gt;, &lt;ul&gt;&lt;li&gt;Елемент списку&lt;/li&gt;&lt;/ul&gt;</p>
+                                </div>
+                            ')),
+                        
+                        Forms\Components\Textarea::make('umowy')
+                            ->label('Опис акції (HTML)')
+                            ->rows(10)
+                            ->helperText('HTML опис акції, який відображається на сторінці акції')
+                            ->columnSpanFull(),
+                    ]),
                 
                 Forms\Components\Section::make('Зображення')
                     ->schema([
-                        Forms\Components\FileUpload::make('image')
-                            ->label('Зображення акції')
+                        Forms\Components\FileUpload::make('banner')
+                            ->label('Банер акції')
                             ->image()
-                            ->directory('promotions')
+                            ->directory('src/stock_images')
                             ->disk('public')
                             ->visibility('public')
-                            ->nullable(),
+                            ->nullable()
+                            ->helperText('Зображення для відображення акції'),
                     ]),
             ]);
     }
@@ -116,50 +103,53 @@ class PromotionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Зображення')
+                Tables\Columns\ImageColumn::make('banner')
+                    ->label('Банер')
                     ->circular()
                     ->size(50)
-                    ->disk('public')
-                    ->visibility('public'),
+                    ->getStateUsing(function ($record) {
+                        if (!$record || !$record->banner) {
+                            return null;
+                        }
+                        // Путь в БД: src/stock_images/...
+                        return $record->banner;
+                    })
+                    ->url(function ($record) {
+                        if (!$record || !$record->banner) {
+                            return null;
+                        }
+                        // Формируем правильный URL как в Blade: asset('storage/' . $record->banner)
+                        return asset('storage/' . $record->banner);
+                    }),
                 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Назва')
                     ->searchable()
+                    ->sortable()
+                    ->limit(50),
+                
+                Tables\Columns\TextColumn::make('discount_action')
+                    ->label('Дія знижки')
+                    ->searchable()
                     ->sortable(),
                 
-                Tables\Columns\TextColumn::make('description')
-                    ->label('Опис')
-                    ->limit(50)
-                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
-                        $state = $column->getState();
-                        if (strlen($state) <= 50) {
-                            return null;
-                        }
-                        return $state;
-                    }),
-                
-                Tables\Columns\IconColumn::make('is_active')
-                    ->label('Активна')
-                    ->boolean(),
-                
-                Tables\Columns\IconColumn::make('show_in_modal')
-                    ->label('Модальне')
-                    ->boolean(),
-                
-                Tables\Columns\TextColumn::make('start_date')
-                    ->label('Дата початку')
-                    ->date('d.m.Y')
+                Tables\Columns\TextColumn::make('locations')
+                    ->label('Локації')
+                    ->searchable()
                     ->sortable(),
                 
-                Tables\Columns\TextColumn::make('end_date')
-                    ->label('Дата закінчення')
-                    ->date('d.m.Y')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('link_name')
+                    ->label('URL')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(30),
                 
-                Tables\Columns\TextColumn::make('sort_order')
-                    ->label('Порядок')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('telegram_name')
+                    ->label('Telegram')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(30)
+                    ->toggleable(isToggledHiddenByDefault: true),
                 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Створено')
@@ -174,11 +164,7 @@ class PromotionResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_active')
-                    ->label('Активні')
-                    ->boolean()
-                    ->trueLabel('Тільки активні')
-                    ->falseLabel('Тільки неактивні'),
+                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -187,7 +173,7 @@ class PromotionResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
-            ->defaultSort('sort_order', 'asc');
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

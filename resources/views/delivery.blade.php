@@ -40,14 +40,8 @@
     {{-- Delivery Info --}}
     @include('includes.elements.delivery-box')
 
-    {{-- Consultation Section --}}
-    @include('includes.elements.consultation')
-
     {{-- Courier Form --}}
     @include('includes.elements.courier_form-box')
-
-    {{-- Services Navigation --}}
-    @include('includes.elements.header-2-box')
 @endsection
 
 @section('scripts')

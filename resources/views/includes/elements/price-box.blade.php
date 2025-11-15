@@ -1,44 +1,43 @@
 {{-- Price Section --}}
-<div class="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50 relative">
+<div class="py-10 relative">
     {{-- Background Elements --}}
     <div class="absolute top-0 left-0 w-full h-full">
         <div class="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
         <div class="absolute bottom-20 right-10 w-40 h-40 bg-secondary/5 rounded-full blur-3xl"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-primary/3 rounded-full blur-3xl"></div>
+        <div
+            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-primary/3 rounded-full blur-3xl">
+        </div>
     </div>
     
-    <div id="price-box-container" class="container mx-auto px-4 relative z-10">
+    <div id="price-box-container" class="container mx-auto relative z-10">
         {{-- Header --}}
-        <div class="text-center mb-16">
+        <div class="text-center mb-8">
             <div class="flex items-center justify-center mb-2">
-                <div class="inline-flex items-center justify-center w-12 h-8">
-                    <i class="fas fa-tag text-primary text-4xl"></i>
-                </div>
-                <h2 class="text-4xl font-bold text-blue-900">Ціни</h2>
+                <h2 class="text-4xl font-sans text-primary">Ціни</h2>
             </div>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p class="text-lg font-sans text-gray-600">
                 Прозорі та доступні ціни на всі наші послуги
             </p>
         </div>
         
         @if (isset($categories) && $categories->count() > 0)
             {{-- Mobile Search and Category Selector --}}
-            <div class="mb-6 lg:hidden">
+            <div class="mb-6 px-4 lg:hidden">
                 {{-- Mobile Search Box --}}
                 <div class="mb-4">
                     <div class="relative">
-                        <input type="text" 
-                               id="mobile-service-search" 
-                               placeholder="" 
+                            <input type="text" id="mobile-service-search" placeholder=""
                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-sm">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
-                        <div id="mobile-animated-placeholder" class="absolute inset-y-0 left-10 right-10 flex items-center pointer-events-none text-gray-400 text-sm">
+                            <div id="mobile-animated-placeholder"
+                                class="absolute inset-y-0 left-10 right-10 flex items-center pointer-events-none text-gray-400 text-sm">
                             <span id="mobile-placeholder-text">Завантаження...</span>
                             <span id="mobile-typing-cursor" class="ml-1">|</span>
                         </div>
-                        <button id="mobile-clear-search" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden">
+                            <button id="mobile-clear-search"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -49,7 +48,7 @@
                     </div>
                 </div>
 
-                <div class="relative">
+                <div class="relative px-2">
                     <button id="mobile-category-selector"
                         class="w-full bg-white border-2 border-gray-300 rounded-xl px-6 py-4 text-left font-semibold text-gray-700 hover:border-primary focus:border-primary focus:outline-none transition-all duration-200 flex items-center justify-between">
                         <span id="mobile-category-text">Оберіть категорію</span>
@@ -57,14 +56,20 @@
                     </button>
                     
                     {{-- Dropdown Menu --}}
-                    <div id="mobile-category-dropdown" class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-xl shadow-lg z-50 hidden">
+                        <div id="mobile-category-dropdown"
+                            class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-xl shadow-lg z-50 hidden">
                         <div class="py-2">
                             @foreach ($categories->filter(fn($category) => $category->services->isNotEmpty()) as $index => $category)
-                                <button class="mobile-category-option w-full text-left px-6 py-3 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-primary text-white' : '' }}"
-                                    data-category="{{ $category->href }}"
-                                    data-name="{{ $category->name }}">
+                                    <button
+                                        class="mobile-category-option w-full text-left px-6 py-3 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-primary text-white' : '' }}"
+                                        data-category="{{ $category->href }}" data-name="{{ $category->name }}">
+                                        <div class="flex items-center space-x-2">
+                                            <img src="{{ asset('storage/' . $category->category_img) }}" alt="{{ $category->name }}"
+                                                class="rounded-full" style="width: 30px; height: 30px;">
                                     <span class="font-medium">{{ $category->name }}</span>
-                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{{ $category->services->count() }}</span>
+                                        </div>
+                                        <span
+                                            class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{{ $category->services->count() }}</span>
                                 </button>
                             @endforeach
                         </div>
@@ -74,14 +79,17 @@
 
             {{-- Mobile Search Results Container --}}
             <div id="mobile-search-results-container" class="mb-6 lg:hidden hidden">
-                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-4 border border-gray-200 rounded-xl shadow-lg">
+                    <div
+                        class="bg-gradient-to-r from-accent/30 to-primary/20 px-4 py-4 border border-gray-200 rounded-xl shadow-lg">
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
                             <h3 class="text-xl font-bold text-gray-800">Результати пошуку</h3>
-                            <p id="mobile-search-results-info" class="text-gray-600 text-sm mt-1">Знайдено: <span id="mobile-search-total-count">0</span></p>
+                                <p id="mobile-search-results-info" class="text-gray-600 text-sm mt-1">Знайдено: <span
+                                        id="mobile-search-total-count">0</span></p>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <button id="mobile-reset-search-btn" class="bg-white text-gray-600 hover:text-primary hover:bg-white/80 px-3 py-2 rounded-lg border border-gray-300 transition-all duration-200 flex items-center space-x-1 text-sm">
+                                <button id="mobile-reset-search-btn"
+                                    class="bg-white text-gray-600 hover:text-primary hover:bg-white/80 px-3 py-2 rounded-lg border border-gray-300 transition-all duration-200 flex items-center space-x-1 text-sm">
                                 <i class="fas fa-times"></i>
                                 <span class="hidden sm:inline">Скинути</span>
                             </button>
@@ -91,7 +99,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="mobile-search-results-list" class="bg-white border border-gray-200 rounded-xl shadow-lg divide-y divide-gray-200">
+                    <div id="mobile-search-results-list"
+                        class="bg-white border border-gray-200 rounded-xl shadow-lg divide-y divide-gray-200">
                     <!-- Mobile search results will be populated here -->
                 </div>
             </div>
@@ -100,23 +109,23 @@
             <div class="flex flex-col lg:flex-row gap-6">
                 {{-- Sticky Sidebar (Desktop only) --}}
                 <div class="w-80 flex-shrink-0 hidden lg:block">
-                    <div class="sticky top-20">
+                    <div class="sticky top-0">
                         <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-4">
                             {{-- Search Box --}}
                             <div class="mb-6">
                                 <div class="relative">
-                                    <input type="text" 
-                                           id="service-search" 
-                                           placeholder="" 
+                                        <input type="text" id="service-search" placeholder=""
                                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-sm">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i class="fas fa-search text-gray-400"></i>
                                     </div>
-                                    <div id="animated-placeholder" class="absolute inset-y-0 left-10 right-10 flex items-center pointer-events-none text-gray-400 text-sm">
+                                        <div id="animated-placeholder"
+                                            class="absolute inset-y-0 left-10 right-10 flex items-center pointer-events-none text-gray-400 text-sm">
                                         <span id="placeholder-text">Завантаження...</span>
                                         <span id="typing-cursor" class="ml-1">|</span>
                                     </div>
-                                    <button id="clear-search" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden">
+                                        <button id="clear-search"
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
@@ -127,17 +136,25 @@
                                 </div>
                             </div>
 
-                            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                            <h3 class="text-lg font-sans text-gray-800 mb-4 flex items-center">
                                 <i class="fas fa-list mr-2 text-primary"></i>
                                 Категорії послуг
                             </h3>
-                            <nav class="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                <nav
+                                    class="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                                 @foreach ($categories->filter(fn($category) => $category->services->isNotEmpty()) as $index => $category)
-                                    <button class="price-tab-btn w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-300 {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-primary shadow-md text-white' : 'hover:bg-white hover:shadow-sm text-gray-700' }}"
+                                        <button
+                                            class="price-tab-btn w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-300 {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-primary shadow-md text-black' : 'hover:bg-white hover:shadow-sm text-black' }}"
                                         data-category="{{ $category->href }}">
                                         <div class="flex items-center justify-between">
-                                            <span>{{ $category->name }}</span>
-                                            <span class="text-xs opacity-75 bg-gray-100 px-2 py-1 rounded-full" style="color: #000 !important;">{{ $category->services->count() }}</span>
+                                                <div class="flex items-center space-x-2">
+                                                    <img src="{{ asset('storage/' . $category->category_img) }}"
+                                                        alt="{{ $category->name }}" class="rounded-full"
+                                                        style="width: 30px; height: 30px;">
+                                                    <span class="font-medium">{{ $category->name }}</span>
+                                                </div>
+                                                <span class="text-xs opacity-75 bg-gray-100 px-2 py-1 rounded-full"
+                                                    style="color: #000 !important;">{{ $category->services->count() }}</span>
                                         </div>
                                     </button>
                                 @endforeach
@@ -151,14 +168,16 @@
                         <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
                             {{-- Search Results Container --}}
                             <div id="search-results-container" class="hidden">
-                                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-8 py-6 border-b border-gray-200">
+                                <div class="bg-gradient-to-r from-accent/30 to-primary/20 px-8 py-6 border-b border-gray-200">
                                     <div class="flex items-center justify-between">
                                         <div>
                                             <h3 class="text-2xl font-bold text-gray-800">Результати пошуку</h3>
-                                            <p id="search-results-info" class="text-gray-600 mt-1">Знайдено послуг: <span id="search-total-count">0</span></p>
+                                            <p id="search-results-info" class="text-gray-600 mt-1">Знайдено послуг: <span
+                                                    id="search-total-count">0</span></p>
                                         </div>
                                         <div class="flex items-center space-x-4">
-                                            <button id="reset-search-btn" class="bg-white text-gray-600 hover:text-primary hover:bg-white/80 px-4 py-2 rounded-lg border border-gray-300 transition-all duration-200 flex items-center space-x-2">
+                                            <button id="reset-search-btn"
+                                                class="bg-white text-gray-600 hover:text-primary hover:bg-white/80 px-4 py-2 rounded-lg border border-gray-300 transition-all duration-200 flex items-center space-x-2">
                                                 <i class="fas fa-times"></i>
                                                 <span>Скинути пошук</span>
                                             </button>
@@ -175,13 +194,12 @@
 
                             <div class="price-content">
                                 @foreach ($categories->filter(fn($category) => $category->services->isNotEmpty()) as $index => $category)
-                                    @php
-                                        $categoryGroups = $category->services->pluck('groups')->flatten()->unique('id');
-                                    @endphp
 
-                                    <div class="price-category {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'active' : '' }}" data-category="{{ $category->href }}">
+                                    <div class="price-category {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'active' : '' }}"
+                                        data-category="{{ $category->href }}">
                                         {{-- Category Header --}}
-                                        <div id="category-header-{{ $category->href }}" class="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-6 border-b border-gray-200">
+                                        <div id="category-header-{{ $category->href }}"
+                                            class="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-6 border-b border-gray-200">
                                             <div class="flex items-center justify-between">
                                                 <div>
                                                     <h3 class="text-2xl font-bold text-gray-800">{{ $category->name }}</h3>
@@ -193,142 +211,99 @@
                                             </div>
                                         </div>
 
-                                        {{-- Group Tabs (if category has groups) --}}
-                                        @if ($categoryGroups->count() > 0)
-                                            <div class="bg-gray-50 px-8 py-4 border-b border-gray-200">
-                                                <div class="flex flex-wrap gap-2">
-                                                    <button class="group-tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-primary text-white shadow-sm"
-                                                        data-category="{{ $category->href }}" data-group="all">
-                                                        <i class="fas fa-th-large mr-2"></i>Всі послуги
-                                                    </button>
-                                                    @foreach ($categoryGroups as $group)
-                                                        <button class="group-tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-gray-700 hover:bg-white hover:shadow-sm"
-                                                            data-category="{{ $category->href }}" data-group="{{ $group->id }}">
-                                                            <i class="fas fa-tag mr-2"></i>{{ $group->name }}
-                                                        </button>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        @endif
+
 
                                         {{-- Services List --}}
                                         @if ($category->services->count() > 0)
                                             <div class="category-services" data-category="{{ $category->href }}">
-                                                {{-- All Services (default view) --}}
-                                                <div class="group-services {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'active' : '' }}" data-category="{{ $category->href }}" data-group="all">
+                                                <div class="group-services {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'active' : '' }}"
+                                                    data-category="{{ $category->href }}" data-group="all">
                                                     <div class="divide-y divide-gray-200">
                                                         @foreach ($category->services as $serviceIndex => $service)
-                                                            <div class="service-item px-8 py-6 hover:bg-gray-50 transition-colors duration-200 group">
+                                                            <div
+                                                                class="service-item px-8 py-6 hover:bg-gray-50 transition-colors duration-200 group">
                                                                 <div class="flex items-center justify-between">
                                                                     <div class="flex items-center space-x-4">
-                                                                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-200">
-                                                                            <span class="text-primary font-semibold text-sm leading-none flex items-center justify-center w-full h-full">{{ $serviceIndex + 1 }}</span>
+                                                                        <div
+                                                                            class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-200">
+                                                                            <span
+                                                                                class="text-primary font-semibold text-sm leading-none flex items-center justify-center w-full h-full">{{ $serviceIndex + 1 }}</span>
                                                                         </div>
                                                                         <div>
-                                                                            <h4 class="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors duration-200">
-                                                                                {{ $service->name }}</h4>
-                                                                            <p class="text-sm text-gray-500">
-                                                                                @if ($service->groups->count() > 0)
-                                                                                    Група: {{ $service->groups->pluck('name')->join(', ') }}
-                                                                                @else
-                                                                                    Професійна обробка
-                                                                                @endif
-                                                                            </p>
+                                                                            <a href="{{ route('service_page', $service->transform_url ?? $service->href) }}" 
+                                                                               class="block">
+                                                                                <h4
+                                                                                    class="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors duration-200 cursor-pointer">
+                                                                                    {{ $service->name }}
+                                                                                </h4>
+                                                                                <p class="text-sm text-gray-500">Професійна обробка</p>
+                                                                            </a>
                                                                         </div>
                                                                     </div>
                                                                     <div class="text-right">
                                                                         @php
-                                                                            $originalPrice = $service->price;
+                                                                            $originalPrice = floatval($service->price ?? 0);
+                                                                            $hasPrice = $originalPrice > 0;
                                                                             $discountedPrice = $originalPrice;
                                                                             $hasDiscount = false;
                                                                             
                                                                             // Проверяем скидку на категорию
-                                                                            foreach ($service->categories as $category) {
-                                                                                if ($category->hasActiveDiscount()) {
-                                                                                    $discountedPrice = $category->calculateDiscountedPrice($originalPrice);
-                                                                                    $hasDiscount = true;
-                                                                                    break;
+                                                                            if ($hasPrice) {
+                                                                                foreach ($service->categories as $category) {
+                                                                                    if ($category->hasActiveDiscount()) {
+                                                                                        $discountedPrice = floatval($category->calculateDiscountedPrice($originalPrice));
+                                                                                        $hasDiscount = true;
+                                                                                        break;
+                                                                                    }
                                                                                 }
                                                                             }
                                                                         @endphp
                                                                         
-                                                                        @if ($hasDiscount)
-                                                                            <div class="space-y-1">
-                                                                                <div class="text-lg font-bold text-primary">{{ number_format($discountedPrice, 0) }}₴</div>
-                                                                                <div class="text-sm text-gray-400 line-through">{{ $originalPrice }}₴</div>
-                                                                                <div class="text-xs text-green-600 font-semibold">
-                                                                                    -{{ $service->categories->first()->getDiscountPercent() }}% знижка
+                                                                        @if ($hasPrice)
+                                                                            @if ($hasDiscount)
+                                                                                <div class="space-y-1">
+                                                                                    <div class="text-lg font-bold text-primary">
+                                                                                        {{ number_format($discountedPrice, 0) }}₴</div>
+                                                                                    <div class="text-sm text-gray-400 line-through">
+                                                                                        {{ number_format($originalPrice, 0) }}₴</div>
+                                                                                    <div class="text-xs text-green-600 font-semibold">
+                                                                                        -{{ $service->categories->first()->getDiscountPercent() }}%
+                                                                                        знижка
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
+                                                                            @else
+                                                                                <div class="text-lg font-bold text-primary">{{ number_format($originalPrice, 0) }}₴</div>
+                                                                            @endif
+                                                                            <div class="text-xs text-gray-500">за одиницю</div>
                                                                         @else
-                                                                            <div class="text-lg font-bold text-primary">{{ $originalPrice }}₴</div>
+                                                                            <div class="text-sm text-gray-400 italic">Ціна за запитом</div>
                                                                         @endif
-                                                                        <div class="text-xs text-gray-500">за одиницю</div>
                                                                     </div>
                                                                 </div>
+                                                                @if($hasPrice)
+                                                                    <div class="mt-4">
+                                                                        @php
+                                                                            $finalPrice = $hasDiscount ? $discountedPrice : $originalPrice;
+                                                                        @endphp
+                                                                        @include('components.add-to-cart-button', [
+                                                                            'serviceId' => $service->id,
+                                                                            'serviceName' => $service->name,
+                                                                            'hasIndividual' => ($service->individual_price ?? 0) > 0,
+                                                                            'price' => $finalPrice,
+                                                                            'individualPrice' => $service->individual_price ?? 0
+                                                                        ])
+                                                                    </div>
+                                                                @endif
                                                             </div>
                                                         @endforeach
                                                     </div>
                                                 </div>
 
-                                                {{-- Services by Groups --}}
-                                                @foreach ($categoryGroups as $group)
-                                                    <div class="group-services" data-category="{{ $category->href }}" data-group="{{ $group->id }}" style="display: none;">
-                                                        <div class="divide-y divide-gray-200">
-                                                            @foreach ($category->services->where('groups', '!=', null)->filter(function ($service) use ($group) {
-                                                                return $service->groups->contains('id', $group->id);
-                                                            }) as $serviceIndex => $service)
-                                                                <div class="service-item px-8 py-6 hover:bg-gray-50 transition-colors duration-200 group">
-                                                                    <div class="flex items-center justify-between">
-                                                                        <div class="flex items-center space-x-4">
-                                                                            <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center group-hover:bg-secondary/20 transition-colors duration-200">
-                                                                                <span class="text-secondary font-semibold text-sm leading-none flex items-center justify-center w-full h-full">{{ $serviceIndex + 1 }}</span>
-                                                                            </div>
-                                                                            <div>
-                                                                                <h4 class="text-lg font-semibold text-gray-800 group-hover:text-secondary transition-colors duration-200">
-                                                                                    {{ $service->name }}</h4>
-                                                                                <p class="text-sm text-gray-500">Група: {{ $group->name }}</p>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="text-right">
-                                                                            @php
-                                                                                $originalPrice = $service->price;
-                                                                                $discountedPrice = $originalPrice;
-                                                                                $hasDiscount = false;
-                                                                                
-                                                                                // Проверяем скидку на категорию
-                                                                                foreach ($service->categories as $category) {
-                                                                                    if ($category->hasActiveDiscount()) {
-                                                                                        $discountedPrice = $category->calculateDiscountedPrice($originalPrice);
-                                                                                        $hasDiscount = true;
-                                                                                        break;
-                                                                                    }
-                                                                                }
-                                                                            @endphp
-                                                                            
-                                                                            @if ($hasDiscount)
-                                                                                <div class="space-y-1">
-                                                                                    <div class="text-2xl font-bold text-secondary">{{ number_format($discountedPrice, 0) }}₴</div>
-                                                                                    <div class="text-lg text-gray-400 line-through">{{ $originalPrice }}₴</div>
-                                                                                    <div class="text-sm text-green-600 font-semibold">
-                                                                                        -{{ $service->categories->first()->getDiscountPercent() }}% знижка
-                                                                                    </div>
-                                                                                </div>
-                                                                            @else
-                                                                                <div class="text-2xl font-bold text-secondary">{{ $originalPrice }}₴</div>
-                                                                            @endif
-                                                                            <div class="text-xs text-gray-500">за одиницю</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            @endforeach
-                                                        </div>
-                                                    </div>
-                                                @endforeach
                                             </div>
                                         @else
                                             <div class="px-8 py-16 text-center">
-                                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <div
+                                                    class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                                     <i class="fas fa-exclamation-triangle text-gray-400 text-xl"></i>
                                                 </div>
                                                 <p class="text-gray-500">Послуги в цій категорії тимчасово недоступні</p>
@@ -340,9 +315,11 @@
 
                             {{-- CTA Section for Desktop --}}
                             <div class="mt-12">
-                                <div class="gradient-button from-primary via-secondary to-primary rounded-3xl p-12 shadow-2xl relative overflow-hidden">
+                                <div
+                                    class="gradient-button from-primary via-secondary to-primary rounded-3xl p-12 shadow-2xl relative overflow-hidden">
                                     <div class="relative z-10">
-                                        <div class="inline-flex items-center w-16 h-16 justify-center bg-white/20 rounded-2xl mb-6">
+                                        <div
+                                            class="inline-flex items-center w-16 h-16 justify-center bg-white/20 rounded-2xl mb-6">
                                             <i class="fas fa-rocket text-white text-2xl"></i>
                                         </div>
                                         <p class="text-white/90 text-lg mb-8 max-w-2xl leading-relaxed">
@@ -351,12 +328,17 @@
                                         </p>
                                         
                                         <div class="flex flex-col sm:flex-row gap-6">
-                                            <button class="group bg-white text-custom-purple hover:bg-gray-100 px-10 py-5 rounded-2xl font-bold text-lg transition-all duration-500 transform hover:scale-105 shadow-xl hover:shadow-2xl modal_fade" data-modal="feedbackmd">
-                                                <i class="fas fa-phone mr-3 group-hover:rotate-12 transition-transform duration-300"></i>
+                                            <button
+                                                class="group bg-white text-custom-purple hover:bg-gray-100 px-10 py-5 rounded-2xl font-bold text-lg transition-all duration-500 transform hover:scale-105 shadow-xl hover:shadow-2xl modal_fade"
+                                                data-modal="feedbackmd">
+                                                <i
+                                                    class="fas fa-phone mr-3 group-hover:rotate-12 transition-transform duration-300"></i>
                                                 Замовити зараз
                                             </button>
-                                            <a href="{{ route('courier_page') }}" class="group border-2 border-white text-white hover:bg-white hover:text-primary px-10 py-5 rounded-2xl font-bold text-lg transition-all duration-500 transform hover:scale-105">
-                                                <i class="fas fa-truck mr-3 group-hover:translate-x-1 transition-transform duration-300"></i>
+                                            <a href="{{ route('courier_page') }}"
+                                                class="group border-2 border-white text-white hover:bg-white hover:text-primary px-10 py-5 rounded-2xl font-bold text-lg transition-all duration-500 transform hover:scale-105">
+                                                <i
+                                                    class="fas fa-truck mr-3 group-hover:translate-x-1 transition-transform duration-300"></i>
                                                 Викликати кур'єра
                                             </a>
                                         </div>
@@ -377,23 +359,24 @@
                                 @endif
 
         {{-- Sticky Mobile Search & Category Menu --}}
-        <div id="sticky-mobile-menu" class="fixed bottom-0 left-0 right-0 z-50 lg:hidden transform translate-y-full transition-transform duration-300 ease-in-out">
+    <div id="sticky-mobile-menu"
+        class="fixed bottom-0 left-0 right-0 z-50 lg:hidden transform translate-y-full transition-transform duration-300 ease-in-out">
             <div class="bg-white border-t border-gray-200 shadow-2xl">
                 {{-- Search Section --}}
                 <div class="px-4 py-3 border-b border-gray-100">
                     <div class="relative">
-                        <input type="text" 
-                               id="sticky-mobile-search" 
-                               placeholder="" 
+                    <input type="text" id="sticky-mobile-search" placeholder=""
                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-sm">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                                                                 </div>
-                        <div id="sticky-mobile-animated-placeholder" class="absolute inset-y-0 left-10 right-10 flex items-center pointer-events-none text-gray-400 text-sm">
+                    <div id="sticky-mobile-animated-placeholder"
+                        class="absolute inset-y-0 left-10 right-10 flex items-center pointer-events-none text-gray-400 text-sm">
                             <span id="sticky-mobile-placeholder-text">Пошук послуг...</span>
                             <span id="sticky-mobile-typing-cursor" class="ml-1">|</span>
                                                                 </div>
-                        <button id="sticky-mobile-clear-search" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden">
+                    <button id="sticky-mobile-clear-search"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden">
                             <i class="fas fa-times"></i>
                         </button>
                                                             </div>
@@ -411,30 +394,37 @@
                             <button id="sticky-mobile-category-selector"
                                 class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-left font-medium text-gray-700 hover:border-primary focus:border-primary focus:outline-none transition-all duration-200 flex items-center justify-between">
                                 <span id="sticky-mobile-category-text">Оберіть категорію</span>
-                                <i class="fas fa-chevron-down transition-transform duration-200" id="sticky-mobile-category-icon"></i>
+                            <i class="fas fa-chevron-down transition-transform duration-200"
+                                id="sticky-mobile-category-icon"></i>
                             </button>
                                                                     </div>
 
                         {{-- Quick Actions --}}
                         <div class="flex items-center space-x-2">
-                            <button id="sticky-mobile-reset-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-600 p-3 rounded-xl transition-all duration-200" title="Скинути пошук">
+                        <button id="sticky-mobile-reset-btn"
+                            class="bg-gray-100 hover:bg-gray-200 text-gray-600 p-3 rounded-xl transition-all duration-200"
+                            title="Скинути пошук">
                                 <i class="fas fa-undo text-sm"></i>
                             </button>
-                            <button id="sticky-mobile-scroll-top" class="bg-primary hover:bg-primary/90 text-white p-3 rounded-xl transition-all duration-200" title="На початок">
+                        <button id="sticky-mobile-scroll-top"
+                            class="bg-primary hover:bg-primary/90 text-white p-3 rounded-xl transition-all duration-200"
+                            title="На початок">
                                 <i class="fas fa-arrow-up text-sm"></i>
                             </button>
                                                                     </div>
                                                                 </div>
 
                     {{-- Sticky Dropdown Menu --}}
-                    <div id="sticky-mobile-category-dropdown" class="absolute bottom-full left-4 right-4 mb-2 bg-white border border-gray-300 rounded-xl shadow-lg z-50 hidden">
+                <div id="sticky-mobile-category-dropdown"
+                    class="absolute bottom-full left-4 right-4 mb-2 bg-white border border-gray-300 rounded-xl shadow-lg z-50 hidden">
                         <div class="py-2 max-h-60 overflow-y-auto">
                             @foreach ($categories->filter(fn($category) => $category->services->isNotEmpty()) as $index => $category)
-                                <button class="sticky-mobile-category-option w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-primary text-white' : '' }}"
-                                    data-category="{{ $category->href }}"
-                                    data-name="{{ $category->name }}">
+                            <button
+                                class="sticky-mobile-category-option w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-primary text-white' : '' }}"
+                                data-category="{{ $category->href }}" data-name="{{ $category->name }}">
                                     <span class="font-medium">{{ $category->name }}</span>
-                                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{{ $category->services->count() }}</span>
+                                <span
+                                    class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{{ $category->services->count() }}</span>
                             </button>
                             @endforeach
                         </div>
@@ -448,7 +438,7 @@
 @section('scripts')
 <script src="{{ asset('js/scripts/price_slide.js') }}"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
     console.log('Price tabs script starting...');
 
     // Elements
@@ -512,9 +502,12 @@ document.addEventListener('DOMContentLoaded', function() {
         groupTabButtons: groupTabButtons.length
     });
 
+    // Flag to track if we should scroll on category switch
+    let shouldScrollOnSwitch = false;
+
     // Function to switch categories
-    function switchTab(targetCategory) {
-        console.log('Switching to category:', targetCategory);
+    function switchTab(targetCategory, userInitiated = false) {
+        console.log('Switching to category:', targetCategory, 'userInitiated:', userInitiated);
 
         // Update desktop buttons
         tabButtons.forEach(btn => {
@@ -524,7 +517,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const activeButtons = document.querySelectorAll(`.price-tab-btn[data-category="${targetCategory}"]`);
         activeButtons.forEach(activeButton => {
-            activeButton.classList.add('bg-primary', 'text-white', 'shadow-md');
+            activeButton.classList.add('bg-primary', 'text-white', 'shadow-md', 'hover:text-black');
             activeButton.classList.remove('text-gray-700');
         });
 
@@ -552,8 +545,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Close mobile dropdown
         closeMobileDropdown();
 
-        // Прокрутка к началу блока цен на мобильных устройствах
-        if (window.innerWidth <= 768) {
+        // Прокрутка к началу блока цен на мобильных устройствах ТОЛЬКО при явном переключении категории
+        if (userInitiated && window.innerWidth <= 768) {
             setTimeout(() => {
                 scrollToPriceBlock();
             }, 150);
@@ -561,13 +554,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Initialize group tabs for this category
         setTimeout(() => {
-            initializeGroupTabs(targetCategory);
+            initializeGroupTabs(targetCategory, userInitiated);
         }, 100);
     }
 
     // Function to initialize group tabs
-    function initializeGroupTabs(category) {
-        console.log('Initializing group tabs for:', category);
+    function initializeGroupTabs(category, userInitiated = false) {
+        console.log('Initializing group tabs for:', category, 'userInitiated:', userInitiated);
         
         const categoryServices = document.querySelector(`.category-services[data-category="${category}"]`);
         if (categoryServices) {
@@ -634,8 +627,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to switch group tabs
-    function switchGroupTab(category, group) {
-        console.log('Switching to group:', group, 'in category:', category);
+    function switchGroupTab(category, group, userInitiated = true) {
+        console.log('Switching to group:', group, 'in category:', category, 'userInitiated:', userInitiated);
 
         // Update group buttons
         const categoryGroupButtons = document.querySelectorAll(`.group-tab-btn[data-category="${category}"]`);
@@ -680,8 +673,8 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Category services container not found for category:', category);
         }
 
-        // Прокрутка к началу блока цен на мобильных устройствах
-        if (window.innerWidth <= 768) {
+        // Прокрутка к началу блока цен на мобильных устройствах ТОЛЬКО при явном переключении группы
+        if (userInitiated && window.innerWidth <= 768) {
             setTimeout(() => {
                 scrollToPriceBlock();
             }, 150);
@@ -750,7 +743,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Функция для отображения цены с учетом скидки
     function getServicePriceHTML(service) {
-        const originalPrice = service.price;
+        const originalPrice = service.price || 0;
+        const hasPrice = originalPrice > 0;
+        
+        if (!hasPrice) {
+            return `<div class="text-sm text-gray-400 italic">Ціна за запитом</div>`;
+        }
+        
         let discountedPrice = originalPrice;
         let hasDiscount = false;
         let discountPercent = 0;
@@ -758,7 +757,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Проверяем скидку на категорию
         if (service.categories && service.categories.length > 0) {
             for (const category of service.categories) {
-                if (category.discount_active && category.discount_percent > 0) {
+                if (typeof category === 'object' && category.discount_active && category.discount_percent > 0) {
                     discountedPrice = originalPrice - (originalPrice * category.discount_percent / 100);
                     hasDiscount = true;
                     discountPercent = category.discount_percent;
@@ -839,7 +838,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 suggestionElement.addEventListener('click', () => {
                     const input = isMobile ? mobileSearchInput : searchInput;
                     input.value = suggestion;
-                    performSearch(suggestion, currentCategory, currentGroup, isMobile);
+                    // Поиск по всем услугам, а не только по выбранной категории
+                    performSearch(suggestion, '', currentGroup, isMobile);
                 });
                 suggestionsList.appendChild(suggestionElement);
             });
@@ -880,8 +880,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Build results HTML
         let resultsHTML = '';
         data.services.forEach((service, index) => {
-            const categoriesText = service.categories.length > 0 ? service.categories.join(', ') : 'Професійна обробка';
-            const groupsText = service.groups.length > 0 ? service.groups.join(', ') : '';
+                    const categoriesText = service.categories.length > 0 ?
+                        (typeof service.categories[0] === 'object' ?
+                            service.categories.map(cat => cat.name || cat).join(', ') :
+                            service.categories.join(', ')) :
+                        'Професійна обробка';
+                    const groupsText = service.groups.length > 0 ?
+                        (typeof service.groups[0] === 'object' ?
+                            service.groups.map(g => g.name || g).join(', ') :
+                            service.groups.join(', ')) :
+                        '';
             const relevanceScore = service.relevance_score || 0;
             
             // Определяем цвет релевантности
@@ -1336,14 +1344,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listeners
     tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
             const targetCategory = this.getAttribute('data-category');
-            switchTab(targetCategory);
+            switchTab(targetCategory, true); // userInitiated = true при клике
         });
     });
 
     if (mobileSelector) {
-        mobileSelector.addEventListener('click', function(e) {
+                mobileSelector.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             toggleMobileDropdown();
@@ -1351,7 +1359,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     mobileOptions.forEach(option => {
-        option.addEventListener('click', function(e) {
+                option.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             
@@ -1363,7 +1371,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             closeMobileDropdown();
-            switchTab(targetCategory);
+            switchTab(targetCategory, true); // userInitiated = true при клике
         });
     });
 
@@ -1374,7 +1382,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Close dropdown when clicking outside
-    document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
         if (mobileDropdown && mobileSelector &&
             !mobileDropdown.contains(e.target) &&
             !mobileSelector.contains(e.target)) {
@@ -1384,7 +1392,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Search event listeners
     if (searchInput) {
-        searchInput.addEventListener('input', function() {
+                searchInput.addEventListener('input', function () {
             clearTimeout(searchTimeout);
             const query = this.value.trim();
             
@@ -1394,7 +1402,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (query.length >= 1) { // Снижаем минимальную длину
                 clearSearchBtn.classList.remove('hidden');
                 searchTimeout = setTimeout(() => {
-                    performSearch(query, currentCategory, currentGroup, false);
+                    // Поиск по всем услугам, а не только по выбранной категории
+                    performSearch(query, '', currentGroup, false);
                 }, 200); // Ускоряем поиск
             } else {
                 clearSearchBtn.classList.add('hidden');
@@ -1408,21 +1417,22 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        searchInput.addEventListener('keypress', function(e) {
+                searchInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 const query = this.value.trim();
                 if (query.length >= 2) {
-                    performSearch(query, currentCategory, currentGroup, false);
+                    // Поиск по всем услугам, а не только по выбранной категории
+                    performSearch(query, '', currentGroup, false);
                 }
             }
         });
 
-        searchInput.addEventListener('focus', function() {
+                searchInput.addEventListener('focus', function () {
             stopPlaceholderAnimation(false);
         });
 
-        searchInput.addEventListener('blur', function() {
+                searchInput.addEventListener('blur', function () {
             if (!this.value) {
                 startPlaceholderAnimation(false);
             }
@@ -1430,13 +1440,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (clearSearchBtn) {
-        clearSearchBtn.addEventListener('click', function() {
+                clearSearchBtn.addEventListener('click', function () {
             resetSearch(false);
         });
     }
 
     if (resetSearchBtn) {
-        resetSearchBtn.addEventListener('click', function() {
+                resetSearchBtn.addEventListener('click', function () {
             resetSearch(false);
         });
     }
@@ -1444,7 +1454,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mobile search event listeners
     if (mobileSearchInput) {
         console.log('Mobile search input found, adding event listeners');
-        mobileSearchInput.addEventListener('input', function() {
+                mobileSearchInput.addEventListener('input', function () {
             console.log('Mobile search input event triggered:', this.value);
             clearTimeout(searchTimeout);
             const query = this.value.trim();
@@ -1455,7 +1465,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (query.length >= 1) { // Снижаем минимальную длину
                 mobileClearSearchBtn.classList.remove('hidden');
                 searchTimeout = setTimeout(() => {
-                    performSearch(query, currentCategory, currentGroup, true);
+                    // Поиск по всем услугам, а не только по выбранной категории
+                    performSearch(query, '', currentGroup, true);
                 }, 200); // Ускоряем поиск
             } else {
                 mobileClearSearchBtn.classList.add('hidden');
@@ -1469,21 +1480,22 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        mobileSearchInput.addEventListener('keypress', function(e) {
+                mobileSearchInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 const query = this.value.trim();
                 if (query.length >= 2) {
-                    performSearch(query, currentCategory, currentGroup, true);
+                    // Поиск по всем услугам, а не только по выбранной категории
+                    performSearch(query, '', currentGroup, true);
                 }
             }
         });
 
-        mobileSearchInput.addEventListener('focus', function() {
+                mobileSearchInput.addEventListener('focus', function () {
             stopPlaceholderAnimation(true);
         });
 
-        mobileSearchInput.addEventListener('blur', function() {
+                mobileSearchInput.addEventListener('blur', function () {
             if (!this.value) {
                 startPlaceholderAnimation(true);
             }
@@ -1491,20 +1503,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (mobileClearSearchBtn) {
-        mobileClearSearchBtn.addEventListener('click', function() {
+                mobileClearSearchBtn.addEventListener('click', function () {
             resetSearch(true);
         });
     }
 
     if (mobileResetSearchBtn) {
-        mobileResetSearchBtn.addEventListener('click', function() {
+                mobileResetSearchBtn.addEventListener('click', function () {
             resetSearch(true);
         });
     }
 
     // Update search when switching categories
     const originalSwitchTab = switchTab;
-    switchTab = function(targetCategory) {
+            switchTab = function (targetCategory, userInitiated = false) {
         currentCategory = targetCategory;
         currentActiveCategory = targetCategory; // Обновляем активную категорию для отслеживания
         
@@ -1513,12 +1525,13 @@ document.addEventListener('DOMContentLoaded', function() {
             resetSearch(false);
         }
         
-        originalSwitchTab(targetCategory);
+        // Передаем параметр userInitiated в оригинальную функцию
+        originalSwitchTab(targetCategory, userInitiated);
     };
 
     // Update search when switching groups
     const originalSwitchGroupTab = switchGroupTab;
-    switchGroupTab = function(category, group) {
+            switchGroupTab = function (category, group, userInitiated = true) {
         currentGroup = group;
         
         // Reset search when switching groups
@@ -1526,7 +1539,8 @@ document.addEventListener('DOMContentLoaded', function() {
             resetSearch(false);
         }
         
-        originalSwitchGroupTab(category, group);
+        // Передаем параметр userInitiated в оригинальную функцию
+        originalSwitchGroupTab(category, group, userInitiated);
     };
 
     // Initialize price box container
@@ -1542,7 +1556,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const activeCategoryName = activeButton.querySelector('span').textContent.trim();
 
             currentActiveCategory = activeCategory; // Инициализируем активную категорию
-            switchTab(activeCategory);
+            switchTab(activeCategory, false); // userInitiated = false при инициализации
             
             if (mobileText) {
                 mobileText.textContent = activeCategoryName;
@@ -1554,7 +1568,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const firstCategoryName = firstButton.querySelector('span').textContent.trim();
 
             currentActiveCategory = firstCategory;
-            switchTab(firstCategory);
+            switchTab(firstCategory, false); // userInitiated = false при инициализации
             
             if (mobileText) {
                 mobileText.textContent = firstCategoryName;
@@ -1578,7 +1592,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Sticky search functionality
     if (stickyMobileSearchInput) {
-        stickyMobileSearchInput.addEventListener('input', function() {
+                stickyMobileSearchInput.addEventListener('input', function () {
             const query = this.value.trim();
             const stickyPlaceholder = document.getElementById('sticky-mobile-animated-placeholder');
             
@@ -1596,7 +1610,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (query.length >= 1) {
                 stickyMobileClearSearchBtn.classList.remove('hidden');
-                performSearch(query, currentCategory, currentGroup, true);
+                // Поиск по всем услугам, а не только по выбранной категории
+                performSearch(query, '', currentGroup, true);
             } else {
                 stickyMobileClearSearchBtn.classList.add('hidden');
                 hideSuggestions(true);
@@ -1608,13 +1623,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        stickyMobileSearchInput.addEventListener('focus', function() {
+                stickyMobileSearchInput.addEventListener('focus', function () {
             const stickyPlaceholder = document.getElementById('sticky-mobile-animated-placeholder');
             if (stickyPlaceholder) stickyPlaceholder.classList.add('hidden');
             stopPlaceholderAnimation(true);
         });
 
-        stickyMobileSearchInput.addEventListener('blur', function() {
+                stickyMobileSearchInput.addEventListener('blur', function () {
             const stickyPlaceholder = document.getElementById('sticky-mobile-animated-placeholder');
             if (!this.value) {
                 if (stickyPlaceholder) stickyPlaceholder.classList.remove('hidden');
@@ -1624,7 +1639,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (stickyMobileClearSearchBtn) {
-        stickyMobileClearSearchBtn.addEventListener('click', function() {
+                stickyMobileClearSearchBtn.addEventListener('click', function () {
             const stickyPlaceholder = document.getElementById('sticky-mobile-animated-placeholder');
             resetSearch(true);
             if (mobileSearchInput) {
@@ -1636,7 +1651,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Sticky category functionality
     if (stickyMobileCategorySelector) {
-        stickyMobileCategorySelector.addEventListener('click', function(e) {
+                stickyMobileCategorySelector.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             
@@ -1656,7 +1671,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Sticky category options
     stickyMobileCategoryOptions.forEach(option => {
-        option.addEventListener('click', function(e) {
+                option.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             
@@ -1672,7 +1687,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Переключаем категорию
-            switchTab(targetCategory);
+            switchTab(targetCategory, true); // userInitiated = true при клике
             
             // Закрываем dropdown
             stickyMobileCategoryDropdown.classList.add('hidden');
@@ -1684,7 +1699,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Quick action buttons
     if (stickyMobileResetBtn) {
-        stickyMobileResetBtn.addEventListener('click', function() {
+                stickyMobileResetBtn.addEventListener('click', function () {
             resetSearch(true);
             if (mobileSearchInput) {
                 mobileSearchInput.value = '';
@@ -1693,16 +1708,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (stickyMobileScrollTopBtn) {
-        stickyMobileScrollTopBtn.addEventListener('click', function() {
+                stickyMobileScrollTopBtn.addEventListener('click', function () {
             scrollToTop();
         });
     }
 
     // Optimized scroll event listener
     let isScrolling = false;
-    window.addEventListener('scroll', function() {
+            window.addEventListener('scroll', function () {
         if (!isScrolling) {
-            requestAnimationFrame(function() {
+                    requestAnimationFrame(function () {
                 handleScroll();
                 isScrolling = false;
             });
@@ -1711,7 +1726,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Close sticky dropdown when clicking outside
-    document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
         if (stickyMobileCategoryDropdown && stickyMobileCategorySelector &&
             !stickyMobileCategoryDropdown.contains(e.target) &&
             !stickyMobileCategorySelector.contains(e.target)) {
@@ -1725,18 +1740,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sync sticky menu when main menu changes
     // Note: originalSwitchTab is already declared above, so we just update the function
     const currentSwitchTab = switchTab;
-    switchTab = function(targetCategory) {
+            switchTab = function (targetCategory, userInitiated = false) {
         currentCategory = targetCategory;
         currentActiveCategory = targetCategory; // Обновляем активную категорию для отслеживания
         
         if (isSearchActive && currentSearchQuery) {
-            performSearch(currentSearchQuery, targetCategory, currentGroup, false);
+            performSearch(currentSearchQuery, '', currentGroup, false);
         }
         
         // Синхронизируем закрепленное меню
         syncStickyMenuWithMain();
         
-        currentSwitchTab(targetCategory);
+        // Передаем параметр userInitiated в оригинальную функцию
+        currentSwitchTab(targetCategory, userInitiated);
     };
 
     // Автоматический поиск при загрузке страницы с параметром search
@@ -1756,7 +1772,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Выполняем поиск
         setTimeout(() => {
-            performSearch(searchQuery.trim(), currentCategory, currentGroup, false);
+            // Поиск по всем услугам, а не только по выбранной категории
+            performSearch(searchQuery.trim(), '', currentGroup, false);
         }, 100);
     }
 });
@@ -1796,12 +1813,13 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 /* Smooth transitions */
-.price-tab-btn, .group-tab-btn {
+    .price-tab-btn,
+    .group-tab-btn {
     transition: all 0.3s ease-in-out;
 }
 
 .price-tab-btn.active {
-    background-color: #3b82f6 !important;
+        background-color: #b0a8fe !important;
     color: white !important;
 }
 
@@ -1815,49 +1833,66 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 /* Search styles */
-#service-search, #mobile-service-search {
+    #service-search,
+    #mobile-service-search {
     transition: all 0.3s ease-in-out;
 }
 
-#service-search:focus, #mobile-service-search:focus {
+    #service-search:focus,
+    #mobile-service-search:focus {
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        box-shadow: 0 4px 12px rgba(176, 168, 254, 0.15);
 }
 
-#clear-search, #mobile-clear-search {
+    #clear-search,
+    #mobile-clear-search {
     transition: all 0.2s ease-in-out;
 }
 
-#clear-search:hover, #mobile-clear-search:hover {
+    #clear-search:hover,
+    #mobile-clear-search:hover {
     transform: scale(1.1);
 }
 
-#reset-search-btn, #mobile-reset-search-btn {
+    #reset-search-btn,
+    #mobile-reset-search-btn {
     transition: all 0.2s ease-in-out;
 }
 
-#reset-search-btn:hover, #mobile-reset-search-btn:hover {
+    #reset-search-btn:hover,
+    #mobile-reset-search-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Animated placeholder styles */
-#animated-placeholder, #mobile-animated-placeholder {
+    #animated-placeholder,
+    #mobile-animated-placeholder {
     transition: all 0.3s ease-in-out;
 }
 
-#typing-cursor, #mobile-typing-cursor {
+    #typing-cursor,
+    #mobile-typing-cursor {
     animation: blink 1s infinite;
-    color: #3b82f6;
+        color: #b0a8fe;
 }
 
 @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+
+        0%,
+        50% {
+            opacity: 1;
+        }
+
+        51%,
+        100% {
+            opacity: 0;
+        }
 }
 
 /* Search suggestions styles */
-#search-suggestions, #mobile-search-suggestions {
+    #search-suggestions,
+    #mobile-search-suggestions {
     animation: fadeInDown 0.3s ease-out;
 }
 
@@ -1866,6 +1901,7 @@ document.addEventListener('DOMContentLoaded', function() {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1903,23 +1939,26 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 /* Enhanced search suggestions */
-#search-suggestions .suggestion-tag, #mobile-search-suggestions .suggestion-tag {
+    #search-suggestions .suggestion-tag,
+    #mobile-search-suggestions .suggestion-tag {
     position: relative;
     overflow: hidden;
 }
 
-#search-suggestions .suggestion-tag::before, #mobile-search-suggestions .suggestion-tag::before {
+    #search-suggestions .suggestion-tag::before,
+    #mobile-search-suggestions .suggestion-tag::before {
     content: '';
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
     transition: left 0.5s;
 }
 
-#search-suggestions .suggestion-tag:hover::before, #mobile-search-suggestions .suggestion-tag:hover::before {
+    #search-suggestions .suggestion-tag:hover::before,
+    #mobile-search-suggestions .suggestion-tag:hover::before {
     left: 100%;
 }
 
@@ -1957,35 +1996,38 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 /* Quick action buttons */
-#sticky-mobile-reset-btn, #sticky-mobile-scroll-top {
+    #sticky-mobile-reset-btn,
+    #sticky-mobile-scroll-top {
     transition: all 0.2s ease-in-out;
     position: relative;
     overflow: hidden;
 }
 
-#sticky-mobile-reset-btn:hover, #sticky-mobile-scroll-top:hover {
+    #sticky-mobile-reset-btn:hover,
+    #sticky-mobile-scroll-top:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #sticky-mobile-scroll-top {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        background: linear-gradient(135deg, #b0a8fe, #c47e93);
 }
 
 #sticky-mobile-scroll-top:hover {
-    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        background: linear-gradient(135deg, #c47e93, #b0a8fe);
 }
 
 /* Sticky search input focus effect */
 #sticky-mobile-search:focus {
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        box-shadow: 0 4px 12px rgba(176, 168, 254, 0.15);
 }
 
 /* Mobile-specific adjustments */
 @media (max-width: 1024px) {
     body {
-        padding-bottom: 0; /* Remove any existing padding */
+            padding-bottom: 0;
+            /* Remove any existing padding */
     }
     
     /* Ensure content doesn't get hidden behind sticky menu */
@@ -2012,6 +2054,7 @@ document.addEventListener('DOMContentLoaded', function() {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -2041,5 +2084,5 @@ document.addEventListener('DOMContentLoaded', function() {
     #mobile-search-results-container .service-item {
         padding: 1rem !important;
     }
-}
+    ß}
 </style>

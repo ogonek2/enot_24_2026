@@ -24,6 +24,10 @@ class CategoryResource extends Resource
     protected static ?string $modelLabel = 'Категорія';
     
     protected static ?string $pluralModelLabel = 'Категорії';
+    
+    protected static ?string $navigationGroup = 'Контент';
+    
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -39,6 +43,19 @@ class CategoryResource extends Resource
                             ->label('URL адреса')
                             ->maxLength(255)
                             ->helperText('Буде згенеровано автоматично, якщо залишити порожнім'),
+                        Forms\Components\TextInput::make('category_type')
+                            ->label('Тип категорії')
+                            ->numeric()
+                            ->default(1)
+                            ->helperText('Число для сортування категорій'),
+                        Forms\Components\FileUpload::make('category_img')
+                            ->label('Іконка категорії')
+                            ->image()
+                            ->directory('src/categories_images')
+                            ->disk('public')
+                            ->visibility('public')
+                            ->nullable()
+                            ->helperText('Зображення для відображення в категорії'),
                     ])
                     ->columns(2),
                 
@@ -67,6 +84,25 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('category_img')
+                    ->label('Іконка')
+                    ->circular()
+                    ->size(50)
+                    ->getStateUsing(function ($record) {
+                        if (!$record || !$record->category_img) {
+                            return null;
+                        }
+                        // Путь в БД: src/categories_images/...
+                        // Возвращаем путь относительно storage/app/public
+                        return $record->category_img;
+                    })
+                    ->url(function ($record) {
+                        if (!$record || !$record->category_img) {
+                            return null;
+                        }
+                        // Формируем правильный URL как в Blade: asset('storage/' . $category->category_img)
+                        return asset('storage/' . $record->category_img);
+                    }),
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->sortable(),
@@ -74,15 +110,23 @@ class CategoryResource extends Resource
                     ->label('Назва')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('category_type')
+                    ->label('Тип')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('href')
                     ->label('URL')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('discount_percent')
                     ->label('Знижка (%)')
+                    ->formatStateUsing(fn ($state) => $state ? $state . '%' : '—')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('discount_active')
                     ->label('Активна знижка')
                     ->boolean()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('services_count')
+                    ->label('Послуг')
+                    ->counts('services')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Створено')
@@ -91,8 +135,20 @@ class CategoryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('category_type')
+                    ->label('Тип категорії')
+                    ->options([
+                        1 => 'Тип 1',
+                        2 => 'Тип 2',
+                        3 => 'Тип 3',
+                    ]),
+                Tables\Filters\TernaryFilter::make('discount_active')
+                    ->label('Знижка')
+                    ->boolean()
+                    ->trueLabel('Зі знижкою')
+                    ->falseLabel('Без знижки'),
             ])
+            ->defaultSort('category_type', 'asc')
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

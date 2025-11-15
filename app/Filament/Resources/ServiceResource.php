@@ -28,28 +28,94 @@ class ServiceResource extends Resource
     protected static ?string $modelLabel = 'Послуга';
     
     protected static ?string $pluralModelLabel = 'Послуги';
+    
+    protected static ?string $navigationGroup = 'Контент';
+    
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->label('Назва'),
-                Forms\Components\TextInput::make('price')
-                    ->required()
-                    ->label('Ціна'),
-                Forms\Components\TextInput::make('title')
-                    ->label('Заголовок'),
-                Forms\Components\TextInput::make('value')
-                    ->label('Значення'),
-                Forms\Components\TextInput::make('href')
-                    ->label('URL'),
-                Forms\Components\Select::make('groups')
-                    ->label('Групи')
-                    ->multiple()
-                    ->options(\App\Models\Group::pluck('name', 'id'))
-                    ->relationship('groups', 'name'),
+                Forms\Components\Section::make('Основна інформація')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->label('Назва послуги')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('transform_url')
+                            ->label('URL адреса')
+                            ->maxLength(255)
+                            ->helperText('Буде згенеровано автоматично, якщо залишити порожнім'),
+                        Forms\Components\Textarea::make('description')
+                            ->label('Опис')
+                            ->rows(4)
+                            ->maxLength(2000),
+                    ])
+                    ->columns(2),
+                
+                Forms\Components\Section::make('Ціни')
+                    ->schema([
+                        Forms\Components\TextInput::make('price')
+                            ->label('Ціна (потокова)')
+                            ->numeric()
+                            ->minValue(0)
+                            ->required()
+                            ->suffix('₴')
+                            ->helperText('Може бути числом або текстом'),
+                        Forms\Components\TextInput::make('individual_price')
+                            ->label('Ціна (індивідуальна)')
+                            ->numeric()
+                            ->minValue(0)
+                            ->nullable()
+                            ->suffix('₴')
+                            ->helperText('Якщо не вказано, індивідуальна чистка недоступна'),
+                    ])
+                    ->columns(2),
+                
+                Forms\Components\Section::make('Категорії та групи')
+                    ->schema([
+                        Forms\Components\Select::make('categories')
+                            ->label('Категорії')
+                            ->multiple()
+                            ->options(\App\Models\Category::pluck('name', 'id'))
+                            ->relationship('categories', 'name')
+                            ->searchable()
+                            ->preload(),
+                        Forms\Components\Select::make('groups')
+                            ->label('Групи')
+                            ->multiple()
+                            ->options(\App\Models\Group::pluck('name', 'id'))
+                            ->relationship('groups', 'name')
+                            ->searchable()
+                            ->preload(),
+                    ])
+                    ->columns(2),
+                
+                Forms\Components\Section::make('Додаткова інформація')
+                    ->schema([
+                        Forms\Components\TextInput::make('title')
+                            ->label('Заголовок')
+                            ->maxLength(255),
+                        Forms\Components\Textarea::make('value')
+                            ->label('Значення')
+                            ->rows(3)
+                            ->maxLength(1000),
+                        Forms\Components\TextInput::make('article')
+                            ->label('Артикул')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('marker')
+                            ->label('Маркер')
+                            ->maxLength(255),
+                        Forms\Components\Textarea::make('seo_description')
+                            ->label('SEO опис')
+                            ->rows(3)
+                            ->maxLength(500),
+                        Forms\Components\TextInput::make('seo_keywords')
+                            ->label('SEO ключові слова')
+                            ->maxLength(255),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -58,26 +124,61 @@ class ServiceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID'),
+                    ->label('ID')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Назва'),
+                    ->label('Назва')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->label('Ціна'),
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Заголовок'),
-                Tables\Columns\TextColumn::make('value')
-                    ->label('Значення'),
+                    ->label('Ціна (потокова)')
+                    ->formatStateUsing(function ($state) {
+                        if (is_numeric($state)) {
+                            return number_format((float)$state, 0, ',', ' ') . '₴';
+                        }
+                        return $state ?: '—';
+                    })
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('individual_price')
+                    ->label('Ціна (індивідуальна)')
+                    ->formatStateUsing(function ($state) {
+                        if (is_numeric($state) && $state > 0) {
+                            return number_format((float)$state, 0, ',', ' ') . '₴';
+                        }
+                        return '—';
+                    })
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('categories.name')
+                    ->label('Категорії')
+                    ->formatStateUsing(function ($record) {
+                        $categories = $record->categories->pluck('name');
+                        return $categories->isNotEmpty() ? $categories->join(', ') : '—';
+                    })
+                    ->limit(50),
                 Tables\Columns\TextColumn::make('groups.name')
                     ->label('Групи')
                     ->formatStateUsing(function ($record) {
-                        return $record->groups->pluck('name')->join(', ');
-                    }),
+                        $groups = $record->groups->pluck('name');
+                        return $groups->isNotEmpty() ? $groups->join(', ') : '—';
+                    })
+                    ->limit(50),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Створено'),
+                    ->label('Створено')
+                    ->dateTime('d.m.Y H:i')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('categories')
+                    ->label('Категорія')
+                    ->relationship('categories', 'name')
+                    ->multiple(),
+                Tables\Filters\SelectFilter::make('groups')
+                    ->label('Група')
+                    ->relationship('groups', 'name')
+                    ->multiple(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

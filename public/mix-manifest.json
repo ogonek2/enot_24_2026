@@ -1,9 +1,9 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/fixed_elements.css": "/css/fixed_elements.css",
     "/css/elements.css": "/css/elements.css",
     "/css/windows.css": "/css/windows.css",
     "/css/content.css": "/css/content.css",
     "/css/app.css": "/css/app.css",
-    "/css/box_containers.css": "/css/box_containers.css"
+    "/css/box_containers.css": "/css/box_containers.css",
+    "/css/fixed_elements.css": "/css/fixed_elements.css"
 }

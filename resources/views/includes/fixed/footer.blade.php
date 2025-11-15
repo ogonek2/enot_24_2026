@@ -15,38 +15,30 @@
                 {{-- Logo & Description --}}
                 <div class="lg:col-span-2 space-y-6">
                      <!-- Logo -->
-                    <div style="display: flex; align-items: center;">
-                        <a href="/"
-                            style="
-                            display: flex;
-                            align-items: center;
-                            text-decoration: none;
-                            color: #1f2937;
-                            font-weight: bold;
-                            font-size: 20px;
-                        ">
-                            <img src="{{ asset('storage/source/logo_hear_white.svg') }}" alt="Logo" class="w-auto h-12">
+                    <div class="flex items-center">
+                        <a href="{{ route('welcome') }}" class="flex items-center hover:opacity-80 transition-opacity">
+                            <img src="{{ asset('storage/src/logo/full_logo.svg') }}" alt="ЄНОТ 24" class="w-40 h-10">
                         </a>
                     </div>
                     
                     <p class="text-gray-300 leading-relaxed max-w-md">
-                        Професійна екочистка одягу та домашнього текстилю з кур'єрською доставкою. 
+                        Професійна хімчистка одягу та домашнього текстилю з кур'єрською доставкою. 
                         Швидко, зручно, якісно!
                     </p>
                     
                     {{-- Social Links --}}
                     <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-white/10 hover:bg-primary rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110">
-                            <i class="fab fa-facebook-f text-sm"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-white/10 hover:bg-primary rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110">
+                        <a href="https://instagram.com/enot24cleaner" target="_blank" class="w-10 h-10 bg-white/10 hover:bg-pink-500 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110">
                             <i class="fab fa-instagram text-sm"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-white/10 hover:bg-primary rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110">
+                        <a href="https://t.me/enot24ServiceBot" target="_blank" class="w-10 h-10 bg-white/10 hover:bg-blue-500 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110">
                             <i class="fab fa-telegram text-sm"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-white/10 hover:bg-primary rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110">
-                            <i class="fab fa-whatsapp text-sm"></i>
+                        <a href="https://t.me/servisenot24" target="_blank" class="w-10 h-10 bg-white/10 hover:bg-blue-400 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110">
+                            <i class="fas fa-headset text-sm"></i>
+                        </a>
+                        <a href="viber://pa?chatURI=enot24" class="w-10 h-10 bg-white/10 hover:bg-purple-600 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110">
+                            <i class="fab fa-viber text-sm"></i>
                         </a>
                     </div>
                 </div>
@@ -58,7 +50,7 @@
                         <li>
                             <a href="{{ route('services') }}" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
                                 <i class="fas fa-arrow-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
-                                Наші послуги
+                                Послуги та ціни
                             </a>
                         </li>
                         <li>
@@ -68,15 +60,27 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('courier_page') }}" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
+                            <a href="{{ route('promotions') }}" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
                                 <i class="fas fa-arrow-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
-                                Викликати кур'єра
+                                Акції
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('locations_page') }}" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
+                                <i class="fas fa-arrow-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                                Локації
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('delivery_page') }}" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
                                 <i class="fas fa-arrow-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
-                                Доставка
+                                Доставка та кур'єр
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contacts_page') }}" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
+                                <i class="fas fa-arrow-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                                Контакти
                             </a>
                         </li>
                     </ul>
@@ -102,17 +106,23 @@
                     <div>
                         <h4 class="text-lg font-semibold text-white mb-4">Контакти</h4>
                         <div class="space-y-3">
-                            <a href="tel:+380xxxxxxxxx" class="flex items-center space-x-3 text-gray-300 hover:text-primary transition-colors duration-300 group">
+                            <a href="tel:0678872233" class="flex items-center space-x-3 text-gray-300 hover:text-primary transition-colors duration-300 group">
                                 <div class="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center group-hover:bg-primary/30 transition-colors duration-300">
                                     <i class="fas fa-phone text-primary text-sm"></i>
                                 </div>
-                                <span>+38 (xxx) xxx-xx-xx</span>
+                                <span>067 887 22 33</span>
                             </a>
-                            <a href="mailto:email@gmail.com" class="flex items-center space-x-3 text-gray-300 hover:text-primary transition-colors duration-300 group">
+                            <a href="tel:0443372233" class="flex items-center space-x-3 text-gray-300 hover:text-primary transition-colors duration-300 group">
+                                <div class="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center group-hover:bg-primary/30 transition-colors duration-300">
+                                    <i class="fas fa-phone text-primary text-sm"></i>
+                                </div>
+                                <span>044 337 22 33</span>
+                            </a>
+                            <a href="mailto:office.enot24@gmail.com" class="flex items-center space-x-3 text-gray-300 hover:text-primary transition-colors duration-300 group">
                                 <div class="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center group-hover:bg-primary/30 transition-colors duration-300">
                                     <i class="fas fa-envelope text-primary text-sm"></i>
                                 </div>
-                                <span>email@gmail.com</span>
+                                <span class="text-sm break-all">office.enot24@gmail.com</span>
                             </a>
                         </div>
                     </div>
@@ -139,11 +149,11 @@
             <div class="container mx-auto px-4 py-6">
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <div class="text-gray-400 text-sm">
-                        © {{ date('Y') }} praska.kiev.ua. Всі права захищені.
+                        © {{ date('Y') }} ЄНОТ 24. Всі права захищені.
                     </div>
                     <div class="flex space-x-6 text-sm">
-                        <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">Політика конфіденційності</a>
-                        <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">Умови використання</a>
+                        <a href="{{ route('contacts_page') }}" class="text-gray-400 hover:text-primary transition-colors duration-300">Контакти</a>
+                        <a href="{{ route('locations_page') }}" class="text-gray-400 hover:text-primary transition-colors duration-300">Локації</a>
                     </div>
                 </div>
             </div>

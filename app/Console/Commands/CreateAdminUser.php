@@ -22,10 +22,12 @@ class CreateAdminUser extends Command
             'email' => $email,
             'password' => Hash::make($password),
             'email_verified_at' => now(),
+            'is_admin' => true,
         ]);
 
-        $this->info('Admin user created successfully!');
-        $this->info('Email: ' . $email);
-        $this->info('Password: [hidden]');
+        $this->info('✅ Admin user created successfully!');
+        $this->info('📧 Email: ' . $email);
+        $this->info('🔑 Password: [hidden]');
+        $this->info('👤 Admin status: true');
     }
 }

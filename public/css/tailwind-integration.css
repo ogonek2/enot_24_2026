@@ -7,23 +7,23 @@
 
 /* Override some Tailwind defaults to work with existing design */
 .text-primary {
-    color: #30C1F0 !important;
+    color: #b0a8fe !important;
 }
 
 .text-secondary {
-    color: #002B5B !important;
+    color: #c47e93 !important;
 }
 
 .bg-primary {
-    background-color: #30C1F0 !important;
+    background-color: #b0a8fe !important;
 }
 
 .bg-secondary {
-    background-color: #002B5B !important;
+    background-color: #c47e93 !important;
 }
 
 .border-primary {
-    border-color: #30C1F0 !important;
+    border-color: #b0a8fe !important;
 }
 
 /* Enhanced button styles that work with existing buttons */
@@ -94,7 +94,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #30C1F0, #26A9D9);
+    background: linear-gradient(90deg, #b0a8fe, #c47e93);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -282,16 +282,16 @@ input:focus, textarea:focus, select:focus {
 
 /* Gradient backgrounds */
 .gradient-primary {
-    background: linear-gradient(135deg, #30C1F0 0%, #26A9D9 100%);
+    background: linear-gradient(135deg, #b0a8fe 0%, #c47e93 100%);
 }
 
 .gradient-secondary {
-    background: linear-gradient(135deg, #002B5B 0%, #003d7a 100%);
+    background: linear-gradient(135deg, #c47e93 0%, #b0a8fe 100%);
 }
 
 /* Text effects */
 .text-gradient {
-    background: linear-gradient(135deg, #30C1F0 0%, #002B5B 100%);
+    background: linear-gradient(135deg, #b0a8fe 0%, #c47e93 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -352,7 +352,7 @@ input:focus, textarea:focus, select:focus {
 
 /* Focus states for accessibility */
 *:focus-visible {
-    outline: 2px solid #30C1F0;
+    outline: 2px solid #b0a8fe;
     outline-offset: 2px;
     border-radius: 4px;
 }

@@ -1,9 +1,9 @@
 <!-- Модальное окно для акций -->
-<div id="promotion-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+<div id="promotion-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden" style="z-index: 1001;">
     <div class="flex items-center justify-center min-h-screen p-2 sm:p-4">
         <div class="bg-white rounded-xl sm:rounded-2xl shadow-2xl max-w-4xl w-full mx-2 sm:mx-4 relative overflow-hidden max-h-[95vh] overflow-y-auto">
             <!-- Кнопка закрытия -->
-            <button id="close-promotion-modal" class="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 text-blue-400 hover:text-blue-600 transition-colors">
+            <button id="close-promotion-modal" class="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 text-primary hover:text-secondary transition-colors">
                 <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -12,27 +12,20 @@
             <!-- Контент модального окна -->
             <div id="promotion-modal-content" class="flex flex-col lg:flex-row min-h-[400px] lg:min-h-[500px]">
                 <!-- Левая часть - изображение и логотип -->
-                <div class="w-full lg:w-1/2 relative bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center py-8 lg:py-0">
+                <div class="w-full lg:w-1/2 relative bg-gradient-to-br from-accent to-primary/30 flex items-center justify-center py-8 lg:py-0">
                     <!-- Фоновый круг -->
-                    <div class="absolute top-0 left-0 w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 bg-blue-600 rounded-full -translate-x-16 -translate-y-16 sm:-translate-x-24 sm:-translate-y-24 lg:-translate-x-32 lg:-translate-y-32 opacity-20"></div>
+                    <div class="absolute top-0 left-0 w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 bg-primary rounded-full -translate-x-16 -translate-y-16 sm:-translate-x-24 sm:-translate-y-24 lg:-translate-x-32 lg:-translate-y-32 opacity-20"></div>
                     
                     <!-- Изображение акции -->
                     <div id="promotion-image-container" class="relative z-10 text-center">
-                        <img id="promotion-image" src="" alt="" class="w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 object-cover rounded-full mx-auto mb-4 shadow-lg hidden">
-                        
-                        <!-- Логотип -->
-                        <div class="relative z-20">
-                            <div class="w-auto h-8 sm:h-10 lg:h-12 flex items-center justify-center mx-auto opacity-50">
-                                <img src="{{ asset('storage/source/logo_hear.svg') }}" alt="Logo" class="w-full h-full">
-                            </div>
-                        </div>
+                        <img id="promotion-image" src="{{ asset('storage/src/logo/enot-white-bg.png') }}" alt="" class="w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 object-cover rounded-full mx-auto mb-4 shadow-lg hidden">
                     </div>
                 </div>
                 
                 <!-- Правая часть - контент и форма -->
                 <div class="w-full lg:w-1/2 p-4 sm:p-6 lg:p-8 flex flex-col justify-center">
                     <!-- Заголовок -->
-                    <h3 id="promotion-title" class="text-xl sm:text-2xl lg:text-3xl font-bold text-blue-900 mb-3 sm:mb-4 leading-tight text-center lg:text-left">
+                    <h3 id="promotion-title" class="text-xl sm:text-2xl lg:text-3xl font-bold text-secondary mb-3 sm:mb-4 leading-tight text-center lg:text-left">
                         ЗАМОВТЕ ЧИСТКУ ЗАРАЗ!
                     </h3>
                     
@@ -43,17 +36,17 @@
                     <form id="promotion-contact-form" class="space-y-3 sm:space-y-4">
                         <div>
                             <input type="tel" id="promotion-phone" name="phone" placeholder="Введіть свій ТЕЛЕФОН" 
-                                   class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-sm sm:text-base lg:text-lg">
+                                   class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-center text-sm sm:text-base lg:text-lg">
                         </div>
                         <button type="submit" 
-                                class="w-full bg-blue-600 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-lg hover:bg-blue-700 transition-all duration-200 font-semibold text-sm sm:text-base lg:text-lg">
+                                class="w-full bg-gradient-primary text-white py-2 px-4 sm:py-3 sm:px-6 rounded-lg hover:opacity-90 transition-all duration-200 font-semibold text-sm sm:text-base lg:text-lg">
                             ОТРИМАТИ ЗНИЖКУ
                         </button>
                     </form>
                     
                     <!-- Дополнительные предложения (скрыты по умолчанию) -->
                     <div id="promotion-offers" class="mt-4 sm:mt-6 hidden">
-                        <h4 class="font-semibold text-blue-900 mb-2 text-sm sm:text-base">Наші пропозиції:</h4>
+                        <h4 class="font-semibold text-secondary mb-2 text-sm sm:text-base">Наші пропозиції:</h4>
                         <div id="promotion-offers-list" class="text-gray-600 text-xs sm:text-sm"></div>
                     </div>
                 </div>
@@ -117,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Изображение
         if (promotion.image) {
-            document.getElementById('promotion-image').src = promotion.image;
             document.getElementById('promotion-image').classList.remove('hidden');
         }
         
@@ -129,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (offers.length > 0) {
                 offersList.innerHTML = offers.map(offer => 
                     `<div class="flex items-start mb-1">
-                        <span class="text-blue-500 mr-2">•</span>
+                        <span class="text-primary mr-2">•</span>
                         <span>${offer.trim()}</span>
                     </div>`
                 ).join('');

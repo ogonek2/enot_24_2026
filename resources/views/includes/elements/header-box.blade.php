@@ -1,32 +1,39 @@
 <div class="relative bg-gradient-to-br from-primary to-secondary min-h-screen flex items-center overflow-hidden">
     {{-- Background Pattern --}}
     <div class="absolute inset-0 bg-black/20"></div>
-    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.05\"%3E%3Ccircle cx=\"30\" cy=\"30\" r=\"2\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
     
     <div class="container mx-auto px-4 relative z-10">
         <div class="grid lg:grid-cols-2 gap-12 items-center flex flex-col-reverse lg:flex-row">
             {{-- Content --}}
             <div class="text-white space-y-8 animate-fade-in-left">
                 {{-- Navigation --}}
+                @php
+                    $headerCategories = \App\Models\Category::with(['services'])
+                        ->whereHas('services')
+                        ->orderBy('category_type')
+                        ->orderBy('name')
+                        ->take(3)
+                        ->get();
+                @endphp
                 <nav class="flex flex-wrap gap-4 mb-8">
-                    <a href="#" class="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 hover:bg-white/20 transition-all duration-300">
-                        <img src="{{ asset('storage/source/svg/icons/icon_1.svg') }}" alt="Еко-чистка одягу" class="w-6 h-6">
-                        <span class="text-sm font-medium">Еко-чистка одягу</span>
-                    </a>
-                    <a href="#" class="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 hover:bg-white/20 transition-all duration-300">
-                        <img src="{{ asset('storage/source/svg/icons/icon_2.svg') }}" alt="Прання килимів" class="w-6 h-6">
-                        <span class="text-sm font-medium">Прання килимів</span>
-                    </a>
-                    <a href="#" class="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 hover:bg-white/20 transition-all duration-300">
-                        <img src="{{ asset('storage/source/svg/icons/icon_3.svg') }}" alt="Чистка м'яких меблів" class="w-6 h-6">
-                        <span class="text-sm font-medium">Чистка м'яких меблів</span>
-                    </a>
+                    @foreach($headerCategories as $category)
+                        <a href="{{ route('category_page', $category->href) }}" class="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 hover:bg-white/20 transition-all duration-300">
+                            @if($category->category_img)
+                                <img src="{{ asset('storage/' . $category->category_img) }}" alt="{{ $category->name }}" class="w-6 h-6 rounded-full">
+                            @else
+                                <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                                    <i class="fas fa-tag text-xs"></i>
+                                </div>
+                            @endif
+                            <span class="text-sm font-medium">{{ $category->name }}</span>
+                        </a>
+                    @endforeach
                 </nav>
                 
                 {{-- Main Content --}}
                 <div class="space-y-6">
                     <h1 class="text-5xl lg:text-6xl font-bold leading-tight">
-                        Еко-чистка <span class="text-primary">одягу</span><br>
+                        Хімчистка <span class="text-primary">одягу</span><br>
                         та домашнього<br>
                         текстилю
                     </h1>
@@ -41,8 +48,8 @@
                     <button class="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl modal_fade" data-modal="feedbackmd">
                         <i class="fas fa-phone mr-2"></i>Викликати кур'єра
                     </button>
-                    <a href="#services" class="border-2 border-white text-white hover:bg-white hover:text-secondary px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105">
-                        <i class="fas fa-list mr-2"></i>Наші послуги
+                    <a href="{{ route('services') }}" class="border-2 border-white text-white hover:bg-white hover:text-secondary px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-list mr-2"></i>Послуги та ціни
                     </a>
                 </div>
                 

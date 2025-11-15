@@ -18,14 +18,8 @@
                     </div>
 
                     <h2 class="text-4xl lg:text-5xl font-bold leading-tight text-gray-900">
-                        Послуги для бізнесу
+                        Послуги<br>для бізнесу
                     </h2>
-
-                    <p class="text-xl text-gray-600 leading-relaxed">
-                        Заповніть форму для співпраці та отримайте спеціальні B2B-пропозиції на послуги прасування та
-                        хімчистки одягу. Ми гарантуємо індивідуальні умови, гнучкі знижки та надійне партнерство для вашого
-                        бізнесу.
-                    </p>
                 </div>
             </div>
 
@@ -88,12 +82,6 @@
             </div>
         </div>
     </div>
-
-    {{-- Services Navigation --}}
-    @include('includes.elements.header-2-box')
-
-    {{-- Courier Delivery Highlight --}}
-    @include('includes.elements.delivery-box')
 @endsection
 
 @section('scripts')

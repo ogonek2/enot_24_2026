@@ -99,9 +99,9 @@ class FeedbackController extends Controller
         
         // Different messages for different form types
         $formTitles = [
-            'feedback' => "🆕 *Нове повідомлення зворотного зв'язку*",
+            'feedback' => "🆕 *Нове повідомлення зворотнього зв'язку*",
             'consultation' => "📞 *Заявка на консультацію*",
-            'courier' => "🚚 *Заявка на кур'єра*",
+            'courier' => "🚚 *Заявка на консультацію*",
             'promotion_modal' => "🎁 *Заявка з модального вікна акції*"
         ];
         

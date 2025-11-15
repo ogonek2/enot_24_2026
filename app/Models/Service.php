@@ -10,7 +10,8 @@ class Service extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'price', 'title', 'value', 'href',
+        'name', 'article', 'price', 'individual_price', 'category_id', 'marker', 'title', 'value', 'href', 'transform_url',
+        'seo_description', 'seo_keywords', 'description', 'type_page', 'promotion', 'created_at', 'updated_at', 'sort_order'
     ];
 
     public function categories()
@@ -28,10 +29,19 @@ class Service extends Model
         parent::boot();
 
         static::saving(function ($service) {
-            if (empty($service->href)) {
-                $service->href = self::generateHref($service->name);
+            // Генерируем transform_url если не указан
+            if (empty($service->transform_url)) {
+                $service->transform_url = self::generateHref($service->name);
             }
         });
+    }
+    
+    /**
+     * Accessor для href - возвращает transform_url для обратной совместимости
+     */
+    public function getHrefAttribute()
+    {
+        return $this->attributes['transform_url'] ?? null;
     }
 
     // Метод для генерации href

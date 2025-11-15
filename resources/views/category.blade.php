@@ -1,23 +1,193 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ $category->name ?? 'Категорія' }} - Екочистка одягу та домашнього текстилю
+    {{ $category->name }} - Екочистка одягу та домашнього текстилю
 @endsection
 
 @section('content')
-    {{-- Price Section --}}
-    @include('includes.elements.price-box')
+    <div class="pb-8 md:pb-12">
+        <div class="container mx-auto md:px-4">
+            {{-- Category Header --}}
+            <div class="mb-2 md:mb-4">
+                <div class="py-4">
+                    <div class="flex flex-col md:flex-row items-center gap-4">
+                        {{-- Category Image --}}
+                        @if($category->category_img)
+                            <div class="flex-shrink-0">
+                                <img src="{{ asset('storage/' . $category->category_img) }}" 
+                                     alt="{{ $category->name }}" 
+                                     class="w-[60px] h-[60px] rounded-full object-cover">
+                            </div>
+                        @else
+                            <div class="flex-shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                                <i class="fas fa-tag text-4xl md:text-5xl text-primary/50"></i>
+                            </div>
+                        @endif
+                        
+                        {{-- Category Info --}}
+                        <div class="flex-1 text-center md:text-left">
+                            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">
+                                {{ $category->name }}
+                            </h1>
+                            <p class="text-gray-600 text-lg">
+                                {{ $category->services->count() }} {{ $category->services->count() === 1 ? 'послуга' : 'послуг' }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    {{-- Consultation Section --}}
-    @include('includes.elements.consultation')
+            {{-- Services List --}}
+            <div class="mb-8 md:mb-12">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    @if($category->services->count() > 0)
+                        {{-- Table Headers --}}
+                        <div class="hidden md:grid md:grid-cols-12 gap-4 bg-gradient-to-r from-gray-50 to-gray-100 px-6 md:px-8 py-4 border-b-2 border-gray-200">
+                            <div class="md:col-span-6">
+                                <span class="text-sm font-bold text-gray-800 uppercase">Послуга</span>
+                            </div>
+                            <div class="md:col-span-2 text-right">
+                                <span class="text-sm font-bold text-gray-800 uppercase">Потокова ціна</span>
+                            </div>
+                            <div class="md:col-span-2 text-right">
+                                <span class="text-sm font-bold text-gray-800 uppercase">Індивідуальна ціна</span>
+                            </div>
+                            <div class="md:col-span-2 text-right">
+                                <span class="text-sm font-bold text-gray-800 uppercase">Дія</span>
+                            </div>
+                        </div>
+                        
+                        <div class="divide-y divide-gray-200">
+                            @foreach($category->services as $index => $service)
+                                <div class="px-6 md:px-8 py-4 md:py-6 hover:bg-gray-50 transition-colors duration-200 group">
+                                    <div class="grid grid-cols-2 md:grid-cols-12 items-center gap-4">
+                                        
+                                        {{-- Service Name --}}
+                                        <div class="md:col-span-6 col-span-2">
+                                            <a href="{{ route('service_page', $service->transform_url ?? $service->href) }}" 
+                                               class="block">
+                                                <h3 class="text-lg font-sans text-gray-800 group-hover:text-primary transition-colors duration-200 cursor-pointer">
+                                                    {{ $service->name }}
+                                                </h3>
+                                            </a>
+                                        </div>
+                                        
+                                        {{-- Current Price --}}
+                                        <div class="md:col-span-2 text-left md:text-right">
+                                            <span class="text-sm text-gray-500 md:hidden">Потокова</span><br class="md:hidden">
+                                            @php
+                                                $originalPrice = floatval($service->price ?? 0);
+                                                $hasPrice = $originalPrice > 0;
+                                            @endphp
+                                            @if($hasPrice)
+                                                @if($category->hasActiveDiscount())
+                                                    <div class="flex flex-col items-start md:items-end gap-1">
+                                                        <span class="text-gray-400 text-sm line-through">
+                                                            {{ number_format($originalPrice, 0, ',', ' ') }} грн
+                                                        </span>
+                                                        <span class="text-lg font-bold text-primary">
+                                                            {{ number_format(floatval($category->calculateDiscountedPrice($originalPrice)), 0, ',', ' ') }} грн
+                                                        </span>
+                                                    </div>
+                                                @else
+                                                    <span class="text-base font-bold text-primary">
+                                                        {{ number_format($originalPrice, 0, ',', ' ') }} грн
+                                                    </span>
+                                                @endif
+                                            @else
+                                                <span class="text-sm text-gray-400 italic">Ціна за запитом</span>
+                                            @endif
+                                        </div>
+                                        
+                                        {{-- Individual Price --}}
+                                        <div class="md:col-span-2 text-left md:text-right">
+                                            <span class="text-sm text-gray-500 md:hidden">Індивідуальна</span><br class="md:hidden">
+                                            @if($service->individual_price)
+                                                <span class="text-base font-bold text-secondary">
+                                                    {{ number_format($service->individual_price, 0, ',', ' ') }} грн
+                                                </span>
+                                            @else
+                                                <span class="text-gray-400 text-sm italic">—</span>
+                                            @endif
+                                        </div>
+                                        
+                                        {{-- Add to Cart Button --}}
+                                        <div class="md:col-span-2 flex items-center justify-end col-span-2 md:col-span-1">
+                                            @php
+                                                $finalPrice = $hasPrice ? ($category->hasActiveDiscount() ? $category->calculateDiscountedPrice($originalPrice) : $originalPrice) : 0;
+                                            @endphp
+                                            @if($hasPrice)
+                                                @include('components.add-to-cart-button', [
+                                                    'serviceId' => $service->id,
+                                                    'serviceName' => $service->name,
+                                                    'hasIndividual' => ($service->individual_price ?? 0) > 0,
+                                                    'price' => $finalPrice,
+                                                    'individualPrice' => $service->individual_price ?? 0
+                                                ])
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="px-6 md:px-8 py-16 text-center">
+                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-exclamation-triangle text-gray-400 text-2xl"></i>
+                            </div>
+                            <p class="text-gray-500 text-lg">Послуги в цій категорії тимчасово недоступні</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
 
-    {{-- Services Navigation --}}
-    @include('includes.elements.header-2-box')
+            {{-- Other Categories --}}
+            @if($otherCategories->count() > 0)
+                <div class="mb-8">
+                    <div class="py-6">
+                        <div class="text-center mb-8">
+                            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Інші категорії</h2>
+                            <p class="text-gray-600">Оберіть іншу категорію послуг</p>
+                        </div>
 
-    {{-- Courier Form --}}
-    @include('includes.elements.courier_form-box')
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-4">
+                            @foreach($otherCategories as $otherCategory)
+                                <a href="{{ route('category_page', $otherCategory->href) }}" 
+                                   class="group bg-white/40 rounded-xl p-4 md:p-6 hover:border-primary hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                                    <div class="flex gap-4 md:flex-col md:items-center md:text-center">
+                                        @if($otherCategory->category_img)
+                                            <img src="{{ asset('storage/' . $otherCategory->category_img) }}" 
+                                                 alt="{{ $otherCategory->name }}" 
+                                                 class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                        @else
+                                            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                                                <i class="fas fa-tag text-2xl md:text-3xl text-primary/50"></i>
+                                            </div>
+                                        @endif
+                                        <div>
+                                            <h3 class="text-base md:text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors duration-300 mb-2">
+                                                {{ $otherCategory->name }}
+                                            </h3>
+                                            <p class="text-sm text-gray-500">
+                                                {{ $otherCategory->services->count() }} {{ $otherCategory->services->count() === 1 ? 'послуга' : 'послуг' }}
+                                            </p>
+                                            @if($otherCategory->hasActiveDiscount())
+                                                <span class="mt-2 inline-block bg-primary/10 text-primary text-xs font-semibold px-2 py-1 rounded-full">
+                                                    -{{ $otherCategory->getDiscountPercent() }}%
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/scripts/price_slide.js') }}"></script>
+    {{-- Дополнительные скрипты при необходимости --}}
 @endsection

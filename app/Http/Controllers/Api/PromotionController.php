@@ -3,35 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Promotion;
+use App\Models\discount;
 use Illuminate\Http\Request;
 
 class PromotionController extends Controller
 {
     /**
      * Получить активную модальную акцию
+     * 
+     * Примечание: модель discount не поддерживает модальные окна.
+     * Этот метод возвращает null, так как функциональность модальных окон
+     * не реализована для модели discount.
      */
     public function getModalPromotion()
     {
-        $promotion = Promotion::current()
-            ->modal()
-            ->orderBy('sort_order', 'asc')
-            ->first();
-
-        if (!$promotion) {
-            return response()->json(['promotion' => null]);
-        }
-
-        return response()->json([
-            'promotion' => [
-                'id' => $promotion->id,
-                'title' => $promotion->modal_title ?: $promotion->name,
-                'description' => $promotion->modal_description ?: $promotion->description,
-                'offers' => $promotion->offers,
-                'image' => $promotion->image ? asset('storage/' . $promotion->image) : null,
-                'cache_minutes' => $promotion->modal_cache_minutes,
-            ]
-        ]);
+        // Модель discount не имеет полей для модальных окон
+        // Возвращаем null, так как функциональность не реализована
+        return response()->json(['promotion' => null]);
     }
 
     /**
@@ -39,9 +27,7 @@ class PromotionController extends Controller
      */
     public function getPromotionsForBanner()
     {
-        $promotions = Promotion::current()
-            ->where('is_active', true)
-            ->orderBy('sort_order', 'asc')
+        $promotions = discount::orderBy('created_at', 'desc')
             ->limit(6)
             ->get();
 
@@ -49,9 +35,11 @@ class PromotionController extends Controller
             return [
                 'id' => $promotion->id,
                 'title' => $promotion->name,
-                'description' => $promotion->description,
-                'offers' => $promotion->offers,
-                'image' => $promotion->image ? asset('storage/' . $promotion->image) : null,
+                'description' => strip_tags($promotion->umowy ?? ''),
+                'offers' => $promotion->umowy ?? '',
+                'image' => $promotion->banner ? asset('storage/' . $promotion->banner) : null,
+                'discount_action' => $promotion->discount_action ?? '',
+                'locations' => $promotion->locations ?? 'ВСІ',
             ];
         });
 

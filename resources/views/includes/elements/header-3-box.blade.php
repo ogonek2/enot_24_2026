@@ -1,60 +1,39 @@
-<div class="py-20 bg-white">
-    <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-secondary mb-4">Наші послуги</h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Виберіть потрібну послугу для детального ознайомлення
-            </p>
-        </div>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {{-- Прасування --}}
-            <a href="{{ route('category_page', 'prasuvannya') }}" target="_blank" 
-               class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up">
-                <div class="p-8 text-center">
-                    <div class="bg-primary/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <img src="{{ asset('storage/source/svg/icons/tags/praska.svg') }}" alt="Прасування" class="w-10 h-10">
-                    </div>
-                    <h3 class="text-xl font-semibold text-secondary mb-2 group-hover:text-primary transition-colors">Прасування</h3>
-                    <p class="text-gray-600 text-sm">Професійне прасування одягу</p>
-                </div>
-            </a>
+@php
+    $ctaHeaders = \App\Models\CtaHeader::where('is_active', true)
+        ->orderBy('sort_order', 'asc')
+        ->get();
+@endphp
 
-            {{-- Аквачистка --}}
-            <a href="{{ route('category_page', 'akvachystka') }}" target="_blank" 
-               class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up" style="animation-delay: 0.1s;">
-                <div class="p-8 text-center">
-                    <div class="bg-primary/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <img src="{{ asset('storage/source/svg/icons/tags/aqua_clean.svg') }}" alt="Аквачистка" class="w-10 h-10">
+@if($ctaHeaders->count() > 0)
+<div class="py-4">
+    <div class="container mx-auto">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-0 lg:gap-4">
+            @foreach($ctaHeaders as $index => $ctaHeader)
+            <a href="{{ $ctaHeader->resolved_url }}" target="_blank"
+                class="group bg-white rounded-2xl overflow-hidden transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up"
+                style="animation-delay: {{ $index * 0.1 }}s;">
+                <div class="p-8 text-center flex flex-row lg:flex-col justify-start gap-4 items-center">
+                    <div
+                        class="rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        @if($ctaHeader->icon)
+                            <img src="{{ asset('storage/' . $ctaHeader->icon) }}" alt="{{ $ctaHeader->title }}"
+                                class="w-[70px] h-[70px] min-w-[70px] min-h-[70px]">
+                        @else
+                            <div class="w-[70px] h-[70px] min-w-[70px] min-h-[70px] rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                                <i class="fas fa-tag text-3xl text-primary/50"></i>
+                            </div>
+                        @endif
                     </div>
-                    <h3 class="text-xl font-semibold text-secondary mb-2 group-hover:text-primary transition-colors">Аквачистка</h3>
-                    <p class="text-gray-600 text-sm">Екологічно чиста обробка</p>
+                    <div class="text-left lg:text-center">
+                        <h3
+                            class="text-xl font-semibold text-secondary mb-2 group-hover:text-primary transition-colors">
+                            {{ $ctaHeader->title }}</h3>
+                        <p class="text-gray-600 text-sm">{{ $ctaHeader->subtitle }}</p>
+                    </div>
                 </div>
             </a>
-
-            {{-- Для бізнесу --}}
-            <a href="{{ route('b2b_page') }}" target="_blank" 
-               class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up" style="animation-delay: 0.2s;">
-                <div class="p-8 text-center">
-                    <div class="bg-primary/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <img src="{{ asset('storage/source/svg/icons/tags/B2B.svg') }}" alt="Для бізнесу" class="w-10 h-10">
-                    </div>
-                    <h3 class="text-xl font-semibold text-secondary mb-2 group-hover:text-primary transition-colors">Для бізнесу</h3>
-                    <p class="text-gray-600 text-sm">Корпоративні послуги</p>
-                </div>
-            </a>
-
-            {{-- Хімчистка --}}
-            <a href="{{ route('category_page', 'khimchystka') }}" target="_blank" 
-               class="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up" style="animation-delay: 0.3s;">
-                <div class="p-8 text-center">
-                    <div class="bg-primary/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                        <img src="{{ asset('storage/source/svg/icons/tags/clean.svg') }}" alt="Хімчистка" class="w-10 h-10">
-                    </div>
-                    <h3 class="text-xl font-semibold text-secondary mb-2 group-hover:text-primary transition-colors">Хімчистка</h3>
-                    <p class="text-gray-600 text-sm">Професійна хімчистка</p>
-                </div>
-            </a>
+            @endforeach
         </div>
     </div>
 </div>
+@endif

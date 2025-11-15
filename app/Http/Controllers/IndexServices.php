@@ -7,24 +7,44 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Service;
 use App\Models\B2b;
+use App\Models\discount;
+use App\Models\locations;
+use App\Models\cities;
 
 class IndexServices extends Controller
 {
     public function index()
     {
+        // Загружаем все категории (тип 1 и 2) без фильтрации по типу
+        // Загружаем все услуги, включая с ценой 0 (цена будет скрыта в view, если она 0)
         $categories = Category::with(['services' => function ($query) {
-            $query->where('price', '>', 0);
-        }])->get();
+            $query->orderBy('name');
+        }])
+        ->whereHas('services')
+        // Сортировка: сначала по типу категории (1, 2, 3...), затем по имени
+        ->orderBy('category_type')
+        ->orderBy('name')
+        ->get();
+
+        $discounts = discount::all();
 
         return view('welcome', [
             'categories' => $categories,
+            'discounts' => $discounts,
         ]);
     }
     public function services()
     {
+        // Загружаем все категории (тип 1 и 2) без фильтрации по типу
+        // Загружаем все услуги, включая с ценой 0 (цена будет скрыта в view, если она 0)
         $categories = Category::with(['services' => function ($query) {
-            $query->where('price', '>', 0);
-        }])->get();
+            $query->orderBy('name');
+        }])
+        ->whereHas('services')
+        // Сортировка: сначала по типу категории (1, 2, 3...), затем по имени
+        ->orderBy('category_type')
+        ->orderBy('name')
+        ->get();
 
         return view('poslugi', [
             'categories' => $categories,
@@ -52,21 +72,158 @@ class IndexServices extends Controller
     {
         return view('delivery');
     }
+
+    public function contacts()
+    {
+        return view('contacts');
+    }
+
+    public function locations(Request $request)
+    {
+        // Получаем все города с их локациями
+        // Сортируем города по ID (от 1 и дальше по возрастанию)
+        $cities = cities::with(['locations' => function($query) {
+            $query->orderBy('street');
+        }])
+        ->whereHas('locations')
+        ->orderBy('id', 'asc')
+        ->get();
+
+        // Получаем выбранную локацию из query параметра (если есть)
+        $selectedLocationId = $request->get('location');
+
+        return view('locations', [
+            'cities' => $cities,
+            'selectedLocationId' => $selectedLocationId,
+        ]);
+    }
+
+    public function location($seo_link)
+    {
+        // Декодируем URL-кодированный параметр (на случай, если слеши были закодированы)
+        $seo_link = urldecode($seo_link);
+        
+        // Находим локацию по seo_link (точное совпадение)
+        $location = locations::where('seo_link', $seo_link)->first();
+
+        if (!$location) {
+            // Если не найдено, пробуем найти без учета регистра или с различными вариантами
+            // (например, если в базе хранится с другим форматом)
+            $location = locations::whereRaw('LOWER(seo_link) = ?', [strtolower($seo_link)])->first();
+        }
+
+        if (!$location) {
+            return abort(404);
+        }
+
+        // Редиректим на страницу списка локаций с параметром выбранной локации
+        return redirect()->route('locations_page', ['location' => $location->id]);
+    }
+    
+    public function promotions()
+    {
+        // Получаем все акции из таблицы discount
+        $discounts = discount::orderBy('created_at', 'desc')->get();
+
+        return view('promotions', [
+            'promotions' => $discounts,
+        ]);
+    }
+    
+    public function promotion($id)
+    {
+        // Находим акцию по ID
+        $discount = discount::findOrFail($id);
+        
+        // Получаем другие акции (исключая текущую)
+        $otherDiscounts = discount::where('id', '!=', $discount->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get();
+
+        return view('promotion', [
+            'promotion' => $discount,
+            'otherPromotions' => $otherDiscounts,
+        ]);
+    }
+    
+    public function service_page($service)
+    {
+        // Находим услугу по transform_url
+        $serviceModel = Service::where('transform_url', $service)
+            ->with(['categories', 'groups'])
+            ->firstOrFail();
+        
+        // Получаем первую категорию услуги для навигации
+        $primaryCategory = $serviceModel->categories->first();
+        
+        // Получаем другие услуги из той же категории (исключая текущую)
+        $otherServices = collect();
+        if ($primaryCategory) {
+            $otherServices = Service::whereHas('categories', function($query) use ($primaryCategory) {
+                $query->where('categories.id', $primaryCategory->id);
+            })
+            ->where('id', '!=', $serviceModel->id)
+            ->with(['categories'])
+            ->orderBy('name')
+            ->limit(6)
+            ->get();
+        }
+        
+        // Получаем другие категории (для навигации)
+        $otherCategories = collect();
+        if ($primaryCategory) {
+            $otherCategories = Category::whereHas('services')
+                ->where('id', '!=', $primaryCategory->id)
+                ->with(['services'])
+                ->orderBy('category_type')
+                ->orderBy('name')
+                ->limit(4)
+                ->get();
+        } else {
+            $otherCategories = Category::whereHas('services')
+                ->with(['services'])
+                ->orderBy('category_type')
+                ->orderBy('name')
+                ->limit(4)
+                ->get();
+        }
+        
+        return view('service', [
+            'service' => $serviceModel,
+            'primaryCategory' => $primaryCategory,
+            'otherServices' => $otherServices,
+            'otherCategories' => $otherCategories,
+        ]);
+    }
+    
     public function category_page($category)
     {
-        // Получаем все категории с услугами
-        $categories = Category::with('services')->get();
-        
-        // Находим активную категорию
-        $activeCategory = Category::where('href', $category)->with('services')->first();
+        // Находим активную категорию с услугами (включая с ценой 0)
+        $activeCategory = Category::where('href', $category)
+            ->with(['services' => function ($query) {
+                $query->orderBy('name');
+            }])
+            ->first();
 
         if (!$activeCategory) {
             return abort(404);
         }
 
+        // Получаем другие категории (исключая текущую, включая с ценой 0)
+        $otherCategories = Category::where('id', '!=', $activeCategory->id)
+            ->whereHas('services')
+            ->with(['services' => function ($query) {
+                $query->orderBy('name');
+            }])
+            // Сортировка: сначала по типу категории (1, 2, 3...), затем по имени
+            ->orderBy('category_type')
+            ->orderBy('name')
+            ->get();
+
         return view('category', [
-            'categories' => $categories,
-            'activeCategory' => $activeCategory,
+            'category' => $activeCategory,
+            'otherCategories' => $otherCategories,
         ]);
     }
 

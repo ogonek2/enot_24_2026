@@ -1,88 +1,50 @@
-<div class="py-20 bg-gray-50">
-    <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-secondary mb-4">Наші послуги</h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Виберіть потрібну послугу або викличте кур'єра для консультації
-            </p>
-        </div>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {{-- Прасування --}}
-            <div class="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up">
-                <div class=" w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <img src="{{ asset('storage/source/svg/icons/tags/praska.svg') }}" alt="Прасування" class="w-20 h-20">
-                </div>
-                <h3 class="text-xl font-semibold text-secondary mb-4">Прасування</h3>
-                <div class="space-y-3">
-                    <a href="{{ route('category_page', 'prasuvannya-rechey') }}" target="_blank" class="block w-full border-2 border-primary hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                        Перейти
-                    </a>
-                </div>
-            </div>
+@php
+    $categories = \App\Helpers\CategoryHelper::getByType(1);
+@endphp
 
-            {{-- Аквачистка --}}
-            <div class="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up" style="animation-delay: 0.1s;">
-                <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <img src="{{ asset('storage/source/svg/icons/tags/aqua_clean.svg') }}" alt="Аквачистка" class="w-20 h-20">
-                </div>
-                <h3 class="text-xl font-semibold text-secondary mb-4">Аквачистка</h3>
-                <div class="space-y-3">
-                    <a href="{{ route('category_page', 'akvachystka') }}" target="_blank" class="block w-full border-2 border-primary hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                        Перейти
-                    </a>
-                </div>
-            </div>
+<div class="py-10">
+    <div class="container mx-auto">
+            @if($categories->count() > 0)
+                <div class="mb-8">
+                    <div class="py-6">
+                        <div class="text-center mb-8">
+                            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Інші категорії</h2>
+                            <p class="text-gray-600">Оберіть іншу категорію послуг</p>
+                        </div>
 
-            {{-- Для бізнесу --}}
-            <div class="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up" style="animation-delay: 0.2s;">
-                <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <img src="{{ asset('storage/source/svg/icons/tags/B2B.svg') }}" alt="Для бізнесу" class="w-120 h-20">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-4">
+                            @foreach($categories as $otherCategory)
+                                <a href="{{ route('category_page', $otherCategory->href) }}" 
+                                   class="group bg-white/40 rounded-xl p-4 md:p-6 hover:border-primary hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                                    <div class="flex gap-4 md:flex-col md:items-center md:text-center">
+                                        @if($otherCategory->category_img)
+                                            <img src="{{ asset('storage/' . $otherCategory->category_img) }}" 
+                                                 alt="{{ $otherCategory->name }}" 
+                                                 class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                        @else
+                                            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                                                <i class="fas fa-tag text-2xl md:text-3xl text-primary/50"></i>
+                                            </div>
+                                        @endif
+                                        <div>
+                                            <h3 class="text-base md:text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors duration-300 mb-2">
+                                                {{ $otherCategory->name }}
+                                            </h3>
+                                            <p class="text-sm text-gray-500">
+                                                {{ $otherCategory->services->count() }} {{ $otherCategory->services->count() === 1 ? 'послуга' : 'послуг' }}
+                                            </p>
+                                            @if($otherCategory->hasActiveDiscount())
+                                                <span class="mt-2 inline-block bg-primary/10 text-primary text-xs font-semibold px-2 py-1 rounded-full">
+                                                    -{{ $otherCategory->getDiscountPercent() }}%
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
-                <h3 class="text-xl font-semibold text-secondary mb-4">Для бізнесу</h3>
-                <div class="space-y-3">
-                    <a href="{{ route('b2b_page') }}" target="_blank" class="block w-full border-2 border-primary hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                        Перейти
-                    </a>
-                </div>
-            </div>
-
-            {{-- Хімчистка --}}
-            <div class="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up" style="animation-delay: 0.3s;">
-                <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <img src="{{ asset('storage/source/svg/icons/tags/clean.svg') }}" alt="Хімчистка" class="w-20 h-20">
-                </div>
-                <h3 class="text-xl font-semibold text-secondary mb-4">Хімчистка</h3>
-                <div class="space-y-3">
-                    <a href="{{ route('category_page', 'khimchystka') }}" target="_blank" class="block w-full border-2 border-primary hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                        Перейти
-                    </a>
-                </div>
-            </div>
-             {{-- Реставрація взуття --}}
-             <div class="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up" style="animation-delay: 0.3s;">
-                <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <img src="{{ asset('storage/source/svg/icons/tags/shoes.svg') }}" alt="Реставрація взуття" class="w-20 h-20">
-                </div>
-                <h3 class="text-xl font-semibold text-secondary mb-4">Реставрація взуття</h3>
-                <div class="space-y-3">
-                    <a href="{{ route('category_page', 'chystka-ta-restavratsiya-vzuttya') }}" target="_blank" class="block w-full border-2 border-primary hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                        Перейти
-                    </a>
-                </div>
-            </div>
-             {{-- Одяг зі шкіри та хутра --}}
-             <div class="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 animate-fade-in-up" style="animation-delay: 0.3s;">
-                <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <img src="{{ asset('storage/source/svg/icons/tags/jacket.svg') }}" alt="Одяг зі шкіри та хутра" class="w-20 h-20">
-                </div>
-                <h3 class="text-xl font-semibold text-secondary mb-4">Одяг зі шкіри та хутра</h3>
-                <div class="space-y-3">
-                    <a href="{{ route('category_page', 'odyag-zi-shkiry-ta-khutra') }}" target="_blank" class="block w-full border-2 border-primary hover:bg-primary hover:text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                        Перейти
-                    </a>
-                </div>
-            </div>
-        </div>
+            @endif
     </div>
 </div>

@@ -7,40 +7,6 @@
                     Бажаєте замовити <span class="text-primary">кур'єра</span><br>
                     або залишились питання?
                 </h2>
-                <p class="text-lg text-gray-200 leading-relaxed">
-                    Протягом 10 хвилин після отримання замовлення з вами зв'яжеться наш менеджер для уточнення
-                    деталей та узгодження умов — за умови, що замовлення надійшло в робочий час. Якщо звернення
-                    отримано в неробочий час, ми сконтактуємо з вами наступного робочого дня в період з 10:00 до
-                    20:00.
-                </p>
-                
-                {{-- Quick Benefits --}}
-                <div class="grid grid-cols-2 gap-4 pt-6">
-                    <div class="flex items-center space-x-3">
-                        <div class="bg-white/20 w-8 h-8 rounded-full flex items-center justify-center">
-                            <i class="fas fa-clock text-sm"></i>
-                        </div>
-                        <span class="text-sm">10 хвилин</span>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <div class="bg-white/20 w-8 h-8 rounded-full flex items-center justify-center">
-                            <i class="fas fa-phone text-sm"></i>
-                        </div>
-                        <span class="text-sm">Швидкий зв'язок</span>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <div class="bg-white/20 w-8 h-8 rounded-full flex items-center justify-center">
-                            <i class="fas fa-truck text-sm"></i>
-                        </div>
-                        <span class="text-sm">Безкоштовно</span>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <div class="bg-white/20 w-8 h-8 rounded-full flex items-center justify-center">
-                            <i class="fas fa-user-tie text-sm"></i>
-                        </div>
-                        <span class="text-sm">Персональний менеджер</span>
-                    </div>
-                </div>
             </div>
             
             {{-- Form --}}

@@ -1,0 +1,77 @@
+@font-face {
+    font-family: 'Namu';
+    src: url('/fonts/NAMU-Pro.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        font-family: 'Namu', 'Inter', 'f_inter', sans-serif !important;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Russo One', sans-serif !important;
+    }
+    
+    b, strong, .font-bold, .font-semibold, .font-black {
+        font-family: 'Russo One', sans-serif !important;
+    }
+}
+
+@layer components {
+    .gradient-button {
+        @apply bg-gradient-to-r from-primary to-secondary;
+        background: linear-gradient(135deg, #b0a8fe, #c47e93);
+    }
+    
+    .bg-consultation-btn {
+        background-color: #7470BF !important;
+    }
+    
+    /* Переопределение стандартных медиазапросов для .container */
+    .container {
+        width: 100% !important;
+        max-width: 1440px !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* Убираем все медиазапросы для контейнера */
+    @media (min-width: 640px) {
+        .container {
+            max-width: 1440px !important;
+        }
+    }
+    
+    @media (min-width: 768px) {
+        .container {
+            max-width: 1440px !important;
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .container {
+            max-width: 1440px !important;
+        }
+    }
+    
+    @media (min-width: 1280px) {
+        .container {
+            max-width: 1440px !important;
+        }
+    }
+    
+    @media (min-width: 1536px) {
+        .container {
+            max-width: 1440px !important;
+        }
+    }
+}
+
+
