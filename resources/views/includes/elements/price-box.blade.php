@@ -235,6 +235,7 @@
                                                                                 <h4
                                                                                     class="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors duration-200 cursor-pointer">
                                                                                     {{ $service->name }}
+                                                                                    @if($service->marker !== null)<br><span class="p-2 gradient-button from-primary via-secondary to-primary rounded-3xl font-sans text-sm text-white block my-2" style="width: fit-content;">{{ $service->marker }}</span> @endif
                                                                                 </h4>
                                                                                 <p class="text-sm text-gray-500">Професійна обробка</p>
                                                                             </a>
@@ -272,7 +273,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             @else
-                                                                                <div class="text-lg font-bold text-primary">{{ number_format($originalPrice, 0) }}₴</div>
+                                                                                <div class="text-lg font-bold text-primary">{{ number_format($originalPrice, 0) }}₴@if($service->marker !== null)<br><span class="text-right font-sans text-sm text-secondary">Акційна ціна!</span> @endif</div>
                                                                             @endif
                                                                             <div class="text-xs text-gray-500">за одиницю</div>
                                                                         @else

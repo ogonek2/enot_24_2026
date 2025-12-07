@@ -1,10 +1,54 @@
 @extends('layouts.app')
 
-@section('title', 'Локації - ЄНОТ 24')
+@section('title', 'Наші приймальні пункти - Єнот 24 / Хімчистка одягу та килимів у Києві')
 
 @section('styles')
     {{-- Leaflet CSS --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+@endsection
+
+@php
+    $siteName = config('app.name', 'ЄНОТ 24');
+    $pageTitle = 'Локації - ' . $siteName;
+    $pageDescription = 'Знайдіть найближче відділення ЄНОТ 24 у вашому місті. Хімчистка одягу та домашнього текстилю з кур\'єрською доставкою. Адреси, графік роботи, контакти.';
+    $pageUrl = route('locations_page');
+    
+    // Используем дефолтное изображение для локаций
+    $ogImage = asset('storage/src/logo/full_logo.svg');
+    
+    // Формируем keywords из названий городов
+    $cityNames = $cities->pluck('city')->implode(', ');
+    $keywords = 'локації, адреси, відділення, хімчистка, ЄНОТ 24, ' . $cityNames . ', графік роботи, контакти';
+@endphp
+
+@section('seo_tags')
+    {{-- Basic Meta Tags --}}
+    <meta name="description" content="{{ $pageDescription }}">
+    <meta name="keywords" content="{{ $keywords }}">
+    
+    {{-- Open Graph Meta Tags --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ $pageUrl }}">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:image" content="{{ $ogImage }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ $pageTitle }}">
+    <meta property="og:site_name" content="{{ $siteName }}">
+    <meta property="og:locale" content="uk_UA">
+    
+    {{-- Twitter Card Meta Tags --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ $pageUrl }}">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ $ogImage }}">
+    
+    {{-- Additional Meta Tags --}}
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ $pageUrl }}">
+    <meta name="author" content="{{ $siteName }}">
 @endsection
 
 @section('content')

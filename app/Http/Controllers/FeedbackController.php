@@ -94,8 +94,8 @@ class FeedbackController extends Controller
             return;
         }
         
-        $botToken = '8360742949:AAG-cG88L2IF4HUbpdphYjhAPXKdeVZ1bzE';
-        $chatId = '-4777602155';
+        $botToken = config('telegram.bot_token');
+        $chatId = config('telegram.chat_id');
         
         // Different messages for different form types
         $formTitles = [
