@@ -5,6 +5,17 @@ module.exports = {
         './resources/js/**/*.js',
         './public/js/**/*.js',
     ],
+    safelist: [
+        'bg-enot-light-purple',
+        'text-enot-light-purple',
+        'border-enot-light-purple',
+        'bg-enot-pink',
+        'text-enot-pink',
+        'border-enot-pink',
+        'bg-enot-dark',
+        'text-enot-dark',
+        'border-enot-dark',
+    ],
     theme: {
         extend: {
             colors: {
@@ -24,7 +35,9 @@ module.exports = {
                 'nav-gray': '#eef0f4',
                 'text-gray': '#2d3748',
                 'enot-purple': '#7470BF',
-                
+                'enot-pink': '#E75A84',
+                'enot-light-purple': '#B0A8FE',
+                'enot-dark': '#302950',
             },
             backgroundImage: {
                 'gradient-primary': 'linear-gradient(to right, #b0a8fe, #c47e93)',
@@ -37,6 +50,21 @@ module.exports = {
                 heading: ['Russo One', 'sans-serif'],
                 bold: ['Russo One', 'sans-serif'],
                 inter: ['f_inter', 'Inter', 'sans-serif'],
+            },
+            fontSize: {
+                'xs': ['0.75rem', { lineHeight: '1rem' }],
+                'sm': ['0.875rem', { lineHeight: '1.25rem' }],
+                'base': ['1rem', { lineHeight: '1.5rem' }],
+                'lg': ['1.125rem', { lineHeight: '1.75rem' }],
+                'xl': ['1.25rem', { lineHeight: '1.75rem' }],
+                '2xl': ['1.5rem', { lineHeight: '2rem' }],
+                '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+                '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+                '5xl': ['3rem', { lineHeight: '1' }],
+                '6xl': ['3.75rem', { lineHeight: '1' }],
+                '7xl': ['4.5rem', { lineHeight: '1' }],
+                '8xl': ['6rem', { lineHeight: '1' }],
+                '9xl': ['8rem', { lineHeight: '1' }],
             },
             animation: {
                 'fade-in-up': 'fadeInUp 0.6s ease-out',

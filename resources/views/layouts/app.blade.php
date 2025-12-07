@@ -31,7 +31,26 @@
 
     <style>
         body{
-            background-color: #EDEDF6 !important;
+            background-color: #F3F2FF !important;
+            background-image: url('/storage/src/ill/lines.svg') !important;
+            background-size: contain !important;
+        }
+        
+        /* Отступ для контента, чтобы не перекрывался fixed навбаром */
+        .app-container-elements {
+            padding-top:40px !important;
+        }
+        
+        @media (max-width: 1280px) {
+            .app-container-elements {
+                padding-top: 30px !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .app-container-elements {
+                padding-top: 0px !important;
+            }
         }
         
         /* Page Loader Styles */
@@ -446,7 +465,7 @@
     <div id="app">
         @include('includes.windows.feedback_form-fd')
         @include('includes.windows.success-modal')
-        <div class="app-container">
+        <div class="app-container px-0 md:px-6">
             <div class="app-container-navigator">
                 @include('includes.fixed.navigator')
             </div>

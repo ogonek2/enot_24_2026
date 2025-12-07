@@ -1,39 +1,21 @@
-<div id="navbar" class="fixed top-0 left-0 w-full py-5 transition-transform duration-300 ease-in-out" style="background-color: #eef0f4; z-index: 1000;">
-    <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between gap-5">
-            {{-- Left Section - Logo --}}
-            <div class="flex items-center gap-10">
-                <a href="/" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                    <img src="{{ asset('storage/src/logo/full_logo.svg') }}" alt="ЄНОТ 24" class="w-40 h-10">
-                </a>
+<div id="navbar" class="fixed px-6 top-0 left-0 w-full py-5 transition-transform duration-300 ease-in-out" style="z-index: 1000;">
+    <div class="container mx-auto flex-col">
+        <div class="flex items-center hidden md:flex lg:flex justify-between gap-5 mb-2">
+            <div class="items-center gap-5 hidden lg:flex">
+                <div class="text-sm text-text-gray">Ми в соціальних мережах</div>
+                <div class="flex items-center gap-2">
+                    <a href="https://instagram.com/enot24cleaner" target="_blank">
+                        <i class="fab fa-instagram text-enot-pink text-2xl"></i>
+                    </a>
+                    <a href="https://t.me/enot24ServiceBot" target="_blank">
+                        <i class="fab fa-telegram text-enot-pink text-2xl"></i>
+                    </a>
+                </div>
             </div>
-
-            {{-- Middle Section - Navigation Links (Desktop) --}}
-            <div class="hidden xl:flex items-center gap-6">
-                <nav>
-                    <ul class="flex items-center gap-5">
-                        <li>
-                            <a href="{{ route('services') }}"
-                                class="text-base leading-5 text-text-gray uppercase hover:text-nav-purple transition-colors duration-300">
-                                Послуги та ціни
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('b2b_page') }}"
-                                class="text-base leading-5 text-text-gray uppercase hover:text-nav-purple transition-colors duration-300">
-                                B2B
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('promotions') }}"
-                                class="text-base leading-5 text-text-gray uppercase hover:text-nav-purple transition-colors duration-300">
-                                Акції
-                            </a>
-                        </li>
-                        <li class="relative group">
-                            <button class="text-base leading-5 text-text-gray uppercase hover:text-nav-purple transition-colors duration-300 flex items-center gap-1">
-                                Інформація
-                                <i class="fas fa-chevron-down text-xs"></i>
+                        <div class="relative group hidden md:block lg:block">
+                            <button class="text-base leading-5 text-text-gray hover:text-nav-purple transition-colors duration-300 flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot text-enot-pink text-lg"></i>
+                                <span>Адреси та графік роботи</span>
                             </button>
                             {{-- Information Dropdown --}}
                             <div class="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
@@ -84,48 +66,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </li>
-                        <li class="relative">
-                            <div class="relative">
-                                <input 
-                                    type="text" 
-                                    id="navbar-search" 
-                                    placeholder="Пошук послуг..." 
-                                    class="w-56 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nav-purple focus:border-transparent transition-all duration-200 text-sm bg-white"
-                                    autocomplete="off">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-search text-gray-400"></i>
-                                </div>
-                                <button 
-                                    id="navbar-clear-search"
-                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                            {{-- Search Results Dropdown --}}
-                            <div id="navbar-search-results" class="hidden absolute top-full left-0 mt-2 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-96 overflow-y-auto">
-                                <div id="navbar-search-results-list" class="p-2"></div>
-                                <div id="navbar-search-loading" class="hidden p-4 text-center text-gray-500">
-                                    <i class="fas fa-spinner fa-spin"></i> Пошук...
-                                </div>
-                                <div id="navbar-search-no-results" class="hidden p-4 text-center text-gray-500">
-                                    Нічого не знайдено
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-
-            {{-- Right Section - Contact and CTA (Desktop) --}}
-            <div class="hidden xl:flex items-center gap-3">
-                {{-- Cart Icon Button - will be rendered by Vue component --}}
-                <div id="cart-button-desktop"></div>
-                
+                        </div>
+            <div class="flex items-center gap-2">
                 {{-- Bots --}}
                 <div class="relative group">
-                    <button class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-gray-200 transition-colors duration-200">
-                        <i class="fa-regular fa-comment-dots text-black text-2xl"></i>
+                    <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors duration-200">
+                        <i class="fa-regular fa-comment-dots text-enot-pink text-2xl"></i>
                     </button>
                     {{-- Bots Dropdown --}}
                     <div class="absolute top-full right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
@@ -181,13 +127,12 @@
                         </div>
                     </div>
                 </div>
-                
+                {{-- Cart Icon Button - will be rendered by Vue component --}}
+                <div id="cart-button-desktop"></div>
                 {{-- Contacts Dropdown --}}
                 <div class="relative group">
                     <a href="tel:0678872233" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                        <div class="w-8 h-8 bg-nav-purple rounded-lg flex items-center justify-center">
-                            <i class="fa-regular fa-circle text-white text-lg"></i>
-                        </div>
+                        <i class="fa-solid fa-caret-down text-enot-pink text-lg"></i>
                         <p class="font-inter font-semibold text-base text-text-gray">067 887 22 33</p>
                     </a>
                     {{-- Contacts Dropdown --}}
@@ -223,17 +168,94 @@
                         </div>
                     </div>
                 </div>
-                
+            </div>
+        </div>
+        <div class="flex items-center justify-between gap-5">
+            {{-- Left Section - Logo --}}
+            <div class="flex items-center gap-10">
+                <a href="/" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <img src="{{ asset('storage/src/logo/full_logo.svg') }}" alt="ЄНОТ 24" class="w-40 h-10">
+                </a>
+            </div>
+
+            {{-- Middle Section - Navigation Links (Desktop) --}}
+            <div class="hidden xl:flex items-center gap-6">
+                <nav>
+                    <ul class="flex items-center gap-5">
+                        <li>
+                            <a href="{{ route('services') }}"
+                                class="text-base leading-5 text-text-gray hover:text-nav-purple transition-colors duration-300">
+                                Послуги та ціни
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('b2b_page') }}"
+                                class="text-base leading-5 text-text-gray hover:text-nav-purple transition-colors duration-300">
+                                B2B
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('promotions') }}"
+                                class="text-base leading-5 text-text-gray hover:text-nav-purple transition-colors duration-300">
+                                Акції
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('delivery_page') }}"
+                                class="text-base leading-5 text-text-gray hover:text-nav-purple transition-colors duration-300">
+                                Доставка та кур'єр
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contacts_page') }}"
+                                class="text-base leading-5 text-text-gray hover:text-nav-purple transition-colors duration-300">
+                                Контакти
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            {{-- Right Section - Contact and CTA (Desktop) --}}
+            <div class="hidden xl:flex items-center gap-3">
+                <div class="relative">
+                            <div class="relative">
+                                <input 
+                                    type="text" 
+                                    id="navbar-search" 
+                                    placeholder="Пошук послуг..." 
+                                    class="w-56 pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-nav-purple focus:border-transparent transition-all duration-200 text-sm bg-white"
+                                    autocomplete="off">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                                <button 
+                                    id="navbar-clear-search"
+                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 hidden">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            {{-- Search Results Dropdown --}}
+                            <div id="navbar-search-results" class="hidden absolute top-full left-0 mt-2 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-96 overflow-y-auto">
+                                <div id="navbar-search-results-list" class="p-2"></div>
+                                <div id="navbar-search-loading" class="hidden p-4 text-center text-gray-500">
+                                    <i class="fas fa-spinner fa-spin"></i> Пошук...
+                                </div>
+                                <div id="navbar-search-no-results" class="hidden p-4 text-center text-gray-500">
+                                    Нічого не знайдено
+                                </div>
+                            </div>
+                </div>
+                {{-- Consultation Button --}}
                 <button
-                    class="modal_fade py-4 px-6 text-white rounded-2xl font-inter font-semibold text-base no-underline transition-all duration-300 hover:opacity-90"
-                    style="background-color: #7470BF;"
+                    class="modal_fade bg-enot-pink p-2 px-6 rounded-full text-white"
                     data-modal="feedbackmd">
                     Консультація
                 </button>
             </div>
 
             {{-- Mobile Burger Menu --}}
-            <button id="mobile-menu-toggle" class="xl:hidden burger-btn flex flex-col items-center justify-center gap-1.5 w-10 h-10 relative z-[1003]" 
+            <button id="mobile-menu-toggle" class="xl:hidden burger-btn flex flex-col items-center justify-center gap-1.5 w-10 h-10 relative" 
                 aria-label="Toggle menu">
                 <span class="burger-line burger-line-1 w-6 h-0.5 bg-text-gray transition-all duration-300 transform origin-center"></span>
                 <span class="burger-line burger-line-2 w-6 h-0.5 bg-text-gray transition-all duration-300"></span>
@@ -246,7 +268,7 @@
     <div id="mobile-menu-overlay" class="mobile-menu-overlay fixed inset-0 bg-black/50 z-[1001] hidden xl:hidden opacity-0 transition-opacity duration-300"></div>
 
     {{-- Mobile Menu - Outside navbar container --}}
-    <div id="mobile-menu" class="mobile-menu fixed top-20 left-0 right-0 bottom-0 bg-white z-[1002] hidden xl:hidden transform translate-x-full transition-transform duration-300 ease-out overflow-y-auto">
+    <div id="mobile-menu" class="mobile-menu fixed top-0 left-0 right-0 bottom-0 bg-white z-[1002] hidden xl:hidden transform translate-x-full transition-transform duration-300 ease-out overflow-y-auto">
             <div class="p-4">
                 @php
                     try {
@@ -882,8 +904,17 @@
                         // Scrolling up - show navbar
                         if (!isNavbarVisible) {
                             navbar.style.transform = 'translateY(0)';
+                            navbar.style.backgroundColor = '#ffffff'; // Белый фон при появлении
                             isNavbarVisible = true;
                         }
+                    }
+                    
+                    // Если навигатор виден и мы не в самом верху - добавляем белый фон
+                    if (isNavbarVisible && scrollTop > 0) {
+                        navbar.style.backgroundColor = '#ffffff';
+                    } else if (scrollTop <= 0) {
+                        // В самом верху страницы - убираем фон (или возвращаем исходный)
+                        navbar.style.backgroundColor = '';
                     }
                     
                     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
@@ -903,9 +934,32 @@
     window.addEventListener('scroll', () => {
         if (window.pageYOffset <= 0) {
             navbar.style.transform = 'translateY(0)';
+            navbar.style.backgroundColor = ''; // Убираем белый фон в самом верху
             isNavbarVisible = true;
+        } else if (isNavbarVisible) {
+            // Если навигатор виден и мы не в самом верху - добавляем белый фон
+            navbar.style.backgroundColor = '#ffffff';
         }
     }, { passive: true });
+
+    // Устанавливаем отступ для контента в зависимости от высоты навбара
+    function updateContentPadding() {
+        const navbar = document.getElementById('navbar');
+        const content = document.querySelector('.app-container-elements');
+        
+        if (navbar && content) {
+            const navbarHeight = navbar.offsetHeight;
+            content.style.paddingTop = (navbarHeight + 20) + 'px';
+        }
+    }
+
+    // Вызываем при загрузке и изменении размера окна
+    updateContentPadding();
+    window.addEventListener('resize', updateContentPadding);
+    
+    // Также обновляем после небольшой задержки, чтобы убедиться что все загружено
+    setTimeout(updateContentPadding, 100);
+    setTimeout(updateContentPadding, 500);
 })();
 </script>
 
@@ -1130,13 +1184,12 @@ if (document.readyState === 'loading') {
 #mobile-menu {
     display: none !important;
     position: fixed !important;
-    top: 80px !important;
+    top:0;
     left: 0 !important;
     right: 0 !important;
     bottom: 0 !important;
     width: 100vw !important;
-    height: calc(100vh - 80px) !important;
-    max-height: calc(100vh - 80px) !important;
+    height: 100vh;
     background: white !important;
     z-index: 1002 !important;
     transform: translateX(100%) !important;

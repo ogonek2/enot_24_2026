@@ -2,10 +2,10 @@
 <div class="py-10 relative">
     {{-- Background Elements --}}
     <div class="absolute top-0 left-0 w-full h-full">
-        <div class="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+        <div class="absolute top-20 left-10 w-32 h-32 bg-enot-light-purple/5 rounded-full blur-3xl"></div>
         <div class="absolute bottom-20 right-10 w-40 h-40 bg-secondary/5 rounded-full blur-3xl"></div>
         <div
-            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-primary/3 rounded-full blur-3xl">
+            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-enot-light-purple/3 rounded-full blur-3xl">
         </div>
     </div>
     
@@ -13,7 +13,7 @@
         {{-- Header --}}
         <div class="text-center mb-8">
             <div class="flex items-center justify-center mb-2">
-                <h2 class="text-4xl font-sans text-primary">Ціни</h2>
+                <h2 class="text-4xl font-sans text-enot-pink">Ціни</h2>
             </div>
             <p class="text-lg font-sans text-gray-600">
                 Прозорі та доступні ціни на всі наші послуги
@@ -27,7 +27,7 @@
                 <div class="mb-4">
                     <div class="relative">
                             <input type="text" id="mobile-service-search" placeholder=""
-                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-sm">
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-enot-light-purple focus:border-transparent transition-all duration-200 text-sm">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
@@ -50,7 +50,7 @@
 
                 <div class="relative px-2">
                     <button id="mobile-category-selector"
-                        class="w-full bg-white border-2 border-gray-300 rounded-xl px-6 py-4 text-left font-semibold text-gray-700 hover:border-primary focus:border-primary focus:outline-none transition-all duration-200 flex items-center justify-between">
+                        class="w-full bg-white border-2 border-gray-300 rounded-xl px-6 py-4 text-left font-semibold text-gray-700 hover:border-enot-light-purple focus:border-enot-light-purple focus:outline-none transition-all duration-200 flex items-center justify-between">
                         <span id="mobile-category-text">Оберіть категорію</span>
                         <i class="fas fa-chevron-down transition-transform duration-200" id="mobile-category-icon"></i>
                     </button>
@@ -61,7 +61,7 @@
                         <div class="py-2">
                             @foreach ($categories->filter(fn($category) => $category->services->isNotEmpty()) as $index => $category)
                                     <button
-                                        class="mobile-category-option w-full text-left px-6 py-3 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-primary text-white' : '' }}"
+                                        class="mobile-category-option w-full text-left px-6 py-3 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-enot-light-purple text-white' : '' }}"
                                         data-category="{{ $category->href }}" data-name="{{ $category->name }}">
                                         <div class="flex items-center space-x-2">
                                             <img src="{{ asset('storage/' . $category->category_img) }}" alt="{{ $category->name }}"
@@ -80,7 +80,7 @@
             {{-- Mobile Search Results Container --}}
             <div id="mobile-search-results-container" class="mb-6 lg:hidden hidden">
                     <div
-                        class="bg-gradient-to-r from-accent/30 to-primary/20 px-4 py-4 border border-gray-200 rounded-xl shadow-lg">
+                        class="bg-gradient-to-r from-accent/30 to-enot-light-purple/20 px-4 py-4 border border-gray-200 rounded-xl shadow-lg">
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
                             <h3 class="text-xl font-bold text-gray-800">Результати пошуку</h3>
@@ -89,12 +89,12 @@
                         </div>
                         <div class="flex items-center space-x-2">
                                 <button id="mobile-reset-search-btn"
-                                    class="bg-white text-gray-600 hover:text-primary hover:bg-white/80 px-3 py-2 rounded-lg border border-gray-300 transition-all duration-200 flex items-center space-x-1 text-sm">
+                                    class="bg-white text-gray-600 hover:text-enot-light-purple hover:bg-white/80 px-3 py-2 rounded-lg border border-gray-300 transition-all duration-200 flex items-center space-x-1 text-sm">
                                 <i class="fas fa-times"></i>
                                 <span class="hidden sm:inline">Скинути</span>
                             </button>
-                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                                <i class="fas fa-search text-primary text-lg"></i>
+                            <div class="w-10 h-10 bg-enot-light-purple/10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-search text-enot-light-purple text-lg"></i>
                             </div>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                             <div class="mb-6">
                                 <div class="relative">
                                         <input type="text" id="service-search" placeholder=""
-                                           class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-sm">
+                                           class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-enot-light-purple focus:border-transparent transition-all duration-200 text-sm">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i class="fas fa-search text-gray-400"></i>
                                     </div>
@@ -137,14 +137,14 @@
                             </div>
 
                             <h3 class="text-lg font-sans text-gray-800 mb-4 flex items-center">
-                                <i class="fas fa-list mr-2 text-primary"></i>
+                                <i class="fas fa-list mr-2 text-enot-light-purple"></i>
                                 Категорії послуг
                             </h3>
                                 <nav
                                     class="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                                 @foreach ($categories->filter(fn($category) => $category->services->isNotEmpty()) as $index => $category)
                                         <button
-                                            class="price-tab-btn w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-300 {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-primary shadow-md text-black' : 'hover:bg-white hover:shadow-sm text-black' }}"
+                                            class="price-tab-btn w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-300 {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-enot-light-purple shadow-md text-black' : 'hover:bg-white hover:shadow-sm text-black' }}"
                                         data-category="{{ $category->href }}">
                                         <div class="flex items-center justify-between">
                                                 <div class="flex items-center space-x-2">
@@ -168,7 +168,7 @@
                         <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
                             {{-- Search Results Container --}}
                             <div id="search-results-container" class="hidden">
-                                <div class="bg-gradient-to-r from-accent/30 to-primary/20 px-8 py-6 border-b border-gray-200">
+                                <div class="bg-gradient-to-r from-accent/30 to-enot-light-purple/20 px-8 py-6 border-b border-gray-200">
                                     <div class="flex items-center justify-between">
                                         <div>
                                             <h3 class="text-2xl font-bold text-gray-800">Результати пошуку</h3>
@@ -177,12 +177,12 @@
                                         </div>
                                         <div class="flex items-center space-x-4">
                                             <button id="reset-search-btn"
-                                                class="bg-white text-gray-600 hover:text-primary hover:bg-white/80 px-4 py-2 rounded-lg border border-gray-300 transition-all duration-200 flex items-center space-x-2">
+                                                class="bg-white text-gray-600 hover:text-enot-light-purple hover:bg-white/80 px-4 py-2 rounded-lg border border-gray-300 transition-all duration-200 flex items-center space-x-2">
                                                 <i class="fas fa-times"></i>
                                                 <span>Скинути пошук</span>
                                             </button>
-                                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                                                <i class="fas fa-search text-primary text-xl"></i>
+                                            <div class="w-12 h-12 bg-enot-light-purple/10 rounded-full flex items-center justify-center">
+                                                <i class="fas fa-search text-enot-light-purple text-xl"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -205,8 +205,8 @@
                                                     <h3 class="text-2xl font-bold text-gray-800">{{ $category->name }}</h3>
                                                     <p class="text-gray-600 mt-1">{{ $category->services->count() }} послуг</p>
                                                 </div>
-                                                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                                                    <i class="fas fa-list text-primary text-xl"></i>
+                                                <div class="w-12 h-12 bg-enot-light-purple/10 rounded-full flex items-center justify-center">
+                                                    <i class="fas fa-list text-enot-light-purple text-xl"></i>
                                                 </div>
                                             </div>
                                         </div>
@@ -225,17 +225,17 @@
                                                                 <div class="flex items-center justify-between">
                                                                     <div class="flex items-center space-x-4">
                                                                         <div
-                                                                            class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-200">
+                                                                            class="w-10 h-10 bg-enot-light-purple/10 rounded-lg flex items-center justify-center group-hover:bg-enot-light-purple/20 transition-colors duration-200">
                                                                             <span
-                                                                                class="text-primary font-semibold text-sm leading-none flex items-center justify-center w-full h-full">{{ $serviceIndex + 1 }}</span>
+                                                                                class="text-enot-light-purple font-semibold text-sm leading-none flex items-center justify-center w-full h-full">{{ $serviceIndex + 1 }}</span>
                                                                         </div>
                                                                         <div>
                                                                             <a href="{{ route('service_page', $service->transform_url ?? $service->href) }}" 
                                                                                class="block">
                                                                                 <h4
-                                                                                    class="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors duration-200 cursor-pointer">
+                                                                                    class="text-sm font-semibold text-gray-800 group-hover:text-enot-light-purple transition-colors duration-200 cursor-pointer">
                                                                                     {{ $service->name }}
-                                                                                    @if($service->marker !== null)<br><span class="p-2 gradient-button from-primary via-secondary to-primary rounded-3xl font-sans text-sm text-white block my-2" style="width: fit-content;">{{ $service->marker }}</span> @endif
+                                                                                    @if($service->marker !== null)<br><span class="p-2 bg-enot-pink rounded-3xl font-sans text-sm text-white block my-2" style="width: fit-content;">{{ $service->marker }}</span> @endif
                                                                                 </h4>
                                                                                 <p class="text-sm text-gray-500">Професійна обробка</p>
                                                                             </a>
@@ -263,7 +263,7 @@
                                                                         @if ($hasPrice)
                                                                             @if ($hasDiscount)
                                                                                 <div class="space-y-1">
-                                                                                    <div class="text-lg font-bold text-primary">
+                                                                                    <div class="text-lg font-bold text-enot-light-purple">
                                                                                         {{ number_format($discountedPrice, 0) }}₴</div>
                                                                                     <div class="text-sm text-gray-400 line-through">
                                                                                         {{ number_format($originalPrice, 0) }}₴</div>
@@ -273,7 +273,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             @else
-                                                                                <div class="text-lg font-bold text-primary">{{ number_format($originalPrice, 0) }}₴@if($service->marker !== null)<br><span class="text-right font-sans text-sm text-secondary">Акційна ціна!</span> @endif</div>
+                                                                                <div class="text-lg font-bold text-enot-light-purple">{{ number_format($originalPrice, 0) }}₴@if($service->marker !== null)<br><span class="text-right font-sans text-sm text-secondary">Акційна ціна!</span> @endif</div>
                                                                             @endif
                                                                             <div class="text-xs text-gray-500">за одиницю</div>
                                                                         @else
@@ -317,7 +317,7 @@
                             {{-- CTA Section for Desktop --}}
                             <div class="mt-12">
                                 <div
-                                    class="gradient-button from-primary via-secondary to-primary rounded-3xl p-12 shadow-2xl relative overflow-hidden">
+                                    class="bg-enot-light-purple rounded-2xl p-12 shadow-2xl relative overflow-hidden">
                                     <div class="relative z-10">
                                         <div
                                             class="inline-flex items-center w-16 h-16 justify-center bg-white/20 rounded-2xl mb-6">
@@ -330,14 +330,14 @@
                                         
                                         <div class="flex flex-col sm:flex-row gap-6">
                                             <button
-                                                class="group bg-white text-custom-purple hover:bg-gray-100 px-10 py-5 rounded-2xl font-bold text-lg transition-all duration-500 transform hover:scale-105 shadow-xl hover:shadow-2xl modal_fade"
+                                                class="group bg-white text-black hover:bg-gray-100 px-10 py-2 rounded-full font-bold text-lg transition-all duration-500 transform hover:scale-105 shadow-xl hover:shadow-2xl modal_fade"
                                                 data-modal="feedbackmd">
                                                 <i
                                                     class="fas fa-phone mr-3 group-hover:rotate-12 transition-transform duration-300"></i>
                                                 Замовити зараз
                                             </button>
                                             <a href="{{ route('courier_page') }}"
-                                                class="group border-2 border-white text-white hover:bg-white hover:text-primary px-10 py-5 rounded-2xl font-bold text-lg transition-all duration-500 transform hover:scale-105">
+                                                class="group border-2 border-white text-white hover:bg-white hover:text-enot-light-purple px-10 py-2 rounded-full font-bold text-lg transition-all duration-500 transform hover:scale-105">
                                                 <i
                                                     class="fas fa-truck mr-3 group-hover:translate-x-1 transition-transform duration-300"></i>
                                                 Викликати кур'єра
@@ -367,7 +367,7 @@
                 <div class="px-4 py-3 border-b border-gray-100">
                     <div class="relative">
                     <input type="text" id="sticky-mobile-search" placeholder=""
-                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-sm">
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-enot-light-purple focus:border-transparent transition-all duration-200 text-sm">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                                                                 </div>
@@ -393,7 +393,7 @@
                         {{-- Category Selector --}}
                         <div class="flex-1">
                             <button id="sticky-mobile-category-selector"
-                                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-left font-medium text-gray-700 hover:border-primary focus:border-primary focus:outline-none transition-all duration-200 flex items-center justify-between">
+                                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-left font-medium text-gray-700 hover:border-enot-light-purple focus:border-enot-light-purple focus:outline-none transition-all duration-200 flex items-center justify-between">
                                 <span id="sticky-mobile-category-text">Оберіть категорію</span>
                             <i class="fas fa-chevron-down transition-transform duration-200"
                                 id="sticky-mobile-category-icon"></i>
@@ -408,7 +408,7 @@
                                 <i class="fas fa-undo text-sm"></i>
                             </button>
                         <button id="sticky-mobile-scroll-top"
-                            class="bg-primary hover:bg-primary/90 text-white p-3 rounded-xl transition-all duration-200"
+                            class="bg-enot-light-purple hover:bg-enot-light-purple/90 text-white p-3 rounded-xl transition-all duration-200"
                             title="На початок">
                                 <i class="fas fa-arrow-up text-sm"></i>
                             </button>
@@ -421,7 +421,7 @@
                         <div class="py-2 max-h-60 overflow-y-auto">
                             @foreach ($categories->filter(fn($category) => $category->services->isNotEmpty()) as $index => $category)
                             <button
-                                class="sticky-mobile-category-option w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-primary text-white' : '' }}"
+                                class="sticky-mobile-category-option w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-enot-light-purple text-white' : '' }}"
                                 data-category="{{ $category->href }}" data-name="{{ $category->name }}">
                                     <span class="font-medium">{{ $category->name }}</span>
                                 <span
@@ -512,13 +512,13 @@
 
         // Update desktop buttons
         tabButtons.forEach(btn => {
-            btn.classList.remove('bg-primary', 'text-white', 'shadow-md');
+            btn.classList.remove('bg-enot-light-purple', 'text-white', 'shadow-md');
             btn.classList.add('text-gray-700');
         });
 
         const activeButtons = document.querySelectorAll(`.price-tab-btn[data-category="${targetCategory}"]`);
         activeButtons.forEach(activeButton => {
-            activeButton.classList.add('bg-primary', 'text-white', 'shadow-md', 'hover:text-black');
+            activeButton.classList.add('bg-enot-light-purple', 'text-white', 'shadow-md', 'hover:text-black');
             activeButton.classList.remove('text-gray-700');
         });
 
@@ -581,14 +581,14 @@
             // Reset group buttons
             const categoryGroupButtons = document.querySelectorAll(`.group-tab-btn[data-category="${category}"]`);
             categoryGroupButtons.forEach(btn => {
-                btn.classList.remove('bg-primary', 'text-white', 'shadow-sm');
+                btn.classList.remove('bg-enot-light-purple', 'text-white', 'shadow-sm');
                 btn.classList.add('text-gray-700');
             });
             
             // Activate "all" button
             const allButton = document.querySelector(`.group-tab-btn[data-category="${category}"][data-group="all"]`);
             if (allButton) {
-                allButton.classList.add('bg-primary', 'text-white', 'shadow-sm');
+                allButton.classList.add('bg-enot-light-purple', 'text-white', 'shadow-sm');
                 allButton.classList.remove('text-gray-700');
             }
 
@@ -636,7 +636,7 @@
         console.log('Found category group buttons:', categoryGroupButtons.length);
         
         categoryGroupButtons.forEach(btn => {
-            btn.classList.remove('bg-primary', 'text-white', 'shadow-sm');
+            btn.classList.remove('bg-enot-light-purple', 'text-white', 'shadow-sm');
             btn.classList.add('text-gray-700');
         });
 
@@ -644,7 +644,7 @@
         console.log('Active button found:', activeButton);
         
         if (activeButton) {
-            activeButton.classList.add('bg-primary', 'text-white', 'shadow-sm');
+            activeButton.classList.add('bg-enot-light-purple', 'text-white', 'shadow-sm');
             activeButton.classList.remove('text-gray-700');
         }
 
@@ -770,7 +770,7 @@
         if (hasDiscount) {
             return `
                 <div class="space-y-1">
-                    <div class="text-lg font-bold text-primary">${Math.round(discountedPrice)}₴</div>
+                    <div class="text-lg font-bold text-enot-light-purple">${Math.round(discountedPrice)}₴</div>
                     <div class="text-sm text-gray-400 line-through">${originalPrice}₴</div>
                     <div class="text-xs text-green-600 font-semibold">
                         -${discountPercent}% знижка
@@ -778,7 +778,7 @@
                 </div>
             `;
         } else {
-            return `<div class="text-lg font-bold text-primary">${originalPrice}₴</div>`;
+            return `<div class="text-lg font-bold text-enot-light-purple">${originalPrice}₴</div>`;
         }
     }
 
@@ -911,12 +911,12 @@
                 <div class="service-item px-8 py-6 hover:bg-gray-50 transition-colors duration-200 group">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
-                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-200">
-                                <span class="text-primary font-semibold text-sm leading-none flex items-center justify-center w-full h-full">${index + 1}</span>
+                            <div class="w-10 h-10 bg-enot-light-purple/10 rounded-lg flex items-center justify-center group-hover:bg-enot-light-purple/20 transition-colors duration-200">
+                                <span class="text-enot-light-purple font-semibold text-sm leading-none flex items-center justify-center w-full h-full">${index + 1}</span>
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center space-x-2 mb-1">
-                                    <h4 class="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors duration-200">
+                                    <h4 class="text-sm font-semibold text-gray-800 group-hover:text-enot-light-purple transition-colors duration-200">
                                         ${service.name}</h4>
                                     <span class="text-xs ${relevanceColor} bg-gray-100 px-2 py-1 rounded-full">
                                         ${relevanceText} (${Math.round(relevanceScore)}%)
@@ -1302,12 +1302,12 @@
         }
         
         // Reset category and group to current selection
-        const activeTab = document.querySelector('.price-tab-btn.bg-primary');
+        const activeTab = document.querySelector('.price-tab-btn.bg-enot-light-purple');
         if (activeTab) {
             currentCategory = activeTab.getAttribute('data-category');
         }
         
-        const activeGroupBtn = document.querySelector('.group-tab-btn.bg-primary');
+        const activeGroupBtn = document.querySelector('.group-tab-btn.bg-enot-light-purple');
         if (activeGroupBtn) {
             currentGroup = activeGroupBtn.getAttribute('data-group') || 'all';
         }
@@ -1549,8 +1549,8 @@
 
     // Initialize first tab
     if (tabButtons.length > 0 && categories.length > 0) {
-        // Находим активную кнопку (с классом bg-primary)
-        const activeButton = document.querySelector('.price-tab-btn.bg-primary');
+        // Находим активную кнопку (с классом bg-enot-light-purple)
+        const activeButton = document.querySelector('.price-tab-btn.bg-enot-light-purple');
         
         if (activeButton) {
             const activeCategory = activeButton.getAttribute('data-category');

@@ -6,6 +6,9 @@
 
 require('./bootstrap');
 
+// Подключаем скрипт интерактивного круга в hero-секции
+require('./hero-circle');
+
 // Используем полную версию Vue с компилятором шаблонов (CommonJS версия для require)
 // vue.js - это полная версия с компилятором шаблонов для CommonJS
 window.Vue = require('vue/dist/vue.js');
@@ -94,6 +97,26 @@ function mountVueComponents() {
                 console.log('Cart component mounted');
             }
         });
+        
+        // Монтируем слайдер отделений
+        const branchesSliderApp = document.getElementById('branches-slider-app');
+        if (branchesSliderApp && !branchesSliderApp.dataset.vueMounted) {
+            branchesSliderApp.dataset.vueMounted = 'true';
+            const branchesData = branchesSliderApp.dataset.branches 
+                ? JSON.parse(branchesSliderApp.dataset.branches) 
+                : [];
+            const initialCity = branchesSliderApp.dataset.initialCity || 'Київ';
+            
+            new Vue({
+                el: branchesSliderApp,
+                template: '<branches-slider :branches="branches" :initial-city="initialCity"></branches-slider>',
+                data: {
+                    branches: branchesData,
+                    initialCity: initialCity
+                }
+            });
+            console.log('Branches slider component mounted');
+        }
         
         // Монтируем кнопки добавления в корзину через data-атрибуты
         const addToCartWrappers = document.querySelectorAll('[data-vue-component="add-to-cart-button"]');

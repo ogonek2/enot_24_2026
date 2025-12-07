@@ -11,6 +11,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class PromotionResource extends Resource
 {
@@ -64,6 +65,13 @@ class PromotionResource extends Resource
                             ->maxLength(255)
                             ->helperText('Назва акції для відправки в Telegram')
                             ->nullable(),
+                        
+                        Forms\Components\TextInput::make('sort_order')
+                            ->label('Порядок сортування')
+                            ->numeric()
+                            ->default(0)
+                            ->helperText('Чим менше число, тим вище акція в списку')
+                            ->required(),
                     ])
                     ->columns(2),
                 
@@ -85,7 +93,7 @@ class PromotionResource extends Resource
                             ->columnSpanFull(),
                     ]),
                 
-                Forms\Components\Section::make('Зображення')
+                Forms\Components\Section::make('Зображення та колір')
                     ->schema([
                         Forms\Components\FileUpload::make('banner')
                             ->label('Банер акції')
@@ -94,8 +102,23 @@ class PromotionResource extends Resource
                             ->disk('public')
                             ->visibility('public')
                             ->nullable()
-                            ->helperText('Зображення для відображення акції'),
-                    ]),
+                            ->helperText('Зображення для відображення акції')
+                            ->getUploadedFileUrlUsing(function ($file) {
+                                if (!$file) {
+                                    return null;
+                                }
+                                // Формируем правильный URL: storage/src/stock_images/filename.png
+                                return asset('storage/' . $file);
+                            }),
+                        
+                        Forms\Components\TextInput::make('color')
+                            ->label('Колір акції')
+                            ->type('color')
+                            ->helperText('Колір фону для круглої карточки акції на головній сторінці')
+                            ->default('#fdd9e5')
+                            ->nullable(),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -122,6 +145,11 @@ class PromotionResource extends Resource
                         return asset('storage/' . $record->banner);
                     }),
                 
+                Tables\Columns\TextColumn::make('sort_order')
+                    ->label('Порядок')
+                    ->sortable()
+                    ->default(0),
+                
                 Tables\Columns\TextColumn::make('name')
                     ->label('Назва')
                     ->searchable()
@@ -131,6 +159,18 @@ class PromotionResource extends Resource
                 Tables\Columns\TextColumn::make('discount_action')
                     ->label('Дія знижки')
                     ->searchable()
+                    ->sortable(),
+                
+                Tables\Columns\TextColumn::make('color')
+                    ->label('Колір')
+                    ->formatStateUsing(function ($state) {
+                        if (!$state) {
+                            return '—';
+                        }
+                        return new \Illuminate\Support\HtmlString(
+                            '<div style="display: inline-block; width: 20px; height: 20px; background-color: ' . $state . '; border: 1px solid #ccc; border-radius: 3px; vertical-align: middle;"></div> ' . $state
+                        );
+                    })
                     ->sortable(),
                 
                 Tables\Columns\TextColumn::make('locations')
@@ -173,7 +213,7 @@ class PromotionResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort('sort_order', 'asc');
     }
 
     public static function getRelations(): array

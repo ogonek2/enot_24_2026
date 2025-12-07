@@ -104,6 +104,35 @@
                     {{-- White Content Box --}}
                     <div class="bg-white flex align-stretch h-full rounded-2xl py-6 px-8 relative min-h-96 overflow-hidden">
                         <div class="h-100 flex flex-col justify-between gap-2 relative" style="z-index: 100;">
+                            
+                            <div class="py-4 mb-6">
+                                {{-- Main Title --}}
+                                <div>
+                                    <p class="text-lg text-black font-medium leading-tight">
+                                        #найякісніша_хімчистка_столиці
+                                    </p>
+                                    <h1 class="text-4xl md:text-8xl lg:text-8xl uppercase text-enot-pink font-bold leading-tight">
+                                        <span class="text-enot-purple"></span>хімчистка</span><br>одягу
+                                    </h1>
+                                    <p class="text-sm md:text-2xl uppercase text-black font-bold py-3">
+                                        стильно, якісно, та з<br>увагою до деталей
+                                    </p>
+                                </div>
+
+                                {{-- CTA Buttons --}}
+                                <div class="flex flex-col sm:flex-row gap-3 sm:gap-2">
+                                    <a href="{{ route('services') }}">
+                                        <button class="text-white text-sm bg-enot-pink p-4 border border-enot-pink rounded-full">
+                                            Послуги та ціни
+                                        </button>
+                                    </a>
+                                    <button
+                                        class="text-black text-sm border border-black rounded-full p-4 modal_fade"
+                                        data-modal="feedbackmd">
+                                        Замовити хімчистку
+                                    </button>
+                                </div>
+                            </div>
                             <div>
                                 <ul class="flex items-center gap-2">
                                     <li>
@@ -118,40 +147,15 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="space-y-6">
-                                {{-- Main Title --}}
-                                <div>
-                                    <h1 class="text-4xl font-sans leading-tight text-gray-900" style="color: #111827;">
-                                        <b>хімчистка</b> одягу
-                                    </h1>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-6xl font-bold leading-tight text-primary">
-                                            ЄНОТ
-                                        </span>
-                                        <span class="text-4xl py-2 px-4 bg-primary text-white rounded-full">
-                                            24
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {{-- CTA Buttons --}}
-                                <div class="flex flex-col sm:flex-row gap-3 sm:gap-2">
-                                    <button
-                                        class="bg-gradient-primary text-white px-4 sm:px-6 lg:px-8 py-4 rounded-full font-sans text-sm sm:text-base lg:text-lg transition-all duration-300 shadow-lg modal_fade"
-                                        data-modal="feedbackmd">
-                                        <i class="fas fa-cart-plus mr-2"></i>
-                                        Замовити хімчистку
-                                    </button>
-                                    <a href="{{ route('services') }}"
-                                        class="text-custom-purple text-center border-2 border-custom-purple px-4 sm:px-6 lg:px-8 py-3 sm:py-4 rounded-full font-sans text-sm sm:text-base lg:text-lg transition-all duration-300 shadow-lg hover:bg-custom-purple hover:text-white">
-                                        <i class="fas fa-list mr-2"></i>
-                                        Послуги та ціни
-                                    </a>
-                                </div>
-                            </div>
                         </div>
+                        
                         <div class="absolute bottom-0 top-0 right-[0%] w-100 h-100 hidden lg:block" style="z-index: 10;">
-                            <img src="{{ asset('storage/src/banner_lines.svg') }}" alt="enot 24 banner lines" class="w-100 h-full">
+                            <img src="{{ asset('storage/src/ill/illustration.svg') }}" alt="enot 24 banner lines" class="w-100 h-full">
+                        </div>
+                        
+                        {{-- Interactive Pink Circle --}}
+                        <div id="hero-interactive-circle" class="hero-interactive-circle hidden lg:flex" data-modal="feedbackmd">
+                            <span class="hero-circle-text">Замовити хімчистку</span>
                         </div>
                     </div>
                 </div>
@@ -164,11 +168,14 @@
     {{-- Promotions Slider --}}
     @include('includes.elements.promotions-slider')
 
-    {{-- Services Navigation --}}
-    <!-- @include('includes.elements.header-2-box') -->
-
     {{-- Price Section --}}
     @include('includes.elements.price-box')
+
+    {{-- Branches Slider --}}
+    @include('includes.elements.branches-slider')
+
+    {{-- Services Navigation --}}
+    <!-- @include('includes.elements.header-2-box') -->
 
     {{-- Consultation Section --}}
     @include('includes.elements.consultation')
@@ -184,14 +191,14 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/scripts/price_slide.js') }}"></script>
     <script>
         // Page-specific animations
-        $(document).ready(function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Add floating animation to benefits
-            $('.grid.grid-cols-2.lg\\:grid-cols-4 > div').each(function (index) {
-                $(this).css('animation-delay', (index * 0.2) + 's');
-                $(this).addClass('animate-fade-in-up');
+            const benefitItems = document.querySelectorAll('.grid.grid-cols-2.lg\\:grid-cols-4 > div');
+            benefitItems.forEach(function(item, index) {
+                item.style.animationDelay = (index * 0.2) + 's';
+                item.classList.add('animate-fade-in-up');
             });
         });
     </script>

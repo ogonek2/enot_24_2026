@@ -33,7 +33,70 @@
     .bg-consultation-btn {
         background-color: #7470BF !important;
     }
+}
+
+@layer utilities {
+    /* Дополнительные размеры шрифтов для гарантированной доступности */
+    .text-7xl {
+        font-size: 4.5rem !important;
+        line-height: 1 !important;
+    }
     
+    .text-8xl {
+        font-size: 6rem !important;
+        line-height: 1 !important;
+    }
+    
+    /* Custom brand colors - Text classes */
+    .text-enot-pink {
+        color: #E75A84 !important;
+    }
+    
+    .text-enot-light-purple {
+        color: #B0A8FE !important;
+    }
+    
+    .text-enot-dark {
+        color: #302950 !important;
+    }
+    
+    /* Custom brand colors - Background classes */
+    .bg-enot-pink {
+        background-color: #E75A84 !important;
+    }
+
+    .bg-enot-light-pink {
+        background-color: #F99DBC !important;
+    }
+    
+    .bg-enot-light-purple {
+        background-color: #B0A8FE !important;
+    }
+    
+    /* Дополнительное переопределение для гарантии */
+    .bg-enot-light-purple {
+        background-color: #B0A8FE !important;
+    }
+    
+    .bg-enot-dark {
+        background-color: #302950 !important;
+    }
+    
+    /* Custom brand colors - Border classes */
+    .border-enot-pink {
+        border-color: #E75A84 !important;
+    }
+    
+    .border-enot-light-purple {
+        border-color: #B0A8FE !important;
+    }
+    
+    .border-enot-dark {
+        border-color: #302950 !important;
+    }
+}
+
+@layer components {
     /* Переопределение стандартных медиазапросов для .container */
     .container {
         width: 100% !important;
@@ -71,6 +134,101 @@
         .container {
             max-width: 1440px !important;
         }
+    }
+}
+
+/* Дополнительные размеры шрифтов - добавлены напрямую для гарантированной доступности */
+.text-7xl {
+    font-size: 4.5rem !important;
+    line-height: 1 !important;
+}
+
+.text-8xl {
+    font-size: 6rem !important;
+    line-height: 1 !important;
+}
+
+/* Hero Interactive Circle Styles */
+.hero-interactive-circle {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: #E75A84;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 50;
+    box-shadow: 0 10px 40px rgba(231, 90, 132, 0.4);
+    animation: heroCirclePulse 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    pointer-events: auto;
+}
+
+.hero-interactive-circle:hover {
+    box-shadow: 0 15px 50px rgba(231, 90, 132, 0.6);
+}
+
+.hero-circle-text {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+    font-family: 'Russo One', sans-serif;
+    transform: rotate(-12deg);
+    text-align: center;
+    padding: 20px;
+}
+
+/* Пульсация круга */
+@keyframes heroCirclePulse {
+    0%, 8% {
+        box-shadow: 0 10px 40px rgba(231, 90, 132, 0.4);
+        transform: scale(1);
+    }
+    2% {
+        box-shadow: 0 8px 35px rgba(231, 90, 132, 0.3);
+        transform: scale(0.96);
+    }
+    5% {
+        box-shadow: 0 20px 60px rgba(231, 90, 132, 0.9);
+        transform: scale(1.1);
+    }
+    15%, 17% {
+        box-shadow: 0 10px 40px rgba(231, 90, 132, 0.4);
+        transform: scale(1);
+    }
+    19% {
+        box-shadow: 0 8px 35px rgba(231, 90, 132, 0.3);
+        transform: scale(0.96);
+    }
+    22% {
+        box-shadow: 0 20px 60px rgba(231, 90, 132, 0.9);
+        transform: scale(1.1);
+    }
+    25%, 27% {
+        box-shadow: 0 10px 40px rgba(231, 90, 132, 0.4);
+        transform: scale(1);
+    }
+    29% {
+        box-shadow: 0 8px 35px rgba(231, 90, 132, 0.3);
+        transform: scale(0.96);
+    }
+    32% {
+        box-shadow: 0 20px 60px rgba(231, 90, 132, 0.9);
+        transform: scale(1.1);
+    }
+    35%, 100% {
+        box-shadow: 0 10px 40px rgba(231, 90, 132, 0.4);
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 1024px) {
+    .hero-interactive-circle {
+        display: none !important;
     }
 }
 

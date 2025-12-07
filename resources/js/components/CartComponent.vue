@@ -211,12 +211,15 @@ export default {
                                 type: 'button',
                                 id: 'cart-button-desktop-btn'
                             },
-                            class: 'cart-toggle-btn relative flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200',
+                            class: 'cart-toggle-btn relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200 transition-colors duration-200',
                             on: {
                                 click: () => parent.toggleCart()
                             }
                         }, [
-                            h('i', { class: 'fas fa-shopping-cart text-gray-700 text-xl' }),
+                            h('i', { 
+                                class: 'fas fa-shopping-cart text-xl',
+                                style: { color: '#E75A84' }
+                            }),
                             h('span', {
                                 attrs: {
                                     id: 'cart-badge-desktop'
@@ -263,7 +266,7 @@ export default {
                                 type: 'button',
                                 id: 'cart-button-mobile-btn'
                             },
-                            class: 'cart-toggle-btn relative flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200',
+                            class: 'cart-toggle-btn relative flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-200 transition-colors duration-200',
                             on: {
                                 click: () => {
                                     parent.toggleCart();
@@ -273,7 +276,10 @@ export default {
                                 }
                             }
                         }, [
-                            h('i', { class: 'fas fa-shopping-cart text-gray-700 text-lg' }),
+                            h('i', { 
+                                class: 'fas fa-shopping-cart text-lg',
+                                style: { color: '#E75A84' }
+                            }),
                             h('span', {
                                 attrs: {
                                     id: 'cart-badge-mobile'

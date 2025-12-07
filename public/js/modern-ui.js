@@ -525,7 +525,6 @@ style.textContent = `
 
     /* Mobile Menu Styles */
     #mobile-menu {
-        max-height: calc(100vh - 4rem);
         overflow-y: auto;
         z-index: 9999 !important;
         position: fixed !important;

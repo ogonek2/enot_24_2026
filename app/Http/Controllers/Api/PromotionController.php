@@ -27,7 +27,8 @@ class PromotionController extends Controller
      */
     public function getPromotionsForBanner()
     {
-        $promotions = discount::orderBy('created_at', 'desc')
+        $promotions = discount::orderBy('sort_order', 'asc')
+            ->orderBy('created_at', 'desc')
             ->limit(6)
             ->get();
 

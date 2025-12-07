@@ -14,13 +14,18 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
     .vue({ 
         version: 2,
-        runtimeOnly: false // Используем полную версию Vue с компилятором
+        runtimeOnly: false, // Используем полную версию Vue с компилятором
+        extractStyles: false // Не извлекать стили в отдельный файл
     })
     .webpackConfig({
         resolve: {
             alias: {
                 'vue$': 'vue/dist/vue.js' // Используем полную версию с компилятором (CommonJS)
             }
+        },
+        watchOptions: {
+            ignored: /node_modules/,
+            poll: 1000 // Опционально: для лучшей работы на некоторых системах
         }
     })
     // Компиляция Tailwind CSS через PostCSS

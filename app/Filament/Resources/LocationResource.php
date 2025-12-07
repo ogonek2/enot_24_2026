@@ -96,7 +96,14 @@ class LocationResource extends Resource
                             ->directory('src/locations_image')
                             ->disk('public')
                             ->visibility('public')
-                            ->nullable(),
+                            ->nullable()
+                            ->getUploadedFileUrlUsing(function ($file) {
+                                if (!$file) {
+                                    return null;
+                                }
+                                // Формируем правильный URL: storage/src/locations_image/filename.png
+                                return asset('storage/' . $file);
+                            }),
                         Forms\Components\Textarea::make('value')
                             ->label('Додаткова інформація')
                             ->rows(4)

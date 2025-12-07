@@ -1,8 +1,7 @@
-<div class="py-20 bg-gray-50">
-    <div class="container mx-auto px-4">
+<div class="py-20 px-4 md:px-0 lg:px-0">
+    <div class="container mx-auto">
         <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-secondary mb-4">
-                <i class="fas fa-lightbulb text-primary mr-3"></i>
+            <h2 class="text-4xl font-bold text-enot-pink mb-4">
                 Рекомендації по догляду
             </h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -140,15 +139,15 @@
         
         {{-- CTA Section --}}
         <div class="mt-16 text-center">
-            <div class="gradient-button from-primary to-secondary rounded-2xl p-8 text-white">
+            <div class="bg-enot-light-purple rounded-2xl p-8 text-white">
                 <h3 class="text-2xl font-bold mb-4">Потрібна професійна допомога?</h3>
                 <p class="text-lg opacity-90 mb-6">Зверніться до наших експертів для консультації та замовлення послуг</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button class="bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl modal_fade" data-modal="feedbackmd">
+                    <button class="bg-white text-primary hover:bg-gray-100 px-8 py-2 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl modal_fade" data-modal="feedbackmd">
                         <i class="fas fa-phone mr-2"></i>
                         Консультація
                     </button>
-                    <a href="{{ route('courier_page') }}" class="border-2 border-white text-white hover:bg-white hover:text-secondary px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                    <a href="{{ route('courier_page') }}" class="border-2 border-white text-white hover:bg-white hover:text-secondary px-8 py-2 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105">
                         <i class="fas fa-truck mr-2"></i>
                         Викликати кур'єра
                     </a>

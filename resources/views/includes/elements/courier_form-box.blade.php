@@ -1,5 +1,5 @@
-<div class="py-20 gradient-button from-primary to-secondary">
-    <div class="container mx-auto px-4">
+<div class="bg-enot-light-pink p-8 rounded-2xl">
+    <div class="container mx-auto">
         <div class="grid lg:grid-cols-2 gap-12 items-center flex flex-col-reverse lg:flex-row">
             {{-- Content --}}
             <div class="text-white space-y-6 animate-fade-in-left">
@@ -36,7 +36,7 @@
                         </div>
                         
                         <div class="pt-4">
-                            <button id="courierSubmitBtn" type="submit" class="w-full bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            <button id="courierSubmitBtn" type="submit" class="w-full bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                                 <i class="fas fa-paper-plane mr-2"></i>
                                 Зв'язатися
                             </button>

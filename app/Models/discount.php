@@ -9,7 +9,7 @@ class discount extends Model
     protected $table = 'discounts';
     
     protected $fillable = [
-        'name', 'link_name', 'banner', 'locations', 'umowy', 'discount_action', 'telegram_name',
+        'name', 'link_name', 'banner', 'color', 'sort_order', 'locations', 'umowy', 'discount_action', 'telegram_name',
     ];
 
     protected static function boot()
@@ -21,7 +21,23 @@ class discount extends Model
             if (empty($discount->link_name) && !empty($discount->name)) {
                 $discount->link_name = self::generateLinkName($discount->name);
             }
+            
+            // Преобразуем пустую строку banner в null
+            if ($discount->banner === '') {
+                $discount->banner = null;
+            }
         });
+    }
+
+    /**
+     * Получить полный URL для баннера
+     */
+    public function getBannerUrlAttribute()
+    {
+        if (!$this->banner) {
+            return null;
+        }
+        return asset('storage/' . $this->banner);
     }
 
     /**

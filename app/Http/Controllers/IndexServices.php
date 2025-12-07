@@ -26,11 +26,32 @@ class IndexServices extends Controller
         ->orderBy('name')
         ->get();
 
-        $discounts = discount::all();
+        $discounts = discount::orderBy('sort_order', 'asc')->orderBy('created_at', 'desc')->get();
+
+        // Получаем все локации с их городами для слайдера отделений
+        $branches = locations::with('cityRelation')
+            ->orderBy('city')
+            ->orderBy('street')
+            ->get()
+            ->map(function($location) {
+                return [
+                    'id' => $location->id,
+                    'city' => $location->cityRelation->city ?? 'Київ',
+                    'address' => $location->street,
+                    'workingHours' => $location->workinghourse ?? '10:00-20:00 Без Вихідних',
+                    'image' => $location->banner ? asset('storage/' . $location->banner) : null,
+                    'images' => $location->banner ? [asset('storage/' . $location->banner)] : [],
+                    'linkMap' => $location->link_map ?? null,
+                    'lat' => $location->lat ?? null,
+                    'lng' => $location->lng ?? null,
+                ];
+            })
+            ->toArray();
 
         return view('welcome', [
             'categories' => $categories,
             'discounts' => $discounts,
+            'branches' => $branches,
         ]);
     }
     public function services()
@@ -123,7 +144,7 @@ class IndexServices extends Controller
     public function promotions()
     {
         // Получаем все акции из таблицы discount
-        $discounts = discount::orderBy('created_at', 'desc')->get();
+        $discounts = discount::orderBy('sort_order', 'asc')->orderBy('created_at', 'desc')->get();
 
         return view('promotions', [
             'promotions' => $discounts,
@@ -137,6 +158,7 @@ class IndexServices extends Controller
         
         // Получаем другие акции (исключая текущую)
         $otherDiscounts = discount::where('id', '!=', $discount->id)
+            ->orderBy('sort_order', 'asc')
             ->orderBy('created_at', 'desc')
             ->limit(3)
             ->get();
