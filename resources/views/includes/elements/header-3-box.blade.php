@@ -1,5 +1,6 @@
 @php
-    $ctaHeaders = \App\Models\CtaHeader::where('is_active', true)
+    $ctaHeaders = \App\Models\CtaHeader::with('iconRelation')
+        ->where('is_active', true)
         ->orderBy('sort_order', 'asc')
         ->get();
 @endphp
@@ -15,7 +16,10 @@
                 <div class="p-8 text-center flex flex-row lg:flex-col justify-start gap-4 items-center">
                     <div
                         class="rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        @if($ctaHeader->icon)
+                        @if($ctaHeader->iconRelation && $ctaHeader->iconRelation->file_path)
+                            <img src="{{ asset('storage/' . $ctaHeader->iconRelation->file_path) }}" alt="{{ $ctaHeader->title }}"
+                                class="w-[70px] h-[70px] min-w-[70px] min-h-[70px]">
+                        @elseif($ctaHeader->icon)
                             <img src="{{ asset('storage/' . $ctaHeader->icon) }}" alt="{{ $ctaHeader->title }}"
                                 class="w-[70px] h-[70px] min-w-[70px] min-h-[70px]">
                         @else
@@ -26,9 +30,11 @@
                     </div>
                     <div class="text-left lg:text-center">
                         <h3
-                            class="text-xl font-semibold text-secondary mb-2 group-hover:text-primary transition-colors">
+                            class="text-xl font-semibold text-enot-pink mb-2 group-hover:text-primary transition-colors">
                             {{ $ctaHeader->title }}</h3>
-                        <p class="text-gray-600 text-sm">{{ $ctaHeader->subtitle }}</p>
+                        @if($ctaHeader->subtitle !== '-') 
+                            <p class="text-gray-600 text-sm">{{ $ctaHeader->subtitle }}</p>
+                        @endif
                     </div>
                 </div>
             </a>

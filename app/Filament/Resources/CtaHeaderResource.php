@@ -59,14 +59,166 @@ class CtaHeaderResource extends Resource
                 
                 Forms\Components\Section::make('Іконка')
                     ->schema([
-                        Forms\Components\FileUpload::make('icon')
-                            ->label('Іконка')
-                            ->image()
-                            ->directory('src/icons_svg')
-                            ->disk('public')
-                            ->visibility('public')
-                            ->nullable()
-                            ->helperText('SVG або PNG іконка для відображення'),
+                        Forms\Components\Hidden::make('icon_id')
+                            ->reactive(),
+                        Forms\Components\Placeholder::make('icon_selector')
+                            ->label('Вибір іконки')
+                            ->content(function (callable $get, callable $set) {
+                                $iconId = $get('icon_id');
+                                $selectedIcon = $iconId ? \App\Models\Icon::find($iconId) : null;
+                                $icons = \App\Models\Icon::all();
+                                
+                                $previewHtml = '';
+                                if ($selectedIcon && $selectedIcon->file_path) {
+                                    $imageUrl = asset('storage/' . $selectedIcon->file_path);
+                                    $name = $selectedIcon->name ?: $selectedIcon->file_name;
+                                    $previewHtml = '
+                                        <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                                            <p class="text-sm font-medium text-gray-700 mb-2">Вибрана іконка:</p>
+                                            <div class="flex items-center gap-4">
+                                                <img src="' . $imageUrl . '" alt="' . htmlspecialchars($name) . '" class="w-16 h-16 object-contain border border-gray-200 rounded p-2 bg-white">
+                                                <div>
+                                                    <p class="text-sm font-semibold text-gray-900">' . htmlspecialchars($name) . '</p>
+                                                    ' . ($selectedIcon->file_name ? '<p class="text-xs text-gray-500">' . htmlspecialchars($selectedIcon->file_name) . '</p>' : '') . '
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ';
+                                }
+                                
+                                // Генерируем HTML для модального окна с иконками
+                                $iconsGrid = '';
+                                foreach ($icons as $icon) {
+                                    $iconUrl = asset('storage/' . $icon->file_path);
+                                    $iconName = htmlspecialchars($icon->name ?: $icon->file_name);
+                                    $isSelected = $iconId == $icon->id ? 'border-primary-500 bg-primary-50' : 'border-gray-200';
+                                    $iconsGrid .= '
+                                        <button
+                                            type="button"
+                                            onclick="window.selectIcon(' . $icon->id . ', \'' . $iconUrl . '\', \'' . addslashes($iconName) . '\')"
+                                            class="p-2 border-2 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-all ' . $isSelected . '"
+                                            title="' . $iconName . '"
+                                        >
+                                            <img 
+                                                src="' . $iconUrl . '" 
+                                                alt="' . $iconName . '"
+                                                class="w-full h-full object-contain"
+                                            />
+                                        </button>
+                                    ';
+                                }
+                                
+                                return new \Illuminate\Support\HtmlString('
+                                    <div>
+                                        <button 
+                                            type="button"
+                                            onclick="window.openIconModal()"
+                                            class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 active:bg-primary-900 focus:outline-none focus:border-primary-900 focus:ring ring-primary-300 disabled:opacity-25 transition ease-in-out duration-150"
+                                        >
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                            ' . ($selectedIcon ? 'Змінити іконку' : 'Вибрати іконку') . '
+                                        </button>
+                                        ' . $previewHtml . '
+                                        
+                                        <!-- Модальное окно выбора иконки -->
+                                        <div id="icon-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="window.closeIconModal()"></div>
+                                                
+                                                <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+                                                
+                                                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                                                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                                        <div class="sm:flex sm:items-start">
+                                                            <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                                                                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modal-title">
+                                                                    Виберіть іконку
+                                                                </h3>
+                                                                
+                                                                <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4 max-h-96 overflow-y-auto p-2">
+                                                                    ' . $iconsGrid . '
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                                        <button
+                                                            type="button"
+                                                            onclick="window.closeIconModal()"
+                                                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
+                                                        >
+                                                            Закрити
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <script>
+                                        window.openIconModal = function() {
+                                            document.getElementById(\'icon-modal\').classList.remove(\'hidden\');
+                                        };
+                                        
+                                        window.closeIconModal = function() {
+                                            document.getElementById(\'icon-modal\').classList.add(\'hidden\');
+                                        };
+                                        
+                                        window.selectIcon = function(iconId, imageUrl, iconName) {
+                                            // Находим скрытое поле icon_id через различные селекторы
+                                            let iconIdInput = document.querySelector(\'input[name="data.icon_id"]\');
+                                            if (!iconIdInput) {
+                                                iconIdInput = document.querySelector(\'input[wire\\\\:model*="icon_id"]\');
+                                            }
+                                            if (!iconIdInput) {
+                                                iconIdInput = document.querySelector(\'input[name*="icon_id"]\');
+                                            }
+                                            
+                                            if (iconIdInput) {
+                                                // Устанавливаем значение
+                                                iconIdInput.value = iconId;
+                                                
+                                                // Триггерим события для обновления Livewire
+                                                const inputEvent = new Event(\'input\', { bubbles: true, cancelable: true });
+                                                const changeEvent = new Event(\'change\', { bubbles: true, cancelable: true });
+                                                
+                                                iconIdInput.dispatchEvent(inputEvent);
+                                                iconIdInput.dispatchEvent(changeEvent);
+                                                
+                                                // Для Livewire v2 - находим компонент
+                                                const livewireComponent = iconIdInput.closest(\'[wire\\\\:id]\');
+                                                if (livewireComponent && window.Livewire) {
+                                                    const componentId = livewireComponent.getAttribute(\'wire:id\');
+                                                    const component = window.Livewire.find(componentId);
+                                                    if (component) {
+                                                        component.set(\'data.icon_id\', iconId);
+                                                    }
+                                                }
+                                            }
+                                            
+                                            // Закрываем модальное окно
+                                            window.closeIconModal();
+                                            
+                                            // Принудительно обновляем превью через перезагрузку компонента
+                                            setTimeout(() => {
+                                                // Ищем Livewire компонент и обновляем его
+                                                const livewireElements = document.querySelectorAll(\'[wire\\\\:id]\');
+                                                livewireElements.forEach(el => {
+                                                    const componentId = el.getAttribute(\'wire:id\');
+                                                    if (componentId && window.Livewire) {
+                                                        const component = window.Livewire.find(componentId);
+                                                        if (component) {
+                                                            component.call(\'$refresh\');
+                                                        }
+                                                    }
+                                                });
+                                            }, 200);
+                                        };
+                                        </script>
+                                    </div>
+                                ');
+                            }),
                     ]),
                 
                 Forms\Components\Section::make('Статус')
@@ -88,16 +240,22 @@ class CtaHeaderResource extends Resource
                     ->circular()
                     ->size(50)
                     ->getStateUsing(function ($record) {
-                        if (!$record || !$record->icon) {
-                            return null;
+                        if ($record->iconRelation && $record->iconRelation->file_path) {
+                            return asset('storage/' . $record->iconRelation->file_path);
                         }
-                        return $record->icon;
+                        if ($record->icon) {
+                            return asset('storage/' . $record->icon);
+                        }
+                        return null;
                     })
                     ->url(function ($record) {
-                        if (!$record || !$record->icon) {
-                            return null;
+                        if ($record->iconRelation && $record->iconRelation->file_path) {
+                            return asset('storage/' . $record->iconRelation->file_path);
                         }
+                        if ($record->icon) {
                         return asset('storage/' . $record->icon);
+                        }
+                        return null;
                     }),
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')

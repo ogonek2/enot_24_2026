@@ -1,4 +1,4 @@
-<footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden">
+<footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden mt-8">
     {{-- Background Pattern --}}
     <div class="absolute inset-0 opacity-5">
         <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
@@ -17,7 +17,7 @@
                      <!-- Logo -->
                     <div class="flex items-center">
                         <a href="{{ route('welcome') }}" class="flex items-center hover:opacity-80 transition-opacity">
-                            <img src="{{ asset('storage/src/logo/full_logo.svg') }}" alt="ЄНОТ 24" class="w-40 h-10">
+                            <img src="{{ asset('storage/src/logo/enot24.svg') }}" alt="ЄНОТ 24" class="w-40 h-10">
                         </a>
                     </div>
                     
@@ -149,7 +149,12 @@
             <div class="container mx-auto px-4 py-6">
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <div class="text-gray-400 text-sm">
-                        © {{ date('Y') }} ЄНОТ 24. Всі права захищені.
+                        <small>© {{ date('Y') }} ЄНОТ 24. Всі права захищені.</small>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="/oferta">Публічна оферта</a>
+                            <a href="/privacy-policy">Політика конфіденційності</a>
+                            <a href="/umowy">Умови використання</a>
+                        </div>
                     </div>
                     <div class="flex space-x-6 text-sm">
                         <a href="{{ route('contacts_page') }}" class="text-gray-400 hover:text-primary transition-colors duration-300">Контакти</a>

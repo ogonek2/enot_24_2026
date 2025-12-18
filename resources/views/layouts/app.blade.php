@@ -472,9 +472,9 @@
             <div class="app-container-elements">
                 @yield('content')
             </div>
-            <div class="app-container-footer">
-                @include('includes.fixed.footer')
-            </div>
+        </div>
+        <div class="app-container-footer">
+            @include('includes.fixed.footer')
         </div>
         {{-- Vue компоненты монтируются точечно через кастомные теги --}}
         <vue-cart-container></vue-cart-container>

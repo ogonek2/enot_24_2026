@@ -112,13 +112,25 @@ class PromotionResource extends Resource
                             }),
                         
                         Forms\Components\TextInput::make('color')
-                            ->label('Колір акції')
+                            ->label('Колір фону акції')
                             ->type('color')
-                            ->helperText('Колір фону для круглої карточки акції на головній сторінці')
+                            ->helperText('Колір фону для карточки акції')
                             ->default('#fdd9e5')
                             ->nullable(),
+                        
+                        Forms\Components\TextInput::make('text_color')
+                            ->label('Колір тексту назви')
+                            ->type('color')
+                            ->helperText('Колір тексту назви акції (name)')
+                            ->nullable(),
+                        
+                        Forms\Components\TextInput::make('discount_color')
+                            ->label('Колір тексту знижки')
+                            ->type('color')
+                            ->helperText('Колір тексту знижки (discount_action)')
+                            ->nullable(),
                     ])
-                    ->columns(2),
+                    ->columns(3),
             ]);
     }
 

@@ -118,6 +118,35 @@ function mountVueComponents() {
             console.log('Branches slider component mounted');
         }
         
+        // Монтируем слайдер рекомендаций
+        const recommendationsSliderApp = document.getElementById('recommendations-slider-app');
+        if (recommendationsSliderApp && !recommendationsSliderApp.dataset.vueMounted) {
+            recommendationsSliderApp.dataset.vueMounted = 'true';
+            new Vue({
+                el: recommendationsSliderApp,
+                template: '<recommendations-slider></recommendations-slider>'
+            });
+            console.log('Recommendations slider component mounted');
+        }
+        
+        // Монтируем блок акций
+        const promotionsBlockApp = document.getElementById('promotions-block-app');
+        if (promotionsBlockApp && !promotionsBlockApp.dataset.vueMounted) {
+            promotionsBlockApp.dataset.vueMounted = 'true';
+            const promotionsData = promotionsBlockApp.dataset.promotions 
+                ? JSON.parse(promotionsBlockApp.dataset.promotions) 
+                : [];
+            
+            new Vue({
+                el: promotionsBlockApp,
+                template: '<promotions-block :promotions="promotions"></promotions-block>',
+                data: {
+                    promotions: promotionsData
+                }
+            });
+            console.log('Promotions block component mounted');
+        }
+        
         // Монтируем кнопки добавления в корзину через data-атрибуты
         const addToCartWrappers = document.querySelectorAll('[data-vue-component="add-to-cart-button"]');
         addToCartWrappers.forEach(wrapper => {

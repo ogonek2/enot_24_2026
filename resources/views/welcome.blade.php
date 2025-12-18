@@ -102,32 +102,32 @@
                 {{-- Left Side - White Box with Content --}}
                 <div class="w-full">
                     {{-- White Content Box --}}
-                    <div class="bg-white flex align-stretch h-full rounded-2xl py-6 px-8 relative min-h-96 overflow-hidden">
+                    <div class="bg-white flex justify-center text-center md:text-left md:justify-start lg:justify-start lg:items-center align-stretch h-full rounded-2xl py-6 px-8 relative min-h-96 overflow-hidden">
                         <div class="h-100 flex flex-col justify-between gap-2 relative" style="z-index: 100;">
                             
                             <div class="py-4 mb-6">
                                 {{-- Main Title --}}
                                 <div>
-                                    <p class="text-lg text-black font-medium leading-tight">
+                                    <p class="text-md text-black font-medium leading-tight">
                                         #найякісніша_хімчистка_столиці
                                     </p>
-                                    <h1 class="text-4xl md:text-8xl lg:text-8xl uppercase text-enot-pink font-bold leading-tight">
+                                    <h1 class="text-6xl md:text-8xl lg:text-8xl uppercase text-enot-pink font-bold leading-tight">
                                         <span class="text-enot-purple"></span>хімчистка</span><br>одягу
                                     </h1>
-                                    <p class="text-sm md:text-2xl uppercase text-black font-bold py-3">
+                                    <p class="text-xl md:text-2xl uppercase text-black font-bold py-3">
                                         стильно, якісно, та з<br>увагою до деталей
                                     </p>
                                 </div>
 
                                 {{-- CTA Buttons --}}
                                 <div class="flex flex-col sm:flex-row gap-3 sm:gap-2">
-                                    <a href="{{ route('services') }}">
-                                        <button class="text-white text-sm bg-enot-pink p-4 border border-enot-pink rounded-full">
+                                    <a href="{{ route('services') }}" class="w-full">
+                                        <button class="text-white w-full text-sm bg-enot-pink p-4 border border-enot-pink rounded-full">
                                             Послуги та ціни
                                         </button>
                                     </a>
                                     <button
-                                        class="text-black text-sm border border-black rounded-full p-4 modal_fade"
+                                        class="text-black text-sm border border-black rounded-full p-4 modal_fade w-full"
                                         data-modal="feedbackmd">
                                         Замовити хімчистку
                                     </button>
@@ -149,8 +149,11 @@
                             </div>
                         </div>
                         
+                        <div class="absolute bottom-0 top-0 right-[0%] w-100 h-100 opacity-20 block lg:hidden" style="z-index: 10;">
+                            <img src="{{ asset('storage/src/ill/Frame 1792.svg') }}" alt="enot 24 banner lines" class="w-100 h-full">
+                        </div>
                         <div class="absolute bottom-0 top-0 right-[0%] w-100 h-100 hidden lg:block" style="z-index: 10;">
-                            <img src="{{ asset('storage/src/ill/illustration.svg') }}" alt="enot 24 banner lines" class="w-100 h-full">
+                            <img src="{{ asset('storage/src/ill/backgrond.svg') }}" alt="enot 24 banner lines" class="w-100 h-full">
                         </div>
                         
                         {{-- Interactive Pink Circle --}}
@@ -181,7 +184,7 @@
     @include('includes.elements.consultation')
 
     {{-- Recommendations Section --}}
-    @include('includes.elements.recomendations-box')
+    @include('includes.elements.recommendations-slider')
 
     {{-- Delivery Section --}}
     @include('includes.elements.delivery-box')

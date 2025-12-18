@@ -1,11 +1,11 @@
 <template>
-    <section class="branches-section bg-enot-dark rounded-2xl mt-6 py-12 md:py-16">
-        <div class="container mx-auto px-4 md:px-6 lg:px-8">
+    <section class="branches-section container mx-auto  bg-enot-dark rounded-2xl mt-6 py-12 md:py-16">
+        <div class="px-4 md:px-6 lg:px-8">
             <!-- Header with Title and City Selection -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12 gap-4">
+            <div class="flex flex-col justify-between items-start mb-8 md:mb-12 gap-4">
                 <div>
                     <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
-                        Наші найгарніші відділення
+                        Наші локації де ви<br>можете здати одяг у хімчистку
                     </h2>
                     <p class="text-xl md:text-2xl text-enot-pink">
                         у м. {{ selectedCity }}
@@ -52,19 +52,19 @@
                             <p class="text-sm md:text-base opacity-50 mt-2">Скоро буде додано</p>
                         </div>
                         
-                        <!-- Image Navigation Arrows -->
+                        <!-- Branch Navigation Arrows -->
                         <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-3">
                             <button
-                                @click="previousImage"
+                                @click="previousBranch"
                                 class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-enot-dark border-2 border-white text-white hover:bg-white hover:text-enot-dark transition-all duration-300 flex items-center justify-center"
-                                :disabled="currentImageIndex === 0"
+                                :disabled="filteredBranches.length <= 1"
                             >
                                 <i class="fas fa-chevron-left"></i>
                             </button>
                             <button
-                                @click="nextImage"
+                                @click="nextBranch"
                                 class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-enot-dark border-2 border-white text-white hover:bg-white hover:text-enot-dark transition-all duration-300 flex items-center justify-center"
-                                :disabled="currentImageIndex >= (currentBranch.images?.length || 1) - 1"
+                                :disabled="filteredBranches.length <= 1"
                             >
                                 <i class="fas fa-chevron-right"></i>
                             </button>

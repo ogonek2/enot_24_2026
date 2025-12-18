@@ -51,6 +51,16 @@ Route::get('/invoice/{orderId}/download', [CartController::class, 'downloadInvoi
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/oferta', function() { 
+    return view('oferta'); 
+})->name('oferta'); 
+Route::get('/privacy-policy', function() { 
+    return view('privacy_policy'); 
+})->name('privacy_policy'); 
+Route::get('/umovy', function() {
+    return view('umovy');
+})->name('umovy');
+
 // Feedback form route
 Route::post('/feedback', [App\Http\Controllers\FeedbackController::class, 'submit'])->name('feedback.submit');
 

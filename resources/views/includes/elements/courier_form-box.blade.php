@@ -1,5 +1,5 @@
-<div class="bg-enot-light-pink p-8 rounded-2xl">
-    <div class="container mx-auto">
+<div class="bg-enot-light-pink container mx-auto p-8 rounded-2xl mb-8">
+    <div>
         <div class="grid lg:grid-cols-2 gap-12 items-center flex flex-col-reverse lg:flex-row">
             {{-- Content --}}
             <div class="text-white space-y-6 animate-fade-in-left">

@@ -9,7 +9,7 @@ class discount extends Model
     protected $table = 'discounts';
     
     protected $fillable = [
-        'name', 'link_name', 'banner', 'color', 'sort_order', 'locations', 'umowy', 'discount_action', 'telegram_name',
+        'name', 'link_name', 'banner', 'color', 'text_color', 'discount_color', 'sort_order', 'locations', 'umowy', 'discount_action', 'telegram_name',
     ];
 
     protected static function boot()

@@ -13,7 +13,7 @@
         {{-- Header --}}
         <div class="text-center mb-8">
             <div class="flex items-center justify-center mb-2">
-                <h2 class="text-4xl font-sans text-enot-pink">Ціни</h2>
+                <h2 class="text-4xl font-bold text-enot-pink">Ціни</h2>
             </div>
             <p class="text-lg font-sans text-gray-600">
                 Прозорі та доступні ціни на всі наші послуги

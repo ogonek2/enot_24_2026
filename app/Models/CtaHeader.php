@@ -12,6 +12,7 @@ class CtaHeader extends Model
 
     protected $fillable = [
         'icon',
+        'icon_id',
         'title',
         'url',
         'subtitle',
@@ -23,6 +24,30 @@ class CtaHeader extends Model
         'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    /**
+     * Связь с иконкой
+     */
+    public function iconRelation()
+    {
+        return $this->belongsTo(Icon::class, 'icon_id');
+    }
+
+    /**
+     * Получить URL иконки (приоритет у связи с Icon, затем у старого поля icon)
+     */
+    public function getIconUrlAttribute()
+    {
+        if ($this->iconRelation && $this->iconRelation->file_path) {
+            return asset('storage/' . $this->iconRelation->file_path);
+        }
+        
+        if ($this->icon) {
+            return asset('storage/' . $this->icon);
+        }
+        
+        return null;
+    }
 
     /**
      * Получить обработанный URL для отображения
