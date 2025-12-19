@@ -195,15 +195,48 @@ class IndexServices extends Controller
         ]);
     }
     
-    public function service_page($service)
+    public function service_page($category, $service)
     {
-        // Находим услугу по transform_url
-        $serviceModel = Service::where('transform_url', $service)
-            ->with(['categories', 'groups'])
-            ->firstOrFail();
+        // Находим категорию по href (может быть родительской или дочерней)
+        $categoryModel = Category::where('href', $category)->first();
         
-        // Получаем первую категорию услуги для навигации
-        $primaryCategory = $serviceModel->categories->first();
+        // Находим услугу по transform_url с учетом категории
+        $serviceQuery = Service::where('transform_url', $service)
+            ->with(['categories', 'groups']);
+        
+        // Если категория найдена, фильтруем услуги по этой категории или её дочерним
+        if ($categoryModel) {
+            // Получаем все ID категорий: сама категория + все её дочерние
+            $categoryIds = [$categoryModel->id];
+            if ($categoryModel->parent_id === null) {
+                // Если это родительская категория, добавляем все дочерние
+                $childrenIds = Category::where('parent_id', $categoryModel->id)->pluck('id')->toArray();
+                $categoryIds = array_merge($categoryIds, $childrenIds);
+            } else {
+                // Если это дочерняя категория, также добавляем родительскую для полноты
+                if ($categoryModel->parent_id) {
+                    $categoryIds[] = $categoryModel->parent_id;
+                }
+            }
+            
+            $serviceQuery->whereHas('categories', function($query) use ($categoryIds) {
+                $query->whereIn('categories.id', $categoryIds);
+            });
+        }
+        
+        // Пытаемся найти услугу
+        $serviceModel = $serviceQuery->first();
+        
+        // Если не найдено с фильтром категории, пробуем найти без фильтра
+        // (на случай, если категория указана неправильно, но услуга существует)
+        if (!$serviceModel) {
+            $serviceModel = Service::where('transform_url', $service)
+                ->with(['categories', 'groups'])
+                ->firstOrFail();
+        }
+        
+        // Используем переданную категорию как основную, если она найдена
+        $primaryCategory = $categoryModel ?? $serviceModel->categories->first();
         
         // Получаем другие услуги из той же категории (исключая текущую)
         $otherServices = collect();

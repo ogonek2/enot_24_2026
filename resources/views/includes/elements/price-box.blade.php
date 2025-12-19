@@ -211,7 +211,25 @@
                                             </div>
                                         </div>
 
-
+                                        {{-- Tabs for nested categories --}}
+                                        @php
+                                            $hasChildren = $category->children->isNotEmpty();
+                                            $childrenWithServices = $category->children->filter(fn($child) => $child->services->isNotEmpty())->sortBy('sort_order');
+                                            $firstChildCategory = $childrenWithServices->first();
+                                        @endphp
+                                        @if ($hasChildren && $childrenWithServices->isNotEmpty())
+                                            <div class="px-8 pt-6 pb-4 border-b border-gray-200">
+                                                <div class="flex flex-wrap gap-2">
+                                                    @foreach($childrenWithServices as $index => $childCategory)
+                                                        <button class="subcategory-tab-btn px-4 py-2 rounded-lg font-medium transition-all duration-300 {{ $index === 0 ? 'bg-enot-light-purple text-white shadow-md' : 'hover:bg-gray-100 text-gray-700' }}" 
+                                                                data-parent-category="{{ $category->href }}" 
+                                                                data-subcategory="{{ $childCategory->href }}">
+                                                            {{ $childCategory->name }} ({{ $childCategory->services->count() }})
+                                                        </button>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @endif
 
                                         {{-- Services List --}}
                                         @php
@@ -219,89 +237,178 @@
                                         @endphp
                                         @if ($allServices->count() > 0)
                                             <div class="category-services" data-category="{{ $category->href }}">
-<div class="group-services {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'active' : '' }}"
-                                                    data-category="{{ $category->href }}" data-group="all">
-                                                    <div class="divide-y divide-gray-200">
-                                                        @foreach ($allServices as $serviceIndex => $service)
-                                                            <div
-                                                                class="service-item px-8 py-6 hover:bg-gray-50 transition-colors duration-200 group">
-                                                                <div class="flex items-center justify-between">
-                                                                    <div class="flex items-center space-x-4">
-                                                                        <div
-                                                                            class="w-10 h-10 bg-enot-light-purple/10 rounded-lg flex items-center justify-center group-hover:bg-enot-light-purple/20 transition-colors duration-200">
-                                                                            <span
-                                                                                class="text-enot-light-purple font-semibold text-sm leading-none flex items-center justify-center w-full h-full">{{ $serviceIndex + 1 }}</span>
-                                                                        </div>
-                                                                        <div>
-                                                                            <a href="{{ route('service_page', $service->transform_url ?? $service->href) }}" 
-                                                                               class="block">
-                                                                                <h4
-                                                                                    class="text-sm font-semibold text-gray-800 group-hover:text-enot-light-purple transition-colors duration-200 cursor-pointer">
-                                                                                    {{ $service->name }}
-                                                                                    @if($service->marker !== null)<br><span class="p-2 bg-enot-pink rounded-3xl font-sans text-sm text-white block my-2" style="width: fit-content;">{{ $service->marker }}</span> @endif
-                                                                                </h4>
-                                                                                <p class="text-sm text-gray-500">Професійна обробка</p>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="text-right">
-                                                                        @php
-                                                                            $originalPrice = floatval($service->price ?? 0);
-                                                                            $hasPrice = $originalPrice > 0;
-                                                                            $discountedPrice = $originalPrice;
-                                                                            $hasDiscount = false;
-                                                                            
-                                                                            // Проверяем скидку на категорию
-                                                                            if ($hasPrice) {
-                                                                                foreach ($service->categories as $category) {
-                                                                                    if ($category->hasActiveDiscount()) {
-                                                                                        $discountedPrice = floatval($category->calculateDiscountedPrice($originalPrice));
-                                                                                        $hasDiscount = true;
-                                                                                        break;
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        @endphp
-                                                                        
-                                                                        @if ($hasPrice)
-                                                                            @if ($hasDiscount)
-                                                                                <div class="space-y-1">
-                                                                                    <div class="text-lg font-bold text-enot-light-purple">
-                                                                                        {{ number_format($discountedPrice, 0) }}₴</div>
-                                                                                    <div class="text-sm text-gray-400 line-through">
-                                                                                        {{ number_format($originalPrice, 0) }}₴</div>
-                                                                                    <div class="text-xs text-green-600 font-semibold">
-                                                                                        -{{ $service->categories->first()->getDiscountPercent() }}%
-                                                                                        знижка
-                                                                                    </div>
+                                                {{-- Services from each child category or all services if no children --}}
+                                                @if ($hasChildren && $childrenWithServices->isNotEmpty())
+                                                    @foreach($childrenWithServices as $index => $childCategory)
+                                                        <div class="subcategory-services {{ $index === 0 ? '' : 'hidden' }}"
+                                                            data-parent-category="{{ $category->href }}" 
+                                                            data-subcategory="{{ $childCategory->href }}"
+                                                            style="{{ $index === 0 ? 'display: block;' : 'display: none;' }}">
+                                                            <div class="divide-y divide-gray-200">
+                                                                @foreach ($childCategory->services as $serviceIndex => $service)
+                                                                    <div class="service-item px-8 py-6 hover:bg-gray-50 transition-colors duration-200 group">
+                                                                        <div class="flex items-center justify-between">
+                                                                            <div class="flex items-center space-x-4">
+                                                                                <div class="w-10 h-10 bg-enot-light-purple/10 rounded-lg flex items-center justify-center group-hover:bg-enot-light-purple/20 transition-colors duration-200">
+                                                                                    <span class="text-enot-light-purple font-semibold text-sm leading-none flex items-center justify-center w-full h-full">{{ $serviceIndex + 1 }}</span>
                                                                                 </div>
-                                                                            @else
-                                                                                <div class="text-lg font-bold text-enot-light-purple">{{ number_format($originalPrice, 0) }}₴@if($service->marker !== null)<br><span class="text-right font-sans text-sm text-secondary">Акційна ціна!</span> @endif</div>
-                                                                            @endif
-                                                                            <div class="text-xs text-gray-500">за одиницю</div>
-                                                                        @else
-                                                                            <div class="text-sm text-gray-400 italic">Ціна за запитом</div>
+                                                                                <div>
+                                                                                    @php
+                                                                                        $servicePrimaryCategory = $service->getPrimaryCategory() ?? $category;
+                                                                                    @endphp
+                                                                                    <a href="{{ route('service_page', [$servicePrimaryCategory->href, $service->transform_url ?? $service->href]) }}" 
+                                                                                       class="block">
+                                                                                        <h4 class="text-sm font-semibold text-gray-800 group-hover:text-enot-light-purple transition-colors duration-200 cursor-pointer">
+                                                                                            {{ $service->name }}
+                                                                                            @if($service->marker !== null)<br><span class="p-2 bg-enot-pink rounded-3xl font-sans text-sm text-white block my-2" style="width: fit-content;">{{ $service->marker }}</span> @endif
+                                                                                        </h4>
+                                                                                        <p class="text-sm text-gray-500">Професійна обробка</p>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="text-right">
+                                                                                @php
+                                                                                    $originalPrice = floatval($service->price ?? 0);
+                                                                                    $hasPrice = $originalPrice > 0;
+                                                                                    $discountedPrice = $originalPrice;
+                                                                                    $hasDiscount = false;
+                                                                                    
+                                                                                    if ($hasPrice) {
+                                                                                        if ($childCategory->hasActiveDiscount()) {
+                                                                                            $discountedPrice = floatval($childCategory->calculateDiscountedPrice($originalPrice));
+                                                                                            $hasDiscount = true;
+                                                                                        } elseif ($category->hasActiveDiscount()) {
+                                                                                            $discountedPrice = floatval($category->calculateDiscountedPrice($originalPrice));
+                                                                                            $hasDiscount = true;
+                                                                                        }
+                                                                                    }
+                                                                                @endphp
+                                                                                
+                                                                                @if ($hasPrice)
+                                                                                    @if ($hasDiscount)
+                                                                                        <div class="space-y-1">
+                                                                                            <div class="text-lg font-bold text-enot-light-purple">
+                                                                                                {{ number_format($discountedPrice, 0) }}₴</div>
+                                                                                            <div class="text-sm text-gray-400 line-through">
+                                                                                                {{ number_format($originalPrice, 0) }}₴</div>
+                                                                                            <div class="text-xs text-green-600 font-semibold">
+                                                                                                -{{ ($childCategory->hasActiveDiscount() ? $childCategory : $category)->getDiscountPercent() }}%
+                                                                                                знижка
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    @else
+                                                                                        <div class="text-lg font-bold text-enot-light-purple">{{ number_format($originalPrice, 0) }}₴@if($service->marker !== null)<br><span class="text-right font-sans text-sm text-secondary">Акційна ціна!</span> @endif</div>
+                                                                                    @endif
+                                                                                    <div class="text-xs text-gray-500">за одиницю</div>
+                                                                                @else
+                                                                                    <div class="text-sm text-gray-400 italic">Ціна за запитом</div>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                        @if($hasPrice)
+                                                                            <div class="mt-4">
+                                                                                @php
+                                                                                    $finalPrice = $hasDiscount ? $discountedPrice : $originalPrice;
+                                                                                @endphp
+                                                                                @include('components.add-to-cart-button', [
+                                                                                    'serviceId' => $service->id,
+                                                                                    'serviceName' => $service->name,
+                                                                                    'hasIndividual' => ($service->individual_price ?? 0) > 0,
+                                                                                    'price' => $finalPrice,
+                                                                                    'individualPrice' => $service->individual_price ?? 0
+                                                                                ])
+                                                                            </div>
                                                                         @endif
                                                                     </div>
-                                                                </div>
-                                                                @if($hasPrice)
-                                                                    <div class="mt-4">
-                                                                        @php
-                                                                            $finalPrice = $hasDiscount ? $discountedPrice : $originalPrice;
-                                                                        @endphp
-                                                                        @include('components.add-to-cart-button', [
-                                                                            'serviceId' => $service->id,
-                                                                            'serviceName' => $service->name,
-                                                                            'hasIndividual' => ($service->individual_price ?? 0) > 0,
-                                                                            'price' => $finalPrice,
-                                                                            'individualPrice' => $service->individual_price ?? 0
-                                                                        ])
-                                                                    </div>
-                                                                @endif
+                                                                @endforeach
                                                             </div>
-                                                        @endforeach
+                                                        </div>
+                                                    @endforeach
+                                                @else
+                                                    {{-- If no children, show all services directly --}}
+                                                    <div class="subcategory-services"
+                                                        data-parent-category="{{ $category->href }}" 
+                                                        data-subcategory="all">
+                                                        <div class="divide-y divide-gray-200">
+                                                            @foreach ($allServices as $serviceIndex => $service)
+                                                                @php
+                                                                    $servicePrimaryCategory = $service->getPrimaryCategory() ?? $category;
+                                                                @endphp
+                                                                <div class="service-item px-8 py-6 hover:bg-gray-50 transition-colors duration-200 group">
+                                                                    <div class="flex items-center justify-between">
+                                                                        <div class="flex items-center space-x-4">
+                                                                            <div class="w-10 h-10 bg-enot-light-purple/10 rounded-lg flex items-center justify-center group-hover:bg-enot-light-purple/20 transition-colors duration-200">
+                                                                                <span class="text-enot-light-purple font-semibold text-sm leading-none flex items-center justify-center w-full h-full">{{ $serviceIndex + 1 }}</span>
+                                                                            </div>
+                                                                            <div>
+                                                                                <a href="{{ route('service_page', [$servicePrimaryCategory->href, $service->transform_url ?? $service->href]) }}" 
+                                                                                   class="block">
+                                                                                    <h4 class="text-sm font-semibold text-gray-800 group-hover:text-enot-light-purple transition-colors duration-200 cursor-pointer">
+                                                                                        {{ $service->name }}
+                                                                                        @if($service->marker !== null)<br><span class="p-2 bg-enot-pink rounded-3xl font-sans text-sm text-white block my-2" style="width: fit-content;">{{ $service->marker }}</span> @endif
+                                                                                    </h4>
+                                                                                    <p class="text-sm text-gray-500">Професійна обробка</p>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="text-right">
+                                                                            @php
+                                                                                $originalPrice = floatval($service->price ?? 0);
+                                                                                $hasPrice = $originalPrice > 0;
+                                                                                $discountedPrice = $originalPrice;
+                                                                                $hasDiscount = false;
+                                                                                
+                                                                                if ($hasPrice) {
+                                                                                    foreach ($service->categories as $serviceCategory) {
+                                                                                        if ($serviceCategory->hasActiveDiscount()) {
+                                                                                            $discountedPrice = floatval($serviceCategory->calculateDiscountedPrice($originalPrice));
+                                                                                            $hasDiscount = true;
+                                                                                            break;
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            @endphp
+                                                                            
+                                                                            @if ($hasPrice)
+                                                                                @if ($hasDiscount)
+                                                                                    <div class="space-y-1">
+                                                                                        <div class="text-lg font-bold text-enot-light-purple">
+                                                                                            {{ number_format($discountedPrice, 0) }}₴</div>
+                                                                                        <div class="text-sm text-gray-400 line-through">
+                                                                                            {{ number_format($originalPrice, 0) }}₴</div>
+                                                                                        <div class="text-xs text-green-600 font-semibold">
+                                                                                            -{{ $service->categories->first()->getDiscountPercent() }}%
+                                                                                            знижка
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @else
+                                                                                    <div class="text-lg font-bold text-enot-light-purple">{{ number_format($originalPrice, 0) }}₴@if($service->marker !== null)<br><span class="text-right font-sans text-sm text-secondary">Акційна ціна!</span> @endif</div>
+                                                                                @endif
+                                                                                <div class="text-xs text-gray-500">за одиницю</div>
+                                                                            @else
+                                                                                <div class="text-sm text-gray-400 italic">Ціна за запитом</div>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    @if($hasPrice)
+                                                                        <div class="mt-4">
+                                                                            @php
+                                                                                $finalPrice = $hasDiscount ? $discountedPrice : $originalPrice;
+                                                                            @endphp
+                                                                            @include('components.add-to-cart-button', [
+                                                                                'serviceId' => $service->id,
+                                                                                'serviceName' => $service->name,
+                                                                                'hasIndividual' => ($service->individual_price ?? 0) > 0,
+                                                                                'price' => $finalPrice,
+                                                                                'individualPrice' => $service->individual_price ?? 0
+                                                                            ])
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @endif
 
                                             </div>
                                         @else
@@ -455,6 +562,9 @@
     const mobileOptions = document.querySelectorAll('.mobile-category-option');
     const groupTabButtons = document.querySelectorAll('.group-tab-btn');
     
+    // Subcategory tab elements
+    const subcategoryTabButtons = document.querySelectorAll('.subcategory-tab-btn');
+    
     // Search elements
     const searchInput = document.getElementById('service-search');
     const clearSearchBtn = document.getElementById('clear-search');
@@ -538,6 +648,47 @@
             setTimeout(() => {
                 targetCat.classList.add('active');
             }, 10);
+            
+            // Reset subcategory tabs - show first tab by default
+            const parentCategory = targetCategory;
+            const parentTabButtons = targetCat.querySelectorAll(
+                `.subcategory-tab-btn[data-parent-category="${parentCategory}"]`
+            );
+            if (parentTabButtons.length > 0) {
+                // Reset all buttons
+                parentTabButtons.forEach(btn => {
+                    btn.classList.remove('bg-enot-light-purple', 'text-white', 'shadow-md');
+                    btn.classList.add('hover:bg-gray-100', 'text-gray-700');
+                });
+                
+                // Activate first button
+                const firstButton = parentTabButtons[0];
+                if (firstButton) {
+                    firstButton.classList.add('bg-enot-light-purple', 'text-white', 'shadow-md');
+                    firstButton.classList.remove('hover:bg-gray-100', 'text-gray-700');
+                    
+                    // Get the subcategory from first button
+                    const firstSubcategory = firstButton.getAttribute('data-subcategory');
+                    
+                    // Hide all subcategory services
+                    const allSubcategoryServices = targetCat.querySelectorAll(
+                        `.subcategory-services[data-parent-category="${parentCategory}"]`
+                    );
+                    allSubcategoryServices.forEach(services => {
+                        services.classList.add('hidden');
+                        services.style.display = 'none';
+                    });
+                    
+                    // Show first subcategory services
+                    const firstServices = targetCat.querySelector(
+                        `.subcategory-services[data-parent-category="${parentCategory}"][data-subcategory="${firstSubcategory}"]`
+                    );
+                    if (firstServices) {
+                        firstServices.classList.remove('hidden');
+                        firstServices.style.display = 'block';
+                    }
+                }
+            }
         });
 
         // Update mobile selector text
@@ -1351,6 +1502,45 @@
         });
     });
 
+    // Subcategory tabs handler
+    subcategoryTabButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const parentCategory = this.getAttribute('data-parent-category');
+            const subcategory = this.getAttribute('data-subcategory');
+            
+            // Update tab buttons for this parent category
+            const parentTabButtons = document.querySelectorAll(
+                `.subcategory-tab-btn[data-parent-category="${parentCategory}"]`
+            );
+            parentTabButtons.forEach(btn => {
+                btn.classList.remove('bg-enot-light-purple', 'text-white', 'shadow-md');
+                btn.classList.add('hover:bg-gray-100', 'text-gray-700');
+            });
+            
+            // Activate clicked tab
+            this.classList.add('bg-enot-light-purple', 'text-white', 'shadow-md');
+            this.classList.remove('hover:bg-gray-100', 'text-gray-700');
+            
+            // Hide all subcategory services for this parent category
+            const allSubcategoryServices = document.querySelectorAll(
+                `.subcategory-services[data-parent-category="${parentCategory}"]`
+            );
+            allSubcategoryServices.forEach(services => {
+                services.classList.add('hidden');
+                services.style.display = 'none';
+            });
+            
+            // Show selected subcategory services
+            const selectedServices = document.querySelectorAll(
+                `.subcategory-services[data-parent-category="${parentCategory}"][data-subcategory="${subcategory}"]`
+            );
+            selectedServices.forEach(services => {
+                services.classList.remove('hidden');
+                services.style.display = 'block';
+            });
+        });
+    });
+
     if (mobileSelector) {
                 mobileSelector.addEventListener('click', function (e) {
             e.preventDefault();
@@ -1755,6 +1945,57 @@
         // Передаем параметр userInitiated в оригинальную функцию
         currentSwitchTab(targetCategory, userInitiated);
     };
+
+    // Initialize subcategory tabs for active category on page load
+    function initializeSubcategoryTabs() {
+        const activeCategory = document.querySelector('.price-category.active');
+        if (activeCategory) {
+            const categoryHref = activeCategory.getAttribute('data-category');
+            const parentTabButtons = activeCategory.querySelectorAll(
+                `.subcategory-tab-btn[data-parent-category="${categoryHref}"]`
+            );
+            
+            if (parentTabButtons.length > 0) {
+                // Reset all buttons
+                parentTabButtons.forEach(btn => {
+                    btn.classList.remove('bg-enot-light-purple', 'text-white', 'shadow-md');
+                    btn.classList.add('hover:bg-gray-100', 'text-gray-700');
+                });
+                
+                // Activate first button
+                const firstButton = parentTabButtons[0];
+                if (firstButton) {
+                    firstButton.classList.add('bg-enot-light-purple', 'text-white', 'shadow-md');
+                    firstButton.classList.remove('hover:bg-gray-100', 'text-gray-700');
+                    
+                    const firstSubcategory = firstButton.getAttribute('data-subcategory');
+                    
+                    // Hide all subcategory services
+                    const allSubcategoryServices = activeCategory.querySelectorAll(
+                        `.subcategory-services[data-parent-category="${categoryHref}"]`
+                    );
+                    allSubcategoryServices.forEach(services => {
+                        services.classList.add('hidden');
+                        services.style.display = 'none';
+                    });
+                    
+                    // Show first subcategory services
+                    const firstServices = activeCategory.querySelector(
+                        `.subcategory-services[data-parent-category="${categoryHref}"][data-subcategory="${firstSubcategory}"]`
+                    );
+                    if (firstServices) {
+                        firstServices.classList.remove('hidden');
+                        firstServices.style.display = 'block';
+                    }
+                }
+            }
+        }
+    }
+
+    // Initialize subcategory tabs on page load
+    setTimeout(() => {
+        initializeSubcategoryTabs();
+    }, 100);
 
     // Автоматический поиск при загрузке страницы с параметром search
     const urlParams = new URLSearchParams(window.location.search);

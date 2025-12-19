@@ -131,7 +131,10 @@
                                         
                                         {{-- Service Name --}}
                                         <div class="md:col-span-6 col-span-2">
-                                            <a href="{{ route('service_page', $service->transform_url ?? $service->href) }}" 
+                                            @php
+                                                $primaryCategory = $service->getPrimaryCategory() ?? $category;
+                                            @endphp
+                                            <a href="{{ route('service_page', [$primaryCategory->href, $service->transform_url ?? $service->href]) }}" 
                                                class="block">
                                                 <h3 class="text-lg font-sans text-gray-800 group-hover:text-primary transition-colors duration-200 cursor-pointer">
                                                     {{ $service->name }}
@@ -254,7 +257,10 @@
                                                 
                                                 {{-- Service Name --}}
                                                 <div class="md:col-span-6 col-span-2">
-                                                    <a href="{{ route('service_page', $service->transform_url ?? $service->href) }}" 
+                                                    @php
+                                                $primaryCategory = $service->getPrimaryCategory() ?? $category;
+                                            @endphp
+                                            <a href="{{ route('service_page', [$primaryCategory->href, $service->transform_url ?? $service->href]) }}" 
                                                        class="block">
                                                         <h3 class="text-lg font-sans text-gray-800 group-hover:text-primary transition-colors duration-200 cursor-pointer">
                                                             {{ $service->name }}

@@ -17,7 +17,7 @@ use App\Http\Controllers\CartController;
 
 Route::get('/', [IndexServices::class, 'index'])->name('welcome');
 Route::get('/poslugi-ta-cini', [IndexServices::class, 'services'])->name('services');
-Route::get('/poslugi-ta-cini/posluga/{service}', [IndexServices::class, 'service_page'])->name('service_page');
+Route::get('/poslugi-ta-cini/{category}/posluga/{service}', [IndexServices::class, 'service_page'])->name('service_page');
 Route::get('/poslugi-ta-cini/{category}', [IndexServices::class, 'category_page'])->name('category_page');
 Route::get('/api/search-services', [IndexServices::class, 'searchServices'])->name('search_services');
 Route::get('/api/placeholder-services', [IndexServices::class, 'getPlaceholderServices'])->name('placeholder_services');

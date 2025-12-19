@@ -24,6 +24,32 @@ class Service extends Model
         return $this->belongsToMany(Group::class, 'service_group');
     }
 
+    /**
+     * Получить первичную категорию услуги (конкретную категорию, к которой привязана услуга)
+     * Приоритет: сначала дочерние категории, потом родительские
+     */
+    public function getPrimaryCategory()
+    {
+        // Загружаем категории с их родителями, если еще не загружены
+        if (!$this->relationLoaded('categories')) {
+            $this->load('categories');
+        }
+        
+        $categories = $this->categories;
+        
+        if ($categories->isEmpty()) {
+            return null;
+        }
+        
+        // Ищем дочернюю категорию (с parent_id) - это приоритет
+        $childCategory = $categories->first(function($category) {
+            return $category->parent_id !== null;
+        });
+        
+        // Если есть дочерняя категория, возвращаем её, иначе первую категорию
+        return $childCategory ?? $categories->first();
+    }
+
     protected static function boot()
     {
         parent::boot();

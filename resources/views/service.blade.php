@@ -182,7 +182,10 @@
                             <h3 class="text-xl font-bold text-gray-900 mb-4">Інші послуги</h3>
                             <div class="space-y-4">
                                 @foreach($otherServices as $otherService)
-                                    <a href="{{ route('service_page', $otherService->transform_url ?? $otherService->href) }}" 
+                                    @php
+                                        $otherServicePrimaryCategory = $otherService->getPrimaryCategory() ?? $primaryCategory;
+                                    @endphp
+                                    <a href="{{ route('service_page', [$otherServicePrimaryCategory->href ?? $primaryCategory->href, $otherService->transform_url ?? $otherService->href]) }}" 
                                        class="block p-4 bg-gray-50 rounded-xl hover:bg-primary/5 transition-colors duration-300 group">
                                         <h4 class="font-semibold text-gray-800 group-hover:text-primary transition-colors duration-300 mb-2">
                                             {{ $otherService->name }}
