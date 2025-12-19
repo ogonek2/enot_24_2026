@@ -42,11 +42,20 @@ class ServiceResource extends Resource
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->label('Назва послуги')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $set, $get) {
+                                // Генерируем слаг автоматически, если transform_url пустой
+                                if (empty($get('transform_url'))) {
+                                    $slug = Service::generateHref($state);
+                                    $set('transform_url', $slug);
+                                }
+                            }),
                         Forms\Components\TextInput::make('transform_url')
                             ->label('URL адреса')
                             ->maxLength(255)
-                            ->helperText('Буде згенеровано автоматично, якщо залишити порожнім'),
+                            ->helperText('Буде згенеровано автоматично з назви, якщо залишити порожнім')
+                            ->dehydrated(),
                         Forms\Components\RichEditor::make('description')
                             ->label('Опис')
                             ->toolbarButtons([

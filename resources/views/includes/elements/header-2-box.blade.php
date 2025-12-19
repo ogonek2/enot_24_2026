@@ -31,7 +31,7 @@
                                                 {{ $otherCategory->name }}
                                             </h3>
                                             <p class="text-sm text-gray-500">
-                                                {{ $otherCategory->services->count() }} {{ $otherCategory->services->count() === 1 ? 'послуга' : 'послуг' }}
+                                                {{ $otherCategory->getAllServices()->count() }} {{ $otherCategory->getAllServices()->count() === 1 ? 'послуга' : 'послуг' }}
                                             </p>
                                             @if($otherCategory->hasActiveDiscount())
                                                 <span class="mt-2 inline-block bg-primary/10 text-primary text-xs font-semibold px-2 py-1 rounded-full">

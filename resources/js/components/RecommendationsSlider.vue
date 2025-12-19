@@ -20,7 +20,18 @@
             </transition>
 
             <!-- Swiper Container -->
-            <div class="swiper recommendations-swiper">
+            <div class="swiper recommendations-swiper relative">
+                <!-- Swipe Hint Icon -->
+                <div v-if="showSwipeHint" class="swipe-hint-icon">
+                    <div class="swipe-hand-container">
+                        <div class="swipe-arrows-wrapper">
+                            <i class="fas fa-chevron-left swipe-arrow-icon"></i>
+                            <i class="fas fa-hand-pointer swipe-hand-icon"></i>
+                            <i class="fas fa-chevron-right swipe-arrow-icon"></i>
+                        </div>
+                    </div>
+                    <div class="swipe-text">Свайпніть</div>
+                </div>
                 <div class="swiper-wrapper">
                     <div 
                         v-for="(slide, slideIndex) in slides" 
@@ -175,6 +186,7 @@ export default {
                 }
             ],
             swiper: null,
+            showSwipeHint: true,
             pulseEffects: [
                 { class: 'top-[30%] left-[30%]', delay: '0s' },
                 { class: 'bottom-[30%] left-[35%]', delay: '0.7s' },
@@ -217,6 +229,20 @@ export default {
                         clickable: true,
                         dynamicBullets: true
                     },
+                    on: {
+                        slideChange: () => {
+                            // Скрываем подсказку после первого свайпа
+                            if (this.showSwipeHint) {
+                                this.showSwipeHint = false;
+                            }
+                        },
+                        touchStart: () => {
+                            // Скрываем подсказку при начале взаимодействия
+                            if (this.showSwipeHint) {
+                                this.showSwipeHint = false;
+                            }
+                        }
+                    },
                     breakpoints: {
                         640: {
                             slidesPerView: 1,
@@ -233,12 +259,19 @@ export default {
                     }
                 });
             }
+        },
+        hideSwipeHintAfterDelay() {
+            // Автоматически скрываем подсказку через 5 секунд
+            setTimeout(() => {
+                this.showSwipeHint = false;
+            }, 5000);
         }
     },
     mounted() {
         this.$nextTick(() => {
             setTimeout(() => {
                 this.initSwiper();
+                this.hideSwipeHintAfterDelay();
             }, 100);
         });
     },
@@ -560,6 +593,135 @@ export default {
     75%, 100% {
         transform: scale(2);
         opacity: 0;
+    }
+}
+
+/* Swipe Hint Icon */
+.swipe-hint-icon {
+    position: absolute;
+    top: 50%;
+    right: 2rem;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    pointer-events: none;
+    animation: swipeHint 2s ease-in-out infinite;
+    opacity: 0.8;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+@media (max-width: 768px) {
+    .swipe-hint-icon {
+        right: 1rem;
+        top: 1rem;
+        transform: none;
+    }
+}
+
+.swipe-hand-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swipe-arrows-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.swipe-hand-icon {
+    font-size: 32px;
+    color: #E75A84;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    animation: handSwipe 2s ease-in-out infinite;
+    transform-origin: center;
+}
+
+.swipe-arrow-icon {
+    font-size: 16px;
+    color: #E75A84;
+    opacity: 0.7;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.swipe-arrow-icon:first-child {
+    animation: arrowLeft 2s ease-in-out infinite;
+}
+
+.swipe-arrow-icon:last-child {
+    animation: arrowRight 2s ease-in-out infinite;
+}
+
+@keyframes handSwipe {
+    0%, 100% {
+        transform: translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: translateX(-12px) rotate(-10deg);
+    }
+    75% {
+        transform: translateX(12px) rotate(10deg);
+    }
+}
+
+@keyframes arrowLeft {
+    0%, 100% {
+        opacity: 0.4;
+        transform: translateX(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-8px);
+    }
+}
+
+@keyframes arrowRight {
+    0%, 100% {
+        opacity: 0.4;
+        transform: translateX(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(8px);
+    }
+}
+
+.swipe-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #E75A84;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes swipeHint {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(-50%) translateX(-15px);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    @keyframes swipeHint {
+        0%, 100% {
+            transform: translateX(0);
+            opacity: 0.8;
+        }
+        50% {
+            transform: translateX(-15px);
+            opacity: 1;
+        }
     }
 }
 </style>

@@ -50,20 +50,12 @@ class IconResource extends Resource
                             ->directory('src/icons_svg')
                             ->disk('public')
                             ->visibility('public')
-                            ->acceptedFileTypes(['image/svg+xml', 'image/png', 'image/jpeg'])
+                            ->acceptedFileTypes(['image/svg+xml', 'image/svg', 'image/png', 'image/jpeg', 'image/jpg'])
                             ->maxSize(2048)
                             ->required()
                             ->helperText('SVG, PNG або JPEG. Максимальний розмір: 2MB')
-                            ->afterStateUpdated(function ($state, callable $set, $record) {
-                                if ($state) {
-                                    $fullPath = storage_path('app/public/' . $state);
-                                    if (file_exists($fullPath)) {
-                                        $set('file_name', basename($state));
-                                        $set('mime_type', mime_content_type($fullPath));
-                                        $set('file_size', filesize($fullPath));
-                                    }
-                                }
-                            }),
+                            ->storeFileNamesIn('file_name')
+                            ->imagePreviewHeight('150'),
                     ]),
             ]);
     }

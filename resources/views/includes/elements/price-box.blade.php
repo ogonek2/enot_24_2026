@@ -59,7 +59,7 @@
                         <div id="mobile-category-dropdown"
                             class="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-xl shadow-lg z-50 hidden">
                         <div class="py-2">
-                            @foreach ($categories->filter(fn($category) => $category->services->isNotEmpty()) as $index => $category)
+                            @foreach ($categories->filter(fn($category) => $category->getAllServices()->isNotEmpty()) as $index => $category)
                                     <button
                                         class="mobile-category-option w-full text-left px-6 py-3 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-enot-light-purple text-white' : '' }}"
                                         data-category="{{ $category->href }}" data-name="{{ $category->name }}">
@@ -69,7 +69,7 @@
                                     <span class="font-medium">{{ $category->name }}</span>
                                         </div>
                                         <span
-                                            class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{{ $category->services->count() }}</span>
+                                            class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{{ $category->getAllServices()->count() }}</span>
                                 </button>
                             @endforeach
                         </div>
@@ -142,7 +142,7 @@
                             </h3>
                                 <nav
                                     class="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                                @foreach ($categories->filter(fn($category) => $category->services->isNotEmpty()) as $index => $category)
+                                @foreach ($categories->filter(fn($category) => $category->getAllServices()->isNotEmpty()) as $index => $category)
                                         <button
                                             class="price-tab-btn w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-300 {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-enot-light-purple shadow-md text-black' : 'hover:bg-white hover:shadow-sm text-black' }}"
                                         data-category="{{ $category->href }}">
@@ -154,7 +154,7 @@
                                                     <span class="font-medium">{{ $category->name }}</span>
                                                 </div>
                                                 <span class="text-xs opacity-75 bg-gray-100 px-2 py-1 rounded-full"
-                                                    style="color: #000 !important;">{{ $category->services->count() }}</span>
+                                                    style="color: #000 !important;">{{ $category->getAllServices()->count() }}</span>
                                         </div>
                                     </button>
                                 @endforeach
@@ -165,7 +165,7 @@
 
                     {{-- Main Content --}}
                     <div class="flex-1">
-                        <div class="bg-white rounded-2xl shadow-lg border border-gray-200">
+                        <div class="bg-white rounded-2xl shadow-lg overflow-hidden relative border border-gray-200">
                             {{-- Search Results Container --}}
                             <div id="search-results-container" class="hidden">
                                 <div class="bg-gradient-to-r from-accent/30 to-enot-light-purple/20 px-8 py-6 border-b border-gray-200">
@@ -193,7 +193,7 @@
                             </div>
 
                             <div class="price-content">
-                                @foreach ($categories->filter(fn($category) => $category->services->isNotEmpty()) as $index => $category)
+                                @foreach ($categories->filter(fn($category) => $category->getAllServices()->isNotEmpty()) as $index => $category)
 
                                     <div class="price-category {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'active' : '' }}"
                                         data-category="{{ $category->href }}">
@@ -203,7 +203,7 @@
                                             <div class="flex items-center justify-between">
                                                 <div>
                                                     <h3 class="text-2xl font-bold text-gray-800">{{ $category->name }}</h3>
-                                                    <p class="text-gray-600 mt-1">{{ $category->services->count() }} послуг</p>
+                                                    <p class="text-gray-600 mt-1">{{ $category->getAllServices()->count() }} послуг</p>
                                                 </div>
                                                 <div class="w-12 h-12 bg-enot-light-purple/10 rounded-full flex items-center justify-center">
                                                     <i class="fas fa-list text-enot-light-purple text-xl"></i>
@@ -214,12 +214,15 @@
 
 
                                         {{-- Services List --}}
-                                        @if ($category->services->count() > 0)
+                                        @php
+                                            $allServices = $category->getAllServices();
+                                        @endphp
+                                        @if ($allServices->count() > 0)
                                             <div class="category-services" data-category="{{ $category->href }}">
-                                                <div class="group-services {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'active' : '' }}"
+<div class="group-services {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'active' : '' }}"
                                                     data-category="{{ $category->href }}" data-group="all">
                                                     <div class="divide-y divide-gray-200">
-                                                        @foreach ($category->services as $serviceIndex => $service)
+                                                        @foreach ($allServices as $serviceIndex => $service)
                                                             <div
                                                                 class="service-item px-8 py-6 hover:bg-gray-50 transition-colors duration-200 group">
                                                                 <div class="flex items-center justify-between">
@@ -419,13 +422,13 @@
                 <div id="sticky-mobile-category-dropdown"
                     class="absolute bottom-full left-4 right-4 mb-2 bg-white border border-gray-300 rounded-xl shadow-lg z-50 hidden">
                         <div class="py-2 max-h-60 overflow-y-auto">
-                            @foreach ($categories->filter(fn($category) => $category->services->isNotEmpty()) as $index => $category)
+                            @foreach ($categories->filter(fn($category) => $category->getAllServices()->isNotEmpty()) as $index => $category)
                             <button
                                 class="sticky-mobile-category-option w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between {{ (isset($activeCategory) && $category->href === $activeCategory->href) ? 'bg-enot-light-purple text-white' : '' }}"
                                 data-category="{{ $category->href }}" data-name="{{ $category->name }}">
                                     <span class="font-medium">{{ $category->name }}</span>
                                 <span
-                                    class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{{ $category->services->count() }}</span>
+                                    class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{{ $category->getAllServices()->count() }}</span>
                             </button>
                             @endforeach
                         </div>
@@ -918,9 +921,6 @@
                                 <div class="flex items-center space-x-2 mb-1">
                                     <h4 class="text-sm font-semibold text-gray-800 group-hover:text-enot-light-purple transition-colors duration-200">
                                         ${service.name}</h4>
-                                    <span class="text-xs ${relevanceColor} bg-gray-100 px-2 py-1 rounded-full">
-                                        ${relevanceText} (${Math.round(relevanceScore)}%)
-                                    </span>
                                 </div>
                                 <p class="text-sm text-gray-500">
                                     Категорія: ${categoriesText}

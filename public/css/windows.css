@@ -1,1 +1,137 @@
-@font-face{font-display:swap;font-family:f_inter;font-style:normal;font-weight:400;src:url(/fonts/Inter_24pt-Regular.ttf)}@font-face{font-display:swap;font-family:f_inter;font-style:normal;font-weight:700;src:url(/fonts/Inter_24pt-Bold.ttf)}@font-face{font-display:swap;font-family:f_inter;font-style:normal;font-weight:600;src:url(/fonts/Inter_24pt-SemiBold.ttf)}:root{--var-color-1:#fff;--var-color-2:#000;--var-color-3:#b0a8fe;--var-color-4:#fdd9e5;--var-color-5:#c47e93;--var-background-color:#fff;--var-max-width:1440px;--var-horizontal-padding:25px;--var-vertical-padding:20px;--shadow-sm:0 2px 4px rgba(0,0,0,.1);--shadow-md:0 4px 12px rgba(0,0,0,.15);--shadow-lg:0 8px 24px rgba(0,0,0,.2);--border-radius-sm:8px;--border-radius-md:12px;--border-radius-lg:20px;--border-radius-xl:25px;--transition-fast:0.15s ease-in-out;--transition-normal:0.25s ease-in-out;--transition-slow:0.35s ease-in-out}@media (max-width:1080px){:root{--var-horizontal-padding:15px}}.modal{align-items:center;display:flex;flex-direction:column;height:100%;justify-content:center;position:fixed;width:100%;z-index:10000}.modal .modal-container{background-color:var(--var-color-1);max-width:480px;padding:var(--var-vertical-padding) var(--var-horizontal-padding);position:relative;width:100%;z-index:10}.modal .modal-container .m-head{padding:0 0 15px}.modal .modal-container .m-head h1{font-size:24px;font-weight:600}.modal .modal-container .m-head p{color:var(--var-color-3);font-size:14px}.modal .modal-container .m-head span{cursor:pointer;font-size:20px;position:absolute;right:15px;top:15px}.modal .modal-container .m-head span:hover{color:var(--var-color-3);opacity:.7}.modal .modal-container .m-body{width:100%}.modal .modal-container .m-body form{display:flex;flex-direction:column;gap:25px;width:100%}.modal .modal-container .m-body form .enter-element{display:flex;flex-direction:column;gap:5px;width:100%}.modal .modal-container .m-body form .enter-element label{font-size:16px}.modal .modal-container .m-body form .enter-element input{background-color:#f3f3f3;border-radius:12px;font-size:16px;font-weight:200;height:48px;text-indent:var(--var-horizontal-padding);width:100%}.modal .modal-container .m-body form .enter-element input:focus{outline:1px solid var(--var-color-3)}.modal .modal-container .m-body form .btn-sb,.modal .modal-container .m-body form .btn-sb button,.modal .modal-container .m-body form .btn-sb button .btn{width:100%}.modal .overlay{-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);background-color:rgba(0,0,0,.6);height:100%;position:fixed;width:100%;z-index:1}
+@font-face {
+  font-family: "f_inter";
+  src: url("/fonts/Inter_24pt-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "f_inter";
+  src: url("/fonts/Inter_24pt-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "f_inter";
+  src: url("/fonts/Inter_24pt-SemiBold.ttf");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+:root {
+  --var-color-1: #ffffff;
+  --var-color-2: #000000;
+  --var-color-3: #b0a8fe;
+  --var-color-4: #fdd9e5;
+  --var-color-5: #c47e93;
+  --var-background-color: #ffffff;
+  --var-max-width: 1440px;
+  --var-horizontal-padding: 25px;
+  --var-vertical-padding: 20px;
+  /* Modern CSS variables for better design */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 20px;
+  --border-radius-xl: 25px;
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.25s ease-in-out;
+  --transition-slow: 0.35s ease-in-out;
+}
+@media (max-width: 1080px) {
+  :root {
+    --var-horizontal-padding: 15px;
+  }
+}
+
+.modal {
+  width: 100%;
+  position: fixed;
+  z-index: 10000;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.modal .modal-container {
+  width: 100%;
+  max-width: 480px;
+  padding: var(--var-vertical-padding) var(--var-horizontal-padding);
+  background-color: var(--var-color-1);
+  z-index: 10;
+  position: relative;
+}
+.modal .modal-container .m-head {
+  padding: 0 0 15px;
+}
+.modal .modal-container .m-head h1 {
+  font-size: 24px;
+  font-weight: 600;
+}
+.modal .modal-container .m-head p {
+  font-size: 14px;
+  color: var(--var-color-3);
+}
+.modal .modal-container .m-head span {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.modal .modal-container .m-head span:hover {
+  opacity: 0.7;
+  color: var(--var-color-3);
+}
+.modal .modal-container .m-body {
+  width: 100%;
+}
+.modal .modal-container .m-body form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+}
+.modal .modal-container .m-body form .enter-element {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.modal .modal-container .m-body form .enter-element label {
+  font-size: 16px;
+}
+.modal .modal-container .m-body form .enter-element input {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  background-color: #F3F3F3;
+  text-indent: var(--var-horizontal-padding);
+  font-size: 16px;
+  font-weight: 200;
+}
+.modal .modal-container .m-body form .enter-element input:focus {
+  outline: 1px solid var(--var-color-3);
+}
+.modal .modal-container .m-body form .btn-sb {
+  width: 100%;
+}
+.modal .modal-container .m-body form .btn-sb button {
+  width: 100%;
+}
+.modal .modal-container .m-body form .btn-sb button .btn {
+  width: 100%;
+}
+.modal .overlay {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+}

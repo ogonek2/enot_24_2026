@@ -10,7 +10,7 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'href', 'discount_percent', 'discount_active', 'category_type', 'category_img'
+        'name', 'href', 'discount_percent', 'discount_active', 'category_type', 'category_img', 'sort_order', 'parent_id'
     ];
 
     protected $casts = [
@@ -20,6 +20,69 @@ class Category extends Model
     public function services()
     {
         return $this->belongsToMany(Service::class);
+    }
+
+    /**
+     * Родительская категория
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+
+    /**
+     * Вложенные категории
+     */
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id')->orderBy('sort_order', 'asc');
+    }
+
+    /**
+     * Получить все услуги категории и всех её дочерних категорий
+     */
+    public function getAllServices()
+    {
+        // Загружаем услуги текущей категории, если они еще не загружены
+        if (!$this->relationLoaded('services')) {
+            $this->load('services');
+        }
+        
+        $services = $this->services;
+        
+        // Загружаем дочерние категории, если они еще не загружены
+        if (!$this->relationLoaded('children')) {
+            $this->load('children.services');
+        }
+        
+        foreach ($this->children as $child) {
+            $services = $services->merge($child->getAllServices());
+        }
+        
+        return $services->unique('id');
+    }
+
+    /**
+     * Проверить, является ли категория вложенной
+     */
+    public function isChild()
+    {
+        return !is_null($this->parent_id);
+    }
+
+    /**
+     * Получить все дочерние категории рекурсивно
+     */
+    public function getAllDescendants()
+    {
+        $descendants = collect();
+        
+        foreach ($this->children as $child) {
+            $descendants->push($child);
+            $descendants = $descendants->merge($child->getAllDescendants());
+        }
+        
+        return $descendants;
     }
 
     /**

@@ -29,8 +29,8 @@ class Service extends Model
         parent::boot();
 
         static::saving(function ($service) {
-            // Генерируем transform_url если не указан
-            if (empty($service->transform_url)) {
+            // Генерируем transform_url если не указан и есть название
+            if (empty($service->transform_url) && !empty($service->name)) {
                 $service->transform_url = self::generateHref($service->name);
             }
         });

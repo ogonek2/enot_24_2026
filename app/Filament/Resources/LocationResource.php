@@ -34,6 +34,10 @@ class LocationResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Основна інформація')
                     ->schema([
+                        Forms\Components\TextInput::make('sort_order')
+                            ->label('Порядок сортування')
+                            ->numeric()
+                            ->helperText('Чим менше число, тим вище в списку. Якщо не вказано, буде автоматично встановлено максимальне значення + 1'),
                         Forms\Components\Textarea::make('street')
                             ->label('Адреса (вулиця)')
                             ->required()
@@ -116,6 +120,10 @@ class LocationResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('sort_order')
+                    ->label('Порядок')
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->sortable(),
@@ -185,7 +193,7 @@ class LocationResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
-            ->defaultSort('city', 'asc');
+            ->defaultSort('sort_order', 'asc');
     }
     
     public static function getRelations(): array

@@ -35,6 +35,24 @@ class CategoryResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Основна інформація')
                     ->schema([
+                        Forms\Components\Select::make('parent_id')
+                            ->label('Батьківська категорія')
+                            ->options(function ($record) {
+                                $query = Category::query()->whereNull('parent_id');
+                                // Исключаем текущую категорию из списка, чтобы избежать циклических ссылок
+                                if ($record) {
+                                    $query->where('id', '!=', $record->id);
+                                    // Также исключаем всех потомков текущей категории
+                                    $descendantIds = $record->getAllDescendants()->pluck('id')->toArray();
+                                    if (!empty($descendantIds)) {
+                                        $query->whereNotIn('id', $descendantIds);
+                                    }
+                                }
+                                return $query->orderBy('sort_order')->pluck('name', 'id')->toArray();
+                            })
+                            ->searchable()
+                            ->helperText('Оберіть батьківську категорію, якщо це вкладена категорія')
+                            ->nullable(),
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->label('Назва категорії')
@@ -43,11 +61,15 @@ class CategoryResource extends Resource
                             ->label('URL адреса')
                             ->maxLength(255)
                             ->helperText('Буде згенеровано автоматично, якщо залишити порожнім'),
+                        Forms\Components\TextInput::make('sort_order')
+                            ->label('Порядок сортування')
+                            ->numeric()
+                            ->helperText('Чим менше число, тим вище в списку. Якщо не вказано, буде автоматично встановлено максимальне значення + 1'),
                         Forms\Components\TextInput::make('category_type')
                             ->label('Тип категорії')
                             ->numeric()
                             ->default(1)
-                            ->helperText('Число для сортування категорій'),
+                            ->helperText('Тип категорії (для внутрішнього використання)'),
                         Forms\Components\FileUpload::make('category_img')
                             ->label('Іконка категорії')
                             ->image()
@@ -103,13 +125,28 @@ class CategoryResource extends Resource
                         // Формируем правильный URL как в Blade: asset('storage/' . $category->category_img)
                         return asset('storage/' . $record->category_img);
                     }),
+                Tables\Columns\TextColumn::make('sort_order')
+                    ->label('Порядок')
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Назва')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(function ($record) {
+                        $name = $record->name;
+                        if ($record->parent_id) {
+                            $name = '└ ' . $name;
+                        }
+                        return $name;
+                    }),
+                Tables\Columns\TextColumn::make('parent.name')
+                    ->label('Батьківська категорія')
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('category_type')
                     ->label('Тип')
                     ->sortable(),
@@ -148,7 +185,7 @@ class CategoryResource extends Resource
                     ->trueLabel('Зі знижкою')
                     ->falseLabel('Без знижки'),
             ])
-            ->defaultSort('category_type', 'asc')
+            ->defaultSort('sort_order', 'asc')
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

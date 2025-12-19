@@ -15,14 +15,24 @@ class IndexServices extends Controller
 {
     public function index()
     {
-        // Загружаем все категории (тип 1 и 2) без фильтрации по типу
+        // Загружаем только родительские категории (без вложенных) с услугами и вложенными категориями
         // Загружаем все услуги, включая с ценой 0 (цена будет скрыта в view, если она 0)
-        $categories = Category::with(['services' => function ($query) {
-            $query->orderBy('name');
-        }])
-        ->whereHas('services')
-        // Сортировка: сначала по типу категории (1, 2, 3...), затем по имени
-        ->orderBy('category_type')
+        $categories = Category::with([
+            'services' => function ($query) {
+                $query->orderBy('name');
+            },
+            'children.services' => function ($query) {
+                $query->orderBy('name');
+            }
+        ])
+        ->whereNull('parent_id') // Только родительские категории
+        ->where(function($query) {
+            // Категория должна иметь услуги сама или через дочерние категории
+            $query->whereHas('services')
+                  ->orWhereHas('children.services');
+        })
+        // Сортировка: сначала по порядку сортировки (sort_order), затем по имени
+        ->orderBy('sort_order', 'asc')
         ->orderBy('name')
         ->get();
 
@@ -30,6 +40,8 @@ class IndexServices extends Controller
 
         // Получаем все локации с их городами для слайдера отделений
         $branches = locations::with('cityRelation')
+            ->where('sort_order', '>=', 1)
+            ->orderBy('sort_order', 'asc')
             ->orderBy('city')
             ->orderBy('street')
             ->get()
@@ -56,14 +68,24 @@ class IndexServices extends Controller
     }
     public function services()
     {
-        // Загружаем все категории (тип 1 и 2) без фильтрации по типу
+        // Загружаем только родительские категории (без вложенных) с услугами и вложенными категориями
         // Загружаем все услуги, включая с ценой 0 (цена будет скрыта в view, если она 0)
-        $categories = Category::with(['services' => function ($query) {
-            $query->orderBy('name');
-        }])
-        ->whereHas('services')
-        // Сортировка: сначала по типу категории (1, 2, 3...), затем по имени
-        ->orderBy('category_type')
+        $categories = Category::with([
+            'services' => function ($query) {
+                $query->orderBy('name');
+            },
+            'children.services' => function ($query) {
+                $query->orderBy('name');
+            }
+        ])
+        ->whereNull('parent_id') // Только родительские категории
+        ->where(function($query) {
+            // Категория должна иметь услуги сама или через дочерние категории
+            $query->whereHas('services')
+                  ->orWhereHas('children.services');
+        })
+        // Сортировка: сначала по порядку сортировки (sort_order), затем по имени
+        ->orderBy('sort_order', 'asc')
         ->orderBy('name')
         ->get();
 
@@ -104,9 +126,13 @@ class IndexServices extends Controller
         // Получаем все города с их локациями
         // Сортируем города по ID (от 1 и дальше по возрастанию)
         $cities = cities::with(['locations' => function($query) {
-            $query->orderBy('street');
+            $query->where('sort_order', '>=', 1)
+                  ->orderBy('sort_order', 'asc')
+                  ->orderBy('street');
         }])
-        ->whereHas('locations')
+        ->whereHas('locations', function($query) {
+            $query->where('sort_order', '>=', 1);
+        })
         ->orderBy('id', 'asc')
         ->get();
 
@@ -198,14 +224,14 @@ class IndexServices extends Controller
             $otherCategories = Category::whereHas('services')
                 ->where('id', '!=', $primaryCategory->id)
                 ->with(['services'])
-                ->orderBy('category_type')
+                ->orderBy('sort_order', 'asc')
                 ->orderBy('name')
                 ->limit(4)
                 ->get();
         } else {
             $otherCategories = Category::whereHas('services')
                 ->with(['services'])
-                ->orderBy('category_type')
+                ->orderBy('sort_order', 'asc')
                 ->orderBy('name')
                 ->limit(4)
                 ->get();
@@ -221,9 +247,11 @@ class IndexServices extends Controller
     
     public function category_page($category)
     {
-        // Находим активную категорию с услугами (включая с ценой 0)
+        // Находим активную категорию с услугами и вложенными категориями (включая с ценой 0)
         $activeCategory = Category::where('href', $category)
             ->with(['services' => function ($query) {
+                $query->orderBy('name');
+            }, 'children.services' => function ($query) {
                 $query->orderBy('name');
             }])
             ->first();
@@ -232,14 +260,15 @@ class IndexServices extends Controller
             return abort(404);
         }
 
-        // Получаем другие категории (исключая текущую, включая с ценой 0)
+        // Получаем другие родительские категории (исключая текущую, только родительские)
         $otherCategories = Category::where('id', '!=', $activeCategory->id)
+            ->whereNull('parent_id')
             ->whereHas('services')
             ->with(['services' => function ($query) {
                 $query->orderBy('name');
             }])
-            // Сортировка: сначала по типу категории (1, 2, 3...), затем по имени
-            ->orderBy('category_type')
+            // Сортировка: сначала по порядку сортировки (sort_order), затем по имени
+            ->orderBy('sort_order', 'asc')
             ->orderBy('name')
             ->get();
 

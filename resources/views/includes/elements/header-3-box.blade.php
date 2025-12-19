@@ -30,7 +30,7 @@
                     </div>
                     <div class="text-left lg:text-center">
                         <h3
-                            class="text-xl font-semibold text-enot-pink mb-2 group-hover:text-primary transition-colors">
+                            class="text-xl font-semibold text-black mb-2 group-hover:text-primary transition-colors">
                             {{ $ctaHeader->title }}</h3>
                         @if($ctaHeader->subtitle !== '-') 
                             <p class="text-gray-600 text-sm">{{ $ctaHeader->subtitle }}</p>

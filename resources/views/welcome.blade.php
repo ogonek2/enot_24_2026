@@ -115,7 +115,7 @@
                                         <span class="text-enot-purple"></span>хімчистка</span><br>одягу
                                     </h1>
                                     <p class="text-xl md:text-2xl uppercase text-black font-bold py-3">
-                                        стильно, якісно, та з<br>увагою до деталей
+                                        Гипоаллергенно, якісно, та з<br>увагою до деталей
                                     </p>
                                 </div>
 

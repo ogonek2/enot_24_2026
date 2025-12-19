@@ -9,12 +9,23 @@ class CategoryHelper
     /**
      * Получить категории по типу
      * 
-     * @param int $type Тип категории (1 - основные, 2 - дополнительные)
+     * @param int|null $type Тип категории (1 - основные, 2 - дополнительные, null - все)
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function getByType()
+    public static function getByType($type = null)
     {
-        return Category::all();
+        $query = Category::query()
+            ->whereNull('parent_id') // Только родительские категории
+            ->with(['services', 'children.services']);
+        
+        if ($type !== null) {
+            $query->where('category_type', $type);
+        }
+        
+        // Сортировка: сначала по порядку сортировки (sort_order), затем по имени
+        return $query->orderBy('sort_order', 'asc')
+                     ->orderBy('name')
+                     ->get();
     }
 
     /**
@@ -25,13 +36,18 @@ class CategoryHelper
      */
     public static function getAll($type = null)
     {
-        $query = Category::query();
+        $query = Category::query()
+            ->whereNull('parent_id') // Только родительские категории
+            ->with(['services', 'children.services']);
         
         if ($type !== null) {
             $query->where('category_type', $type);
         }
         
-        return $query->orderBy('name')->get();
+        // Сортировка: сначала по порядку сортировки (sort_order), затем по имени
+        return $query->orderBy('sort_order', 'asc')
+                     ->orderBy('name')
+                     ->get();
     }
 }
 
