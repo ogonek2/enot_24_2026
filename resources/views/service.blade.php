@@ -153,12 +153,12 @@
                         @endif
                     </div>
 
-                    {{-- Description --}}
+                     {{-- Description --}}
                     @if($service->description)
                         <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-6">
                             <h2 class="text-2xl font-bold text-gray-900 mb-4">Опис послуги</h2>
-                            <div class="prose prose-lg max-w-none text-gray-700">
-                                {!! nl2br(e($service->description)) !!}
+                            <div class="rich-text-content">
+                                {!! $service->description !!}
                             </div>
                         </div>
                     @endif
@@ -170,14 +170,6 @@
                             <div class="prose prose-lg max-w-none text-gray-700">
                                 {!! nl2br(e($service->value)) !!}
                             </div>
-                        </div>
-                    @endif
-
-                    {{-- Article --}}
-                    @if($service->article)
-                        <div class="bg-gray-50 rounded-xl p-4 mb-6">
-                            <span class="text-sm text-gray-600">Артикул: </span>
-                            <span class="text-sm font-semibold text-gray-900">{{ $service->article }}</span>
                         </div>
                     @endif
                 </div>

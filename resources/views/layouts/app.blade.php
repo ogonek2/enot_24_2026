@@ -36,6 +36,70 @@
             background-size: contain !important;
         }
         
+        
+        /* Rich text from service editor – списки, ссылки, заголовки и т.д. */
+        .rich-text-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #111827;
+        }
+
+        .rich-text-content p {
+            margin-bottom: 0.75rem;
+        }
+
+        .rich-text-content ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .rich-text-content ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .rich-text-content li {
+            margin-bottom: 0.25rem;
+        }
+
+        .rich-text-content a {
+            color: #ec4899;
+            text-decoration: underline;
+        }
+
+        .rich-text-content strong,
+        .rich-text-content b {
+            font-weight: 600;
+        }
+
+        .rich-text-content em,
+        .rich-text-content i {
+            font-style: italic;
+        }
+
+        .rich-text-content h2,
+        .rich-text-content h3,
+        .rich-text-content h4 {
+            font-weight: 700;
+            margin-top: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #111827;
+        }
+
+        .rich-text-content h2 {
+            font-size: 1.5rem;
+        }
+
+        .rich-text-content h3 {
+            font-size: 1.25rem;
+        }
+
+        .rich-text-content h4 {
+            font-size: 1.125rem;
+        }
+        
         /* Отступ для контента, чтобы не перекрывался fixed навбаром */
         .app-container-elements {
             padding-top:40px !important;

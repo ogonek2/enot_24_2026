@@ -47,10 +47,24 @@ class ServiceResource extends Resource
                             ->label('URL адреса')
                             ->maxLength(255)
                             ->helperText('Буде згенеровано автоматично, якщо залишити порожнім'),
-                        Forms\Components\Textarea::make('description')
+                        Forms\Components\RichEditor::make('description')
                             ->label('Опис')
-                            ->rows(4)
-                            ->maxLength(2000),
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'strike',
+                                'bulletList',
+                                'orderedList',
+                                'blockquote',
+                                'link',
+                                'h2',
+                                'h3',
+                                'codeBlock',
+                                'undo',
+                                'redo',
+                            ])
+                            ->columnSpanFull(),
                     ])
                     ->columns(2),
                 
@@ -112,8 +126,7 @@ class ServiceResource extends Resource
                             ->rows(3)
                             ->maxLength(500),
                         Forms\Components\TextInput::make('seo_keywords')
-                            ->label('SEO ключові слова')
-                            ->maxLength(255),
+                            ->label('SEO ключові слова'),
                     ])
                     ->columns(2),
             ]);
