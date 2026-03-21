@@ -1194,6 +1194,43 @@
             initReviewsSwiper();
         });
     </script>
+
+    {{-- Слайдер останніх статей блогу (головна та інші сторінки з include) --}}
+    <script>
+        $(document).ready(function () {
+            function initBlogSliderSwiper() {
+                var root = document.querySelector('.blog-slider-swiper');
+                if (!root) {
+                    return;
+                }
+                if (typeof Swiper === 'undefined') {
+                    setTimeout(initBlogSliderSwiper, 100);
+                    return;
+                }
+                if (root.getAttribute('data-swiper-initialized') === '1') {
+                    return;
+                }
+                root.setAttribute('data-swiper-initialized', '1');
+                var paginationEl = root.querySelector('.blog-slider-pagination');
+                var opts = {
+                    slidesPerView: 1,
+                    spaceBetween: 16,
+                    loop: false,
+                    autoHeight: true,
+                    watchOverflow: true,
+                    breakpoints: {
+                        640: { slidesPerView: 2, spaceBetween: 16 },
+                        1024: { slidesPerView: 3, spaceBetween: 20 },
+                    },
+                };
+                if (paginationEl) {
+                    opts.pagination = { el: paginationEl, clickable: true };
+                }
+                new Swiper(root, opts);
+            }
+            initBlogSliderSwiper();
+        });
+    </script>
     
     <!-- Модальное окно для акций -->
     @include('includes.elements.promotion-modal')

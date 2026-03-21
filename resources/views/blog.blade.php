@@ -5,7 +5,7 @@
 @endsection
 
 @php
-    $siteName = config('app.name', 'Єнот-24');
+    $siteName = 'ЄНОТ-24';
     $pageUrl = route('blog.index');
     $pageDescription = 'Корисні матеріали про догляд за одягом, килимами та текстилем. Поради від хімчистки Єнот-24 у Києві.';
 @endphp
@@ -27,9 +27,10 @@
     <link rel="canonical" href="{{ $pageUrl }}">
 @endsection
 
+
 @section('content')
     <div class="pb-8 md:pb-12">
-        <div class="container mx-auto px-4 md:px-6">
+        <div class="container mx-auto px-4">
             <div class="mb-8">
                 <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Блог</h1>
                 <p class="text-gray-600 text-lg">Корисні статті та поради від Єнот-24</p>

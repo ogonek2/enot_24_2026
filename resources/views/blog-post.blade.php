@@ -57,8 +57,8 @@
 
 @section('content')
     <div class="pb-8 md:pb-12">
-        <div class="container mx-auto px-4 md:px-6 max-w-4xl">
-            <div class="mb-6">
+        <div class="container mx-auto">
+            <div class="mb-6 px-4">
                 <a href="{{ route('blog.index') }}" class="inline-flex items-center gap-2 text-gray-600 hover:text-primary transition-colors">
                     <i class="fas fa-arrow-left"></i>
                     <span>Усі публікації</span>

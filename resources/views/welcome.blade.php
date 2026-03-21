@@ -171,8 +171,6 @@
     {{-- Promotions Slider --}}
     @include('includes.elements.promotions-slider')
 
-    @include('includes.elements.blog-slider')
-
     {{-- Price Section --}}
     @include('includes.elements.price-box')
 
@@ -187,6 +185,8 @@
 
     {{-- Recommendations Section --}}
     @include('includes.elements.recommendations-slider')
+
+    @include('includes.elements.blog-slider')
 
     {{-- Delivery Section --}}
     @include('includes.elements.delivery-box')
@@ -203,18 +203,6 @@
                 item.style.animationDelay = (index * 0.2) + 's';
                 item.classList.add('animate-fade-in-up');
             });
-            if (typeof Swiper !== 'undefined' && document.querySelector('.blog-slider-swiper')) {
-                new Swiper('.blog-slider-swiper', {
-                    slidesPerView: 1,
-                    spaceBetween: 16,
-                    loop: false,
-                    pagination: { el: '.blog-slider-pagination', clickable: true },
-                    breakpoints: {
-                        640: { slidesPerView: 2, spaceBetween: 16 },
-                        1024: { slidesPerView: 3, spaceBetween: 20 },
-                    },
-                });
-            }
         });
     </script>
 @endsection
