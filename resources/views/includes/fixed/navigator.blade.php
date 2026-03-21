@@ -201,6 +201,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('blog.index') }}"
+                                class="text-base leading-5 text-text-gray hover:text-nav-purple transition-colors duration-300">
+                                Блог
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('delivery_page') }}"
                                 class="text-base leading-5 text-text-gray hover:text-nav-purple transition-colors duration-300">
                                 Доставка та кур'єр
@@ -333,6 +339,13 @@
                                 <i class="fas fa-gift text-red-500"></i>
                             </div>
                             <span class="font-semibold text-gray-700">Акції</span>
+                            <i class="fas fa-arrow-right ml-auto text-gray-400"></i>
+                        </a>
+                        <a href="{{ route('blog.index') }}" class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-primary/10 transition-colors duration-300">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-newspaper text-indigo-500"></i>
+                            </div>
+                            <span class="font-semibold text-gray-700">Блог</span>
                             <i class="fas fa-arrow-right ml-auto text-gray-400"></i>
                         </a>
                         <a href="{{ route('b2b_page') }}" class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-primary/10 transition-colors duration-300">

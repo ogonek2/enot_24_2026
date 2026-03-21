@@ -171,6 +171,8 @@
     {{-- Promotions Slider --}}
     @include('includes.elements.promotions-slider')
 
+    @include('includes.elements.blog-slider')
+
     {{-- Price Section --}}
     @include('includes.elements.price-box')
 
@@ -195,14 +197,24 @@
 
 @section('scripts')
     <script>
-        // Page-specific animations
         document.addEventListener('DOMContentLoaded', function() {
-            // Add floating animation to benefits
             const benefitItems = document.querySelectorAll('.grid.grid-cols-2.lg\\:grid-cols-4 > div');
             benefitItems.forEach(function(item, index) {
                 item.style.animationDelay = (index * 0.2) + 's';
                 item.classList.add('animate-fade-in-up');
             });
+            if (typeof Swiper !== 'undefined' && document.querySelector('.blog-slider-swiper')) {
+                new Swiper('.blog-slider-swiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 16,
+                    loop: false,
+                    pagination: { el: '.blog-slider-pagination', clickable: true },
+                    breakpoints: {
+                        640: { slidesPerView: 2, spaceBetween: 16 },
+                        1024: { slidesPerView: 3, spaceBetween: 20 },
+                    },
+                });
+            }
         });
     </script>
 @endsection

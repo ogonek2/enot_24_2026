@@ -66,6 +66,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('blog.index') }}" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
+                                <i class="fas fa-arrow-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                                Блог
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('locations_page') }}" class="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
                                 <i class="fas fa-arrow-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
                                 Локації

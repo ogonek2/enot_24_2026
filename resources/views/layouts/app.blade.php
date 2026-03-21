@@ -99,6 +99,28 @@
         .rich-text-content h4 {
             font-size: 1.125rem;
         }
+
+        .rich-text-content table,
+        .blog-article-body .blog-content-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9375rem;
+        }
+
+        .rich-text-content th,
+        .rich-text-content td,
+        .blog-article-body .blog-content-table th,
+        .blog-article-body .blog-content-table td {
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem 0.75rem;
+            text-align: left;
+        }
+
+        .rich-text-content th {
+            background-color: #f9fafb;
+            font-weight: 600;
+        }
         
         /* Отступ для контента, чтобы не перекрывался fixed навбаром */
         .app-container-elements {

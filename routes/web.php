@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexServices;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\BlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,8 @@ Route::get('/lokatsii/{seo_link}', [IndexServices::class, 'location'])->where('s
 Route::get('/aktsii', [IndexServices::class, 'promotions'])->name('promotions');
 Route::get('/aktsii/{id}', [IndexServices::class, 'promotion'])->name('promotion_page');
 Route::get('/kontakty', [IndexServices::class, 'contacts'])->name('contacts_page');
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 // Cart routes
 Route::get('/api/cart', [CartController::class, 'getCart'])->name('cart.get');

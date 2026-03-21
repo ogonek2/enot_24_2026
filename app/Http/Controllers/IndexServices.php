@@ -10,6 +10,7 @@ use App\Models\B2b;
 use App\Models\discount;
 use App\Models\locations;
 use App\Models\cities;
+use App\Models\BlogPost;
 
 class IndexServices extends Controller
 {
@@ -60,10 +61,17 @@ class IndexServices extends Controller
             })
             ->toArray();
 
+        $latestBlogPosts = BlogPost::query()
+            ->published()
+            ->orderByDesc('published_at')
+            ->limit(5)
+            ->get();
+
         return view('welcome', [
             'categories' => $categories,
             'discounts' => $discounts,
             'branches' => $branches,
+            'latestBlogPosts' => $latestBlogPosts,
         ]);
     }
     public function services()
