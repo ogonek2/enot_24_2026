@@ -205,17 +205,6 @@
                         </div>
                     </div>
                 </div>
-            @else
-                <div class="mb-8 md:mb-12">
-                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                        <div class="px-6 md:px-8 py-16 text-center">
-                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-exclamation-triangle text-gray-400 text-2xl"></i>
-                            </div>
-                            <p class="text-gray-500 text-lg">Послуги в цій категорії тимчасово недоступні</p>
-                        </div>
-                    </div>
-                </div>
             @endif
 
             {{-- Services from Subcategories --}}

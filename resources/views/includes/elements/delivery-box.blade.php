@@ -15,7 +15,7 @@
                         <div class="space-y-4">
                             <div class="grid md:grid-cols-1 gap-4">
                                 <div class="bg-secondary/10 p-4 rounded-xl">
-                                    <div class="text-2xl font-bold text-white">350 грн</div>
+                                    <div class="text-2xl font-bold text-white">Від 400 грн</div>
                                     <div class="text-sm text-white">Доставка в обидві сторони</div>
                                 </div>
                             </div>
