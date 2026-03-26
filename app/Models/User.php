@@ -13,6 +13,9 @@ class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_COPYWRITER = 'copywriter';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +26,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'is_admin',
+        'role',
     ];
 
     /**
@@ -50,6 +54,20 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessFilament(): bool
     {
-        return $this->is_admin === true;
+        return $this->is_admin === true || $this->role === self::ROLE_ADMIN;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
+
+    public function hasAnyRole(array $roles): bool
+    {
+        if ($this->is_admin === true) {
+            return true;
+        }
+
+        return in_array($this->role, $roles, true);
     }
 }

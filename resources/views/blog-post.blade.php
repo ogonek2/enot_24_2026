@@ -83,7 +83,7 @@
             </article>
 
             @if($relatedPosts->count() > 0)
-                <div class="mt-10">
+                <div class="mt-10 px-4">
                     <h2 class="text-xl font-bold text-gray-900 mb-4">Інші статті</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         @foreach($relatedPosts as $rel)

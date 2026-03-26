@@ -62,10 +62,20 @@ class UserResource extends Resource
                 
                 Forms\Components\Section::make('Доступ')
                     ->schema([
+                        Forms\Components\Select::make('role')
+                            ->label('Роль')
+                            ->options([
+                                User::ROLE_ADMIN => 'Адміністратор',
+                                User::ROLE_COPYWRITER => 'Копірайтер',
+                            ])
+                            ->required()
+                            ->default(User::ROLE_COPYWRITER)
+                            ->reactive()
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('is_admin', $state === User::ROLE_ADMIN)),
                         Forms\Components\Toggle::make('is_admin')
                             ->label('Адміністратор')
                             ->default(false)
-                            ->helperText('Дозволити доступ до адмін-панелі'),
+                            ->helperText('Автоматично вмикається для ролі "Адміністратор"'),
                     ]),
             ]);
     }
@@ -88,6 +98,10 @@ class UserResource extends Resource
                 Tables\Columns\IconColumn::make('is_admin')
                     ->label('Адміністратор')
                     ->boolean()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('role')
+                    ->label('Роль')
+                    ->badge()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Створено')

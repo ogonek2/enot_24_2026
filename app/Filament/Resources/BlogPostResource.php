@@ -26,6 +26,13 @@ class BlogPostResource extends Resource
 
     protected static ?int $navigationSort = 6;
 
+    protected static bool $shouldRegisterNavigation = false;
+
+    public static function canViewAny(): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -65,47 +72,6 @@ class BlogPostResource extends Resource
                                 'undo',
                                 'redo',
                             ])
-                            ->helperText('Підзаголовки: H1, H2, H3 у панелі інструментів. Таблиці — у полі нижче.')
-                            ->columnSpanFull(),
-                        Forms\Components\Textarea::make('tables_html')
-                            ->label('Таблиці (HTML)')
-                            ->rows(8)
-                            ->helperText('Окреме поле для таблиць. Натисніть «Вставити таблицю» для шаблону.')
-                            ->hintAction(
-                                Forms\Components\Actions\Action::make('insertTable')
-                                    ->label('Вставити таблицю')
-                                    ->icon('heroicon-o-table')
-                                    ->form([
-                                        Forms\Components\TextInput::make('rows')
-                                            ->label('Рядків')
-                                            ->numeric()
-                                            ->default(2)
-                                            ->minValue(1)
-                                            ->maxValue(30)
-                                            ->required(),
-                                        Forms\Components\TextInput::make('cols')
-                                            ->label('Стовпців')
-                                            ->numeric()
-                                            ->default(2)
-                                            ->minValue(1)
-                                            ->maxValue(12)
-                                            ->required(),
-                                    ])
-                                    ->action(function (array $data, Forms\Components\Component $component): void {
-                                        $r = max(1, min(30, (int) ($data['rows'] ?? 2)));
-                                        $c = max(1, min(12, (int) ($data['cols'] ?? 2)));
-                                        $html = '<table class="blog-content-table"><tbody>';
-                                        for ($i = 0; $i < $r; $i++) {
-                                            $html .= '<tr>';
-                                            for ($j = 0; $j < $c; $j++) {
-                                                $html .= '<td>&nbsp;</td>';
-                                            }
-                                            $html .= '</tr>';
-                                        }
-                                        $html .= '</tbody></table>';
-                                        $component->state(($component->getState() ?? '') . $html);
-                                    })
-                            )
                             ->columnSpanFull(),
                         Forms\Components\FileUpload::make('featured_image')
                             ->label('Зображення до статті')
