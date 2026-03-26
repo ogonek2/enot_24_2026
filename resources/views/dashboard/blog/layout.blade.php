@@ -7,6 +7,7 @@
     <title>@yield('title', 'Blog Dashboard')</title>
     <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css">
+    @yield('styles')
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-800">
 <div class="min-h-screen lg:grid lg:grid-cols-12">

@@ -79,13 +79,21 @@
             font-style: italic;
         }
 
+        .rich-text-content h1,
         .rich-text-content h2,
         .rich-text-content h3,
-        .rich-text-content h4 {
+        .rich-text-content h4,
+        .rich-text-content h5,
+        .rich-text-content h6 {
             font-weight: 700;
             margin-top: 1.25rem;
             margin-bottom: 0.75rem;
             color: #111827;
+            line-height: 1.3;
+        }
+
+        .rich-text-content h1 {
+            font-size: 1.875rem;
         }
 
         .rich-text-content h2 {
@@ -98,6 +106,14 @@
 
         .rich-text-content h4 {
             font-size: 1.125rem;
+        }
+
+        .rich-text-content h5 {
+            font-size: 1rem;
+        }
+
+        .rich-text-content h6 {
+            font-size: 0.875rem;
         }
 
         .rich-text-content table,

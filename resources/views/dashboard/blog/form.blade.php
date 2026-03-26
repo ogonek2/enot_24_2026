@@ -114,6 +114,30 @@
     </div>
 @endsection
 
+@section('styles')
+    <style>
+        .note-editable h1,
+        .note-editable h2,
+        .note-editable h3,
+        .note-editable h4,
+        .note-editable h5,
+        .note-editable h6 {
+            font-family: 'Russo One', 'Namu', sans-serif;
+            color: #111827;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .note-editable h1 { font-size: 2rem; }
+        .note-editable h2 { font-size: 1.75rem; }
+        .note-editable h3 { font-size: 1.5rem; }
+        .note-editable h4 { font-size: 1.25rem; }
+        .note-editable h5 { font-size: 1.125rem; }
+        .note-editable h6 { font-size: 1rem; }
+    </style>
+@endsection
+
 @section('scripts')
     <script>
         var clearFormattingButton = function (context) {
