@@ -11,7 +11,6 @@ class BlogPost extends Model
         'title',
         'slug',
         'content',
-        'tables_html',
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -60,6 +59,6 @@ class BlogPost extends Model
 
     public function bodyHtml(): string
     {
-        return (string) $this->content . (string) $this->tables_html;
+        return (string) $this->content;
     }
 }
