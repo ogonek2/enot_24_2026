@@ -116,22 +116,77 @@
 
 @section('scripts')
     <script>
+        var clearFormattingButton = function (context) {
+            var ui = $.summernote.ui;
+            return ui.button({
+                contents: '<span style="font-size:12px;">Tx</span>',
+                tooltip: 'Очистить формат',
+                click: function () {
+                    context.invoke('editor.removeFormat');
+                }
+            }).render();
+        };
+
         $('#content-editor').summernote({
             height: 320,
             placeholder: 'Текст статті...',
+            fontNames: ['Namu'],
+            fontNamesIgnoreCheck: ['Namu'],
+            buttons: {
+                clearFormatting: clearFormattingButton
+            },
             toolbar: [
                 ['style', ['style']],
                 ['font', ['bold', 'italic', 'underline', 'clear']],
-                ['fontname', ['fontname']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['insert', ['link', 'picture', 'table', 'hr']],
+                ['clean', ['clearFormatting']],
                 ['view', ['codeview']]
             ],
-            dialogsInBody: true
+            dialogsInBody: true,
+            callbacks: {
+                onPaste: function (e) {
+                    e.preventDefault();
+
+                    var clipboardData = (e.originalEvent || e).clipboardData;
+                    var html = clipboardData.getData('text/html');
+                    var text = clipboardData.getData('text/plain');
+
+                    if (!html) {
+                        document.execCommand('insertText', false, text);
+                        return;
+                    }
+
+                    var wrapper = document.createElement('div');
+                    wrapper.innerHTML = html;
+
+                    wrapper.querySelectorAll('*').forEach(function (el) {
+                        el.removeAttribute('style');
+                        el.removeAttribute('class');
+                        el.removeAttribute('id');
+                        el.removeAttribute('dir');
+                    });
+
+                    wrapper.querySelectorAll('p, div').forEach(function (el) {
+                        if (!el.textContent.trim() && !el.querySelector('img, table, br')) {
+                            el.remove();
+                        }
+                    });
+
+                    var cleaned = wrapper.innerHTML
+                        .replace(/&nbsp;/g, ' ')
+                        .replace(/\s{2,}/g, ' ')
+                        .replace(/(<br\s*\/?>\s*){3,}/gi, '<br><br>')
+                        .replace(/(<p>\s*<\/p>\s*){2,}/gi, '<p></p>');
+
+                    document.execCommand('insertHTML', false, cleaned);
+                }
+            }
         });
 
         $('.note-editor').addClass('rounded-xl border border-slate-300');
         $('.note-toolbar').addClass('rounded-t-xl bg-slate-50');
+        $('.note-editable').css('font-family', 'Namu, Inter, f_inter, sans-serif');
 
         function togglePublishedAt() {
             var mode = $('input[name="publish_mode"]:checked').val();
