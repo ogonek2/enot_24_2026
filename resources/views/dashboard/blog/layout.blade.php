@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Blog Dashboard')</title>
     <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css">
+    <link rel="stylesheet" href="{{ asset('css/blog-dashboard.css') }}">
     @yield('styles')
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-800">
@@ -64,8 +64,7 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<script src="{{ asset('js/blog-dashboard.js') }}" defer></script>
 @yield('scripts')
 </body>
 </html>

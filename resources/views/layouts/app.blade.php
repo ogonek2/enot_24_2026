@@ -54,10 +54,70 @@
             margin-bottom: 0.75rem;
         }
 
-        .rich-text-content ol {
-            list-style-type: decimal;
-            padding-left: 1.5rem;
+        .rich-text-content ul ul { list-style-type: circle; }
+        .rich-text-content ul ul ul { list-style-type: square; }
+
+        /* Top-level ordered list (custom marker to avoid browser nesting quirks) */
+        .rich-text-content ol:not(ol ol) {
+            list-style: none;
+            padding-left: 0;
             margin-bottom: 0.75rem;
+            counter-reset: main;
+        }
+
+        .rich-text-content ol:not(ol ol) > li {
+            counter-increment: main;
+            counter-reset: sub;
+            position: relative;
+            padding-left: 2.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .rich-text-content ol:not(ol ol) > li::before {
+            content: counter(main) ".";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2rem;
+            text-align: right;
+            color: #111827;
+        }
+
+        /* Nested ordered lists use 1.1 / 2.1 / 2.2 ... */
+        .rich-text-content ol ol {
+            list-style: none !important;
+            padding-left: 0 !important;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            counter-reset: sub;
+        }
+
+        .rich-text-content ol ol > li {
+            position: relative;
+            padding-left: 2.2rem;
+            counter-increment: sub;
+        }
+
+        .rich-text-content ol ol > li::marker {
+            content: "" !important;
+        }
+
+        .rich-text-content ol ol > li::before {
+            content: counter(main) "." counter(sub);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2rem;
+            text-align: right;
+            color: #111827;
+        }
+
+        /* Ensure all nested levels stay numeric (no a/i/A) */
+        .rich-text-content ol ol ol,
+        .rich-text-content ol ol ol ol,
+        .rich-text-content ol ol ol ol ol,
+        .rich-text-content ol ol ol ol ol ol {
+            list-style: none;
         }
 
         .rich-text-content li {

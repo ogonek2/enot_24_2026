@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexServices;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\SitemapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,9 @@ use App\Http\Controllers\BlogController;
 */
 
 Route::get('/', [IndexServices::class, 'index'])->name('welcome');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
+Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
+Route::get('/sitemap-posts.xml', [SitemapController::class, 'posts'])->name('sitemap.posts');
 Route::get('/poslugi-ta-cini', [IndexServices::class, 'services'])->name('services');
 Route::get('/poslugi-ta-cini/{category}/posluga/{service}', [IndexServices::class, 'service_page'])->name('service_page');
 Route::get('/poslugi-ta-cini/{category}', [IndexServices::class, 'category_page'])->name('category_page');

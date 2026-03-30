@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -20,7 +21,11 @@ mix.js('resources/js/app.js', 'public/js')
     .webpackConfig({
         resolve: {
             alias: {
-                'vue$': 'vue/dist/vue.js' // Используем полную версию с компилятором (CommonJS)
+                'vue$': 'vue/dist/vue.js', // Используем полную версию с компилятором (CommonJS)
+                // Force single jQuery module (avoid casing duplicates: jQuery vs jquery)
+                'jQuery': path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js'),
+                'jquery': path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js'),
+                'jquery$': path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js'),
             }
         },
         watchOptions: {
@@ -33,6 +38,8 @@ mix.js('resources/js/app.js', 'public/js')
         require('tailwindcss'),
         require('autoprefixer'),
     ])
+    .js('resources/js/blog-dashboard.js', 'public/js')
+    .sass('resources/sass/blog-dashboard.scss', 'public/css')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/content.scss', 'public/css')
     .sass('resources/sass/windows.scss', 'public/css')

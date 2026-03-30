@@ -1,10 +1,12 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/elements.css": "/css/elements.css",
+    "/js/blog-dashboard.js": "/js/blog-dashboard.js",
     "/css/windows.css": "/css/windows.css",
     "/css/content.css": "/css/content.css",
     "/css/app.css": "/css/app.css",
+    "/css/blog-dashboard.css": "/css/blog-dashboard.css",
     "/css/tailwind.css": "/css/tailwind.css",
     "/css/box_containers.css": "/css/box_containers.css",
-    "/css/fixed_elements.css": "/css/fixed_elements.css"
+    "/css/fixed_elements.css": "/css/fixed_elements.css",
+    "/css/elements.css": "/css/elements.css"
 }
