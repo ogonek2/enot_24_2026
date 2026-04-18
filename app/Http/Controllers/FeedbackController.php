@@ -19,12 +19,17 @@ class FeedbackController extends Controller
 {
     public function submit(Request $request)
     {
+        if ($request->input('popup_modal_id') === '' || $request->input('popup_modal_id') === null) {
+            $request->merge(['popup_modal_id' => null]);
+        }
+
         // Validate the request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'message' => 'nullable|string|max:1000',
             'source' => 'nullable|string|max:50',
+            'popup_modal_id' => 'nullable|integer|exists:popup_modals,id',
         ], [
             'name.required' => 'Ім\'я є обов\'язковим полем',
             'name.max' => 'Ім\'я не може перевищувати 255 символів',
@@ -45,7 +50,14 @@ class FeedbackController extends Controller
             $formType = $this->determineFormType($request);
             
             // Send notification to Telegram
-            $this->sendTelegramNotification($request->name, $request->phone, $request->message, $formType, $request->source);
+            $this->sendTelegramNotification(
+                $request->name,
+                $request->phone,
+                $request->message,
+                $formType,
+                $request->source,
+                $request->input('popup_modal_id')
+            );
 
             return response()->json([
                 'success' => true,
@@ -69,6 +81,10 @@ class FeedbackController extends Controller
         if ($request->has('source') && $request->source === 'promotion_modal') {
             return 'promotion_modal';
         }
+
+        if ($request->has('source') && $request->source === 'scheduled_popup_modal') {
+            return 'scheduled_popup_modal';
+        }
         
         // Check if it's consultation form (has name_fd field)
         if ($request->has('name_fd')) {
@@ -87,7 +103,7 @@ class FeedbackController extends Controller
     /**
      * Send notification to Telegram
      */
-    private function sendTelegramNotification($name, $phone, $message, $formType = 'feedback', $source = null)
+    private function sendTelegramNotification($name, $phone, $message, $formType = 'feedback', $source = null, $popupModalId = null)
     {
         // Check if Telegram notifications are enabled
         if (!config('telegram.enabled', true)) {
@@ -102,7 +118,8 @@ class FeedbackController extends Controller
             'feedback' => "🆕 *Нове повідомлення зворотнього зв'язку*",
             'consultation' => "📞 *Заявка на консультацію*",
             'courier' => "🚚 *Заявка на консультацію*",
-            'promotion_modal' => "🎁 *Заявка з модального вікна акції*"
+            'promotion_modal' => "🎁 *Заявка з модального вікна акції*",
+            'scheduled_popup_modal' => "🪟 *Заявка з запланованого банерного поп-апу*",
         ];
         
         $text = $formTitles[$formType] . "\n\n";
@@ -111,6 +128,10 @@ class FeedbackController extends Controller
         
         if (!empty($message)) {
             $text .= "💬 *Повідомлення:* " . $message . "\n";
+        }
+
+        if (!empty($popupModalId)) {
+            $text .= "🆔 *Поп-ап ID:* " . $popupModalId . "\n";
         }
         
         $text .= "\n⏰ *Час:* " . now()->format('d.m.Y H:i:s');

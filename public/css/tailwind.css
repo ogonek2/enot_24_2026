@@ -870,6 +870,9 @@ b, strong, .font-bold, .font-semibold, .font-black {
 .z-\[9999\] {
     z-index: 9999 !important;
 }
+.z-\[10102\] {
+    z-index: 10102 !important;
+}
 .col-span-2 {
     grid-column: span 2 / span 2 !important;
 }
@@ -1137,6 +1140,12 @@ b, strong, .font-bold, .font-semibold, .font-black {
 .max-h-\[calc\(100vh-200px\)\] {
     max-height: calc(100vh - 200px) !important;
 }
+.max-h-56 {
+    max-height: 14rem !important;
+}
+.max-h-\[70vh\] {
+    max-height: 70vh !important;
+}
 .min-h-96 {
     min-height: 24rem !important;
 }
@@ -1154,6 +1163,9 @@ b, strong, .font-bold, .font-semibold, .font-black {
 }
 .min-h-screen {
     min-height: 100vh !important;
+}
+.min-h-\[180px\] {
+    min-height: 180px !important;
 }
 .w-10 {
     width: 2.5rem !important;
@@ -1262,6 +1274,9 @@ b, strong, .font-bold, .font-semibold, .font-black {
 }
 .max-w-sm {
     max-width: 24rem !important;
+}
+.max-w-full {
+    max-width: 100% !important;
 }
 .flex-1 {
     flex: 1 1 0% !important;
@@ -1507,6 +1522,9 @@ b, strong, .font-bold, .font-semibold, .font-black {
 }
 .items-center {
     align-items: center !important;
+}
+.items-stretch {
+    align-items: stretch !important;
 }
 .justify-start {
     justify-content: flex-start !important;
@@ -3266,6 +3284,10 @@ b, strong, .font-bold, .font-semibold, .font-black {
     opacity: 0.9 !important;
 }
 
+.hover\:opacity-95:hover {
+    opacity: 0.95 !important;
+}
+
 .hover\:shadow-2xl:hover {
     --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25) !important;
     --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color) !important;
@@ -4007,6 +4029,14 @@ b, strong, .font-bold, .font-semibold, .font-black {
 
     .lg\:min-h-\[500px\] {
         min-height: 500px !important;
+    }
+
+    .lg\:min-h-0 {
+        min-height: 0px !important;
+    }
+
+    .lg\:min-h-\[420px\] {
+        min-height: 420px !important;
     }
 
     .lg\:w-1\/2 {

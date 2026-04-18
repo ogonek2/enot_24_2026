@@ -1310,6 +1310,7 @@
     
     <!-- Модальное окно для акций -->
     @include('includes.elements.promotion-modal')
+    @include('includes.elements.scheduled-popup-modals')
     
     {{-- Page Loader Script --}}
     <script>
