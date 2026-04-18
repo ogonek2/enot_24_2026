@@ -34,9 +34,14 @@
                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-2xl focus:border-primary focus:outline-none transition text-base bg-gray-50 focus:bg-white">
                         <div class="error-message text-sm text-red-600 mt-1" id="scheduled_popup_phoneError"></div>
                     </div>
-                    <button type="submit" id="scheduled_popup_submit" class="w-full bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-full font-semibold text-base transition shadow hover:opacity-95">
-                        <i class="fas fa-paper-plane mr-2"></i> Відправити заявку
-                    </button>
+                    <div class="flex flex-col gap-3 pt-1">
+                        <button type="submit" id="scheduled_popup_submit" class="w-full bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-full font-semibold text-base transition shadow hover:opacity-95">
+                            <i class="fas fa-paper-plane mr-2"></i> Відправити заявку
+                        </button>
+                        <button type="button" data-scheduled-popup-close class="w-full px-8 py-3 rounded-full font-semibold text-base border-2 border-gray-300 text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 transition">
+                            Закрити
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

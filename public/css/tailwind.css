@@ -3043,6 +3043,11 @@ b, strong, .font-bold, .font-semibold, .font-black {
     border-color: rgb(116 112 191 / 0.5) !important;
 }
 
+.hover\:border-gray-400:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(156 163 175 / var(--tw-border-opacity, 1)) !important;
+}
+
 .hover\:bg-accent:hover {
     --tw-bg-opacity: 1 !important;
     background-color: rgb(253 217 229 / var(--tw-bg-opacity, 1)) !important;
